@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>我的订单列表</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/scrollbar.css"/>
+    <script src="__ROOT__/Public/weixin/js/jquery.min.js"></script>
+    <script src="__ROOT__/Public/weixin/js/ilazyuiscroll.js"></script>
+    <script src="__ROOT__/Public/weixin/js/ilazyui.js"></script>
+    <script src="__ROOT__/Public/js/jquery.touchSwipe.min.js"></script>
+    <script src="__ROOT__/Public/js/idangerous.swiper-1.9.1.min.js"></script>
+    <script src="__ROOT__/Public/js/idangerous.swiper.scrollbar-1.2.js"></script>
+    <script type="text/javascript">
+        var statusid = <?php echo $status ?>;
+        $(function(){
+            $('#'+statusid).addClass('weui_bar_item_on texcolor2d bbtmsolid4br');
+            $('.weui_navbar_item').on("click", function(){
+                $(this).addClass('weui_bar_item_on texcolor2d bbtmsolid4br').siblings('.weui_bar_item_on').removeClass('weui_bar_item_on texcolor2d bbtmsolid4br');
+                location.href = "index.php?s=/home/order/orderlist/status/"+$(this).attr('id');
+            });
+        });
+    </script>
+</head>
+<body class="backgroud_f3">
+    <div class="weui_navbar bbtmborder pstfixe zzhou10000">
+        <div class="weui_navbar_item" id='0'>
+            全部
+        </div>
+        <div class="weui_navbar_item" id='1' tab="zc">
+            待付款
+        </div>
+        <div class="weui_navbar_item" id='5' tab="bz">
+            待收货
+        </div>
+        <div class="weui_navbar_item" id='6' tab="sx">
+            已完成
+        </div>
+    </div>
+<!-- 上下拉刷新 -->
+<div id="wrapper" style="margin-top:48px;">
+<div id="scroller">
+<div id="pullDown">
+    <span class="pullDownLabel">下拉刷新...</span>
+</div>
+<!-- 代付款需要购买的功能的list-->
+<volist name="orderlist" id="oo">
+    <div class="backgroud_ff mbottom1">
+        <div class="weui_panel_bd pbottom02 ">
+            <div class=" fontsize105 texcolor44">
+                <p class="mleft15p ftleft ptop06 pbottom02">{{$oo['name']}}</p>
+                <!-- <p class="mright15p fright pbottom02 ptop06 texcolor2d">已发货</p> -->
+                <!-- <p class="mright15p fright pbottom02 ptop06 texcolor2d">派送中</p> -->
+                <p class="mright15p fright pbottom02 ptop06 texcolor2d">
+                    <if condition="$oo['status'] eq 1 or $oo['status'] eq 2">
+                        待付款
+                    <elseif condition="$oo['status'] eq 3 or $oo['status'] eq 4" />
+                        已取消
+                    <elseif condition="$oo['status'] eq 5"/>
+                        待评价
+                    <elseif condition="$oo['status'] eq 6"/>
+                        完成
+                    <elseif condition="$oo['status'] eq 7"/>
+                        退款中
+                    <elseif condition="$oo['status'] eq 8"/>
+                        已退款
+                    </if>
+                    <!-- <switch name="$oo['status']">
+                        <case value="1|2">待付款</case>
+                        <case value="3|4">订单取消</case>
+                        <case value="5">待评价</case>
+                        <case value="6">待付款</case>
+                        <case value="7">申请退款</case>
+                        <case value="8">已退款</case>
+                        <default/>xxx
+                    </switch> -->
+                </p>
+            </div>
+            <div class=" fontsize08 texcolora0 ">
+                <div class="mright15p mleft15p bbtmdashedd0 pbottom06" >
+                    <p class="ftleft">篡单号:<span class="texspacing">{{$oo['orderno']}}</span></p>
+                    <p class="fright texspacing">{{:msubstr($oo['create_time'], 0, 10, 'utf-8', false)}}</p>
+                </div>
+            </div>
+            <div  class="weui_media_box weui_media_appmsg ">
+                <if condition="$oo['isself'] eq 1">
+                    <div class=" pstabsolute marin0 ">
+                        <img class="btltadius6" src="__ROOT__/Public/weixin/image/zy.png">
+                    </div>
+                </if>
+                <div class="weui_media_hd_mx">
+                    <img class="weui_media_appmsg_thumb bgwidth56 bgheight70 braderradius6" src="{{$oo['image']|default='__ROOT__/Public/weixin/image/noimage.png'}}" alt="">
+                </div>
+                <div class="weui_media_bd  mtop_02 fontsize105">
+                    <h4 class="weui_media_title texcolor44 mtop02">购买数量：<span class=" texcolor77 ftright">{{$oo['number']}} 份</span> </h4>
+                    <h4 class="weui_media_title texcolor44 mtop02">支付金额：<span class=" texcolor77 ftright">{{$oo['pay_amount']}} 元</span> </h4>
+                    <h4 class="weui_media_title texcolor44 mtop02">总计商品：<span class=" texcolor77 ftright">共1件商品</span> </h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="btpmdashedfd0 mleft15p mright15p">
+            <div class="texcolor66">
+                <p class="ftleft fright ptop06 pbottom02">
+                    <span class="texcolora0 fontsize04">商品<span class="texcolor4bq fontsize15p">{{$oo['goods_amount']}}</span>元+</span><span class="texcolora0 fontsize04">邮费<span class="texcolor4bq fontsize15p">{{$oo['fare']|default=0}}</span>元</span>
+                </p>
+                <p class="fright pbottom02 ptop06"><span class="mleft03 texcolor2d fontsize1">合计：{{$oo['pay_amount']}}元</span></p>
+            </div>
+            <div class=" fontsize08 texcolora0 pbottom06">
+                 <i class="Hui-iconfont fontsize1 mtop01 icocolorhh">&#xe6c9;</i><span class="mleft03">天津市 西青区 张家窝 华庄子 </span>
+                <!--  <p class="fright">加邮费邮寄</p> -->
+            </div>
+        </div>
+        <!--状态按钮 -->
+        <div class="weui_cellb">
+            <div class="datagrid3">
+                <ul>
+                    <li class="graylink">
+                        <if condition="$oo['status'] eq 3 or $oo['status'] eq 4 or $oo['status'] eq 8">
+                            <a href="javascript:delorder('{{$oo[orderno]}}')" class="texcolor2d">删除订单</a>
+                        <else />
+                            <a href="" class="texcolor2d">取消订单</a>
+                        </if>
+                    </li>
+                    <li class="borderleftgray greenlink">
+                        <!-- <a href="" class="texcolor2d"><div class="account_list_menu_a2">退货</div></a> -->
+                        <!-- <a href="" class="texcolor2d"><div class="account_list_menu_a2">评价</div></a> -->
+                        <if condition="$oo['status'] eq 1">
+                            <a href="interface.php?s=/home/pay/payorder/orderid/{{$oo['orderno']}}/userid/{{$userid}}" class="texcolor2d"><div class="account_list_menu_a2">确认付款</div></a>
+                        <elseif condition="$oo['status'] eq 2" />
+                            <a href="" class="texcolor2d"><div class="account_list_menu_a2">催单进展</div></a>
+                        <elseif condition="$oo['status'] eq 5" />
+                            <a href="" class="texcolor2d"><div class="account_list_menu_a2">扫码收货</div></a>
+                        <elseif condition="$oo['status'] eq 6" />
+                            <a href="" class="texcolor2d"><div class="account_list_menu_a2">退换货物</div></a>
+                        </if>
+                    </li>
+                    <li class="borderleftgray orangelink">
+                        <a href="{{:U('Order/order', array('orderno'=>$oo['orderno']))}}">订单详情</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</volist>
+<!-- 派送中带有催单功能的list -->
+    <!-- <div class="backgroud_ff mbottom1">
+        <div class="weui_panel_bd backgroud_ff pbottom02 ">
+            <div class=" fontsize105 texcolor44">
+                <p class="mleft15p ftleft ptop06 pbottom02">秦安大蜜桃</p>
+                <p class="mright15p fright pbottom02 ptop06 texcolor2d">已发货</p>
+                <p class="mright15p fright pbottom02 ptop06 texcolor2d">派送中</p>
+                 <p class="mright15p fright pbottom02 ptop06 texcolor2d">待评价</p>
+                <p class="mright15p fright pbottom02 ptop06 texcolor2d">代付款</p>
+            </div>
+            <div class=" fontsize08 texcolora0 ">
+                <div class="mright15p mleft15p bbtmdashedd0 pbottom06" >
+                    <p class="ftleft">篡单号:<span class="texspacing">SYGS-D16090700001</span> </p>
+                    <p class="fright texspacing">2016-09-18</p>
+                </div>
+            </div>
+            <div  class="weui_media_box weui_media_appmsg ">
+                <div class="weui_media_hd_mx">
+                    <img class="weui_media_appmsg_thumb bgwidth56 bgheight70 braderradius6" src="__ROOT__/Public/weixin/image/noimage.png" alt="">
+                </div>
+                <div class="weui_media_bd  mtop_02 fontsize105">
+                    <h4 class="weui_media_title texcolor44 mtop02">发起篡单：<span class=" texcolor77 ftright">张先生篡</span> </h4>
+                    <h4 class="weui_media_title texcolor44 mtop02">购买数量：<span class=" texcolor77 ftright">220 斤</span> </h4>
+                    <h4 class="weui_media_title texcolor44 mtop02">支付金额：<span class=" texcolor77 ftright">260 元</span> </h4>
+                    <h4 class="weui_media_title texcolor44 mtop02">总计商品：<span class=" texcolor77 ftright">共1件商品</span> </h4>
+                </div>
+            </div>
+        </div>
+        <div class="btpmdashedfd0 mleft15p mright15p">
+            <div class="texcolor66">
+                <p class="ftleft fright ptop06 pbottom02">
+                    <span class="texcolora0 fontsize04">商品<span class="texcolor4bq fontsize15p">1280.00</span>元</span>
+                </p>
+                <p class="fright pbottom02 ptop06"><span class="mleft03 texcolor2d fontsize1">合计：1280.20元</span></p>
+            </div>
+            <div class=" fontsize08 texcolora0 pbottom06">
+                 <P class="ftleft"><i class="Hui-iconfont fontsize1 mtop01 icocolorhh">&#xe6c9;</i><span class="mleft03">天津市 西青区 张家窝 华庄子 </span></P>
+                 <p class="fright">小区自提</p>
+            </div>
+        </div> -->
+    <!--状态按钮 -->
+        <!-- <div class="weui_cellb">
+            <div class="datagrid3">
+                <ul>
+                    <li class="graylink ">
+                        <a href="" class="texcolor2d">删除</a>
+                    </li>
+                    <li class="borderleftgray greenlink">
+                        <a href="" class="texcolor2d"><div class="account_list_menu_a2">催单</div></a>
+                    </li>
+                    <li class="borderleftgray orangelink">
+                        <a href="{{:U('Order/order')}}">订单详情</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div> -->
+<!-- 代评价需要评价功能的list-->
+    <!-- <div class="backgroud_ff mbottom1">
+        <div class="weui_panel_bd pbottom02 ">
+            <div class=" fontsize105 texcolor44">
+                <p class="mleft15p ftleft ptop06 pbottom02">秦安大蜜桃</p>
+                <p class="mright15p fright pbottom02 ptop06 texcolor2d">待评价</p>
+                <p class="mright15p fright pbottom02 ptop06 texcolor2d">派送中</p>
+                <p class="mright15p fright pbottom02 ptop06 texcolor2d">代付款</p>
+            </div>
+            <div class=" fontsize08 texcolora0 ">
+                <div class="mright15p mleft15p bbtmdashedd0 pbottom06" >
+                    <p class="ftleft">篡单号:<span class="texspacing">SYGS-D16090700001</span> </p>
+                    <p class="fright texspacing">2016-09-18</p>
+                </div>
+            </div>
+            <div  class="weui_media_box weui_media_appmsg ">
+                <div class=" pstabsolute marin0 ">
+                    <img class="btltadius6" src="__ROOT__/Public/weixin/image/zy.png">
+                </div>
+                <div class="weui_media_hd_mx">
+                    <img class="weui_media_appmsg_thumb bgwidth56 bgheight70 braderradius6" src="__ROOT__/Public/weixin/image/1.jpg" alt="">
+                </div>
+                <div class="weui_media_bd  mtop_02 fontsize105">
+                    <h4 class="weui_media_title texcolor44 mtop02">发起篡单：<span class=" texcolor77 ftright">张先生篡</span> </h4>
+                    <h4 class="weui_media_title texcolor44 mtop02">购买数量：<span class=" texcolor77 ftright">220 斤</span> </h4>
+                    <h4 class="weui_media_title texcolor44 mtop02">支付金额：<span class=" texcolor77 ftright">260 元</span> </h4>
+                    <h4 class="weui_media_title texcolor44 mtop02">总计商品：<span class=" texcolor77 ftright">共1件商品</span> </h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="btpmdashedfd0 mleft15p mright15p">
+            <div class="texcolor66">
+                <p class="ftleft fright ptop06 pbottom02">
+                    <span class="texcolora0 fontsize04">商品<span class="texcolor4bq fontsize15p">1280.00</span>元</span>
+                </p>
+                <p class="fright pbottom02 ptop06"><span class="mleft03 texcolor2d fontsize1">合计：1280.20元</span></p>
+            </div>
+            <div class=" fontsize08 texcolora0 pbottom06">
+                 <P class="ftleft"><i class="Hui-iconfont fontsize1 mtop01 icocolorhh">&#xe6c9;</i><span class="mleft03">天津市 西青区 张家窝 华庄子 </span></P>
+                 <p class="fright">小区自提</p>
+            </div>
+        </div> -->
+        <!--状态按钮 -->
+        <!-- <div class="weui_cellb">
+            <div class="datagrid3">
+                <ul>
+                    <li class="graylink">
+                        <a href="" class="texcolor2d">删除</a>
+                    </li>
+                    <li class="borderleftgray greenlink">
+                        <a href="" class="texcolor2d"><div class="account_list_menu_a2">退货</div></a>
+                        <a href="" class="texcolor2d"><div class="account_list_menu_a2">评价</div></a>
+                    </li>
+                    <li class="borderleftgray  orangelink">
+                        <a href="{{:U('Order/order')}}">订单详情</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div> -->
+<!-- 已完成功能的list-->
+<!-- <div class="backgroud_ff mbottom1">
+        <div class="weui_panel_bd pbottom02 ">
+            <div class=" fontsize105 texcolor44">
+                <p class="mleft15p ftleft ptop06 pbottom02">秦安大蜜桃</p>
+                <p class="mright15p fright pbottom02 ptop06 texcolor2d">已完成</p>
+                <p class="mright15p fright pbottom02 ptop06 texcolor2d">派送中</p>
+                <p class="mright15p fright pbottom02 ptop06 texcolor2d">代付款</p>
+            </div>
+            <div class=" fontsize08 texcolora0 ">
+                <div class="mright15p mleft15p bbtmdashedd0 pbottom06" >
+                    <p class="ftleft">篡单号:<span class="texspacing">SYGS-D16090700001</span> </p>
+                    <p class="fright texspacing">2016-09-18</p>
+                </div>
+            </div>
+            <div  class="weui_media_box weui_media_appmsg ">
+                <div class=" pstabsolute marin0 ">
+                    <img class="btltadius6" src="__ROOT__/Public/weixin/image/zy.png">
+                </div>
+                <div class="weui_media_hd_mx">
+                    <img class="weui_media_appmsg_thumb bgwidth56 bgheight70 braderradius6" src="__ROOT__/Public/weixin/image/1.jpg" alt="">
+                </div>
+                <div class="weui_media_bd  mtop_02 fontsize105">
+                    <h4 class="weui_media_title texcolor44 mtop02">发起篡单：<span class=" texcolor77 ftright">张先生篡</span> </h4>
+                    <h4 class="weui_media_title texcolor44 mtop02">购买数量：<span class=" texcolor77 ftright">220 斤</span> </h4>
+                    <h4 class="weui_media_title texcolor44 mtop02">支付金额：<span class=" texcolor77 ftright">260 元</span> </h4>
+                    <h4 class="weui_media_title texcolor44 mtop02">总计商品：<span class=" texcolor77 ftright">共1件商品</span> </h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="btpmdashedfd0 mleft15p mright15p">
+            <div class="texcolor66">
+                <p class="ftleft fright ptop06 pbottom02">
+                    <span class="texcolora0 fontsize04">商品<span class="texcolor4bq fontsize15p">1280.00</span>元</span>
+                </p>
+                <p class="fright pbottom02 ptop06"><span class="mleft03 texcolor2d fontsize1">合计：1280.20元</span></p>
+            </div>
+            <div class=" fontsize08 texcolora0 pbottom06">
+                 <P class="ftleft"><i class="Hui-iconfont fontsize1 mtop01 icocolorhh">&#xe6c9;</i><span class="mleft03">天津市 西青区 张家窝 华庄子 </span></P>
+                 <p class="fright">小区自提</p>
+            </div>
+        </div> -->
+        <!--状态按钮 -->
+        <!-- <div class="weui_cellb">
+            <div class="datagrid3">
+                <ul>
+                    <li class="graylink">
+                        <a href="" class="texcolor2d">删除</a>
+                    </li>
+                    <li class="borderleftgray greenlink">
+                        <a href="" class="texcolor2d"><div class="account_list_menu_a2">退货</div></a>
+                        <a href="" class="texcolor2d"><div class="account_list_menu_a2">申诉</div></a>
+                    </li>
+                    <li class="borderleftgray  orangelink">
+                        <a href="{{:U('Order/order')}}">订单详情</a>
+                    </li>
+                </ul>
+            </div>
+        </div> -->
+    </div>
+    <div id="pullUp">
+        <span class="pullUpLabel">上拉加载更多...</span>
+    </div>
+    <p>&nbsp;</p>
+</div>
+</div>
+<script type="text/javascript">
+    ilazyscrollbar.init({
+    wapper:'wrapper',       //容器
+    scroll:'myScrollbar',   //滑动容器
+    upbtn:'pullUp',         //上拉按钮
+    downbtn:'pullDown',     //下拉按钮
+    puaction:function(){
+        // location.reload();
+    },
+    pdaction:function(){
+        // jiazaicomment(goodsid);
+    }
+});
+
+    var userid = "<?php echo $userid ?>";
+    var status = "<?php echo $status ?>";
+    function delorder(orderno){
+        if (confirm("确认删除订单"+orderno)) {
+            $.ajax({
+                url: 'interface.php?s=/home/order/delorder',
+                type: 'POST',
+                dataType: 'json',
+                data: {userid: userid, 'orderno':orderno},
+                success: function(data){
+                    if (data.code == 2000) {
+                        location.href = "index.php?s=/home/order/orderlist/status/"+status;
+                    }else{
+                        $.iLazy.toast(data.msg);
+                    }
+                },
+                error: function(){
+                    $.iLazy.toast("网络错误");
+                },
+            });
+
+        };
+    }
+</script>
+<script src="__ROOT__/Public/weixin/js/jquery.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/common.js"></script>
+</body>
+</html>

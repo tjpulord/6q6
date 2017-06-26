@@ -1,0 +1,111 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>我的消息</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
+    <script src="__PUBLIC__/js/jquery1.8.1/jquery.js"></script>
+    <script type="text/javascript" src="__ROOT__/Public/weixin/js/ilazyui.js"></script>
+</head>
+<body class="backgroud_f3">
+       <div id="pro_list">
+           <if condition="empty($messages)"><div class="notfound"></div></if>
+           <?php $ids = ""; ?>
+           <volist name="messages" id="massage" key="key">
+                <div class="mtop1">
+                    <div class="weui_panel weui_cells_access ">
+                    <a href="{{:U('Message/message')}}">
+                        <div class="weui_panel_hd texcolor44 fontsize12 texshowpoint ">
+                            <if condition="$massage.isread eq '0'">
+                                <i class="Hui-iconfont texcolor2d fontsize02" id="">&#xe619;</i> 
+                            </if>
+                            {{:msubstr($massage['title'],0,10)}}
+                           <!--  <ul class="weui_media_info">
+                                    <li class="weui_media_info_meta">{{:date("Y-m-d H:i:s",$massage['addtime'])}}</li>
+                            </ul> -->
+                            <span class="updownbtn mtop_03" id="span{{$massage.id}}"><i class="Hui-iconfont icocolorhs fontsize13 opacity04" id="updownbtn{{$massage.id}}">&#xe6d7;</i> </span>
+                        </div>
+                    </a>    
+                    </div>
+                </div>
+                <?php $ids .= $massage['id'] . ','; ?>
+            </volist>
+       </div>
+       <div class="loading" style="display: none;text-align:center">正在加载，请稍候</div>
+<script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/common.js"></script>
+<script type="text/javascript">
+    window.ids =  '{{$ids}}';
+    function read(mid)
+    {
+         $.ajax({
+            type: 'POST',
+            data:{'mid':mid},
+            url: '<?php echo U("Message/read"); ?>',
+            dataType: 'json',
+            success: function(data){
+                $("#span"+mid).prev('i').remove();
+            },
+            error: function(xhr, type){
+                return false;
+            }
+        });
+    }
+    $(function(){
+        var page=1;//当前页
+        var ajax=!1;//是否加载中
+        var last=0;//是否是最后一页
+        var ul_obj = $('#pro_list');
+        $(window).scroll(function(){
+            if(($(window).scrollTop() + $(window).height() > $(document).height()-40) && !ajax && !last){
+                ajax=!0;//注明开始ajax加载中
+                $(".loading").show();//出现加载图片
+                $.ajax({
+                    type: 'POST',
+                    data:{'page':page, 'ids':window.ids},
+                    url: '<?php echo U("Message/ajaxAdd"); ?>',
+                    dataType: 'json',
+                    success: function(data){
+
+                        if (typeof(data[0]) == 'undefined'){
+                            last = 1;
+                            $(".loading").html("暂无更多内容！");
+                        } else {
+                            var li_clone =  "";
+                            for(var i= 0,l = data.length;i<l;i++){
+                                //处理数据并插入
+                                var content = data[i].content,
+                                    title = data[i].title,
+                                    id = data[i].id,
+                                    time = data[i].time,
+                                    ids = data[i].id + ',',
+                                    isread = data[i].isread;
+                                window.ids += ids;
+                                    li_clone +=' <div class="mtop03em"><div class="weui_panel weui_cells_access "><div class="weui_panel_hd texcolor44">';
+                                    if (isread == 0) {
+                                        li_clone += '<i class="Hui-iconfont texcolor2d fontsize02">&#xe619;</i> ';
+                                    }
+                                    li_clone += title + '<span class="updownbtn"><i class="Hui-iconfont" id="updownbtn'+id+'" onclick='+ "'"+'$.iLazy.upadownshow({f:$("#updownbtn'+id+'"),t:$("#details'+id+'")});read('+id+');'+"'"+'>&#xe6d5;</i> </span></div><div class="weui_panel_bd" style="display:none;"  id="details'+id+'"><div class="weui_media_box weui_media_text"><p class="weui_media_desc">'+content+'</p><ul class="weui_media_info"><li class="weui_media_info_meta">'+ time +'</li></ul></div></div></div></div>';
+                            };
+                            page++;
+                            ul_obj.append(li_clone); //克隆元素
+                            $(".loading").hide();
+                        }
+                        ajax=!1;//注明已经完成ajax加载
+                    },
+                    error: function(xhr, type){
+                        $(".loading").html("暂无更多内容！");
+                    }
+                });
+            }else if(!ajax && last){
+                $(".loading").show();
+            }
+        });
+    })
+ </script>
+</body>
+</html>

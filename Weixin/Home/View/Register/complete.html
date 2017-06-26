@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>填写信息</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/example.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+   <!--注册信息表单-->
+   <form action="" method="post" id="register" onsubmit="return dosubmit();">
+   <div class="weui_cells weui_cells_form">
+        <div class="weui_cell">
+            <div class="weui_cell_hd">
+                <label class="weui_label"><i class="Hui-iconfont">&#xe62c;</i></label>
+            </div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <input class="weui_input" name="info[name]" placeholder="请输入姓名" required="required" />
+            </div>
+        </div>
+        <div class="weui_cell">
+            <div class="weui_cell_hd">
+                <label class="weui_label"><i class="Hui-iconfont">&#xe602;</i></label>
+            </div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <input class="weui_input" name="info[cardnumber]" pattern="^\d{6}(18|19|20)?\d{2}(0[1-9]|1[12])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$" placeholder="请输入您身份证号码" required="required"/>
+            </div>
+        </div>
+        <div class="weui_cell">
+            <div class="weui_cell_hd">
+                <label class="weui_label"><i class="Hui-iconfont">&#xe671;</i></label>
+            </div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <input class="weui_input" name="info[address]" placeholder="请输入联系地址"/>
+            </div>
+        </div>
+        <div class="weui_cell">
+            <div class="weui_cell_hd">
+                <label class="weui_label"><i class="Hui-iconfont">&#xe62d;</i></label>
+            </div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <input class="weui_input" name="info[job]" placeholder="请输入您的职业"/>
+            </div>
+        </div>
+        <div class="weui_cell">
+            <div class="weui_cell_hd">
+                <label class="weui_label"><i class="Hui-iconfont">&#xe607;</i></label>
+            </div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <input class="weui_input" name="info[contactor]" placeholder="请输入紧急联系人姓名"/>
+            </div>
+        </div>
+        <div class="weui_cell">
+            <div class="weui_cell_hd">
+                <label class="weui_label"><i class="Hui-iconfont">&#xe6a3;</i></label>
+            </div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <input class="weui_input" name="info[contactor_mobile]" placeholder="请输入紧急联系人电话"/>
+            </div>
+        </div>
+        <div class="weui_btn_area bottom">
+            <input type="checkbox" name="agree" id="agree" checked="checked">
+            <label class="fontminisize" id="article">我已经阅读同意遵守<<同当互助计划章程>></label>
+            <input type="submit" class="weui_btn weui_btn_primary" value="确定">
+        </div>
+    </div>
+    </form>
+    <div id="toast" style="display: none;">
+    <div class="weui_mask_transparent"></div>
+    <div class="weui_toast">
+        <p class="weui_toast_content">请点击阅读<br><<康品互助计划章程>></p>
+    </div>
+</div>
+<script src="__ROOT__/Public/weixin/js/jquery.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/common.js"></script>
+<script type="text/javascript">
+    $("#article").on('click', function(event) {
+       location.href = "{{:U("article/index")}}";
+    });
+    function dosubmit () {
+        if ($("#agree").is(":checked")) {
+            return true;
+        }else{
+            $("#toast").show(300).delay(2000).hide(300);
+            return false;
+        }
+    }
+</script>
+</body>
+</html>

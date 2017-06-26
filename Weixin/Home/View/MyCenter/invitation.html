@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>我要邀请</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+
+<script src="__ROOT__/Public/weixin/js/jquery.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/common.js"></script>
+</head>
+<body>
+  <include file="Wpublic/share"/>
+  <div class="bd backgroud_hui">
+      <div class="invitation_div1">
+          <img src="{{$setting['invatation_img']}}" width="100%">
+            <if condition="$invat_ruler">
+              <div class="invitation_div2">
+                  <a href="{{:U('myCenter/invruler')}}">活动规则>></a>
+              </div>
+            </if>
+      </div>
+  </div>
+  <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+<!--分享图片-->
+<div id="share_img" style="display: none;" >
+<div class="weui_mask" id="weui_mask_share"></div>
+<div class="jiantou"><img src="__ROOT__/Public/weixin/image/arrow.png" class="arrow"></div>
+  <p>点击右上角开始分享:</p>
+  <p><img src="__ROOT__/Public/weixin/image/share1.png"><span>分享到朋友圈</span></p>
+  <p><img src="__ROOT__/Public/weixin/image/share2.png"><span>发送给朋友</span></p>
+  <div class="ok_btn"><img src="__ROOT__/Public/weixin/image/ok_btn.png"></div>
+</div>
+
+<script type="text/javascript" >
+  // wx.config({
+  //   // debug: true,
+  //   appId: '{{:$signPackage["appId"]}}',
+  //   timestamp: {{:$signPackage["timestamp"]}},
+  //   nonceStr: '{{:$signPackage["nonceStr"]}}',
+  //   signature: '{{:$signPackage["signature"]}}',
+  //   jsApiList: [
+  //   'checkJsApi',
+  //   'hideAllNonBaseMenuItem',
+  //   'showMenuItems',
+  //   'onMenuShareTimeline',
+  //   'onMenuShareAppMessage',
+  //   ]
+  // });
+  // wx.ready(function () {
+  //   function addscore()
+  //   {
+  //     return false;
+  //     var phone = '{{$_SESSION['userinfo']['phone']}}',
+  //         userid = '{{$_SESSION['userinfo']['id']}}';
+  //     if (phone != "" && userid != ""){
+  //       $.ajax({
+  //         url: '/interface.php?s=/home/score/add',
+  //         type: 'POST',
+  //         dataType: 'json',
+  //         data: {userid: userid, actionid: '8'},
+  //         success: function(data){
+  //             console.log(data);
+  //             if (data.code == 2000){
+  //               alert(data.msg);
+  //             } else {
+  //               alert(data.msg);
+  //             }
+  //         },
+  //         error: function(){
+  //         }
+  //       });
+  //     }
+
+  //   }
+  //   wx.checkJsApi({
+  //     jsApiList: [
+  //       'hideAllNonBaseMenuItem',
+  //       'showMenuItems'
+  //     ],
+  //     success: function (res) {
+  //       // alert(JSON.stringify(res));
+  //     }
+  //   });
+  // wx.hideAllNonBaseMenuItem();
+  //   wx.showMenuItems({
+  //     menuList: ["menuItem:share:appMessage","menuItem:share:timeline"], // 要显示的菜单项，所有menu项见附录3
+  //     success: function (res) {
+  //       // alert('已显示“阅读模式”，“分享到朋友圈”，“复制链接”等按钮');
+  //     },
+  //     fail: function (res) {
+  //       // alert(JSON.stringify(res));
+  //     }
+  //   });
+  //   // alert(123);
+  //   // 2. 分享接口
+  //   // 2.1 监听“分享给朋友”，按钮点击、自定义分享内容及分享结果接口
+  //     wx.onMenuShareAppMessage({
+  //       title: '{{$setting['share_inv_title']|default="同当互助"}}',
+  //       desc: '{{$setting['share_invitation']|default="现在加入送积分，家人健康有保障"}}',
+  //       link: 'http://{{$_SERVER['HTTP_HOST']}}/weixin.php/home/register/invitation?invphone={{$_SESSION['userinfo']['phone']}}',
+  //       imgUrl: "http://{{$_SERVER['HTTP_HOST']}}{{$setting['share_inv_img']|default="/Public/weixin/image/nr_5yuan.png"}}",
+  //       success: function(res){
+  //         addscore();
+  //       }
+  //     });
+
+  //   // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
+  //   wx.onMenuShareTimeline({
+  //     title: '{{$setting['share_inv_title']|default="同当互助"}}',
+  //     link: 'http://{{$_SERVER['HTTP_HOST']}}/weixin.php/home/register/invitation?invphone={{$_SESSION['userinfo']['phone']}}',
+  //     imgUrl: "http://{{$_SERVER['HTTP_HOST']}}{{$setting['share_inv_img']|default="/Public/weixin/image/nr_5yuan.png"}}",
+  //     success: function(res){
+  //       addscore();
+  //     }
+  //   });
+  // })
+
+</script>
+</body>
+</html>

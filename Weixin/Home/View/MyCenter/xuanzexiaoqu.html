@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>请选择小区</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/new/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/new/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script src="__ROOT__/Public/weixin/js/zepto.min.js"></script>
+</head>
+<body class="backgroud_f3">
+<div class="backgroud_ff zzhou10000 mtop0 pstabsolute">
+<!-- 头部搜素栏目 输入名称后右边显示确认，当没有搜素到 页面弹出对话框，当前没有开通此小区，您是否要开通此小区，开通页面跳转到开通小区界面，点击城市搜素，进入城市选择页面确定后跳回此页-->
+	<div class="page__bd mleft15p mright15p" style="padding-top: 8px; padding-bottom: 8px; ">
+		<div class="" style=" width: 30%; float: left; border-right: 1px solid #f2f2f2;">
+			<span style="margin-right: 6px;">天津市</span>
+			<i class="Hui-iconfont icocolorhs opacity05">&#xe698;</i>
+		</div>
+        <div class="" id="searchBar" style="display: flex; border-radius: 6px;">
+            <form class="weui-search-bar__form">
+                <div class="weui-search-bar__box">
+                    <i class="weui-icon-search"></i>
+                    <input type="search" class="weui-search-bar__input" id="searchInput" placeholder="搜索" required="">
+                    <a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
+                </div>
+                <label class="weui-search-bar__label" id="searchText" style="transform-origin: 0px 0px 0px; opacity: 1; transform: scale(1, 1);">
+                    <i class="weui-icon-search"></i>
+                    <span>输入社区名称搜索</span>
+                </label>
+            </form>
+            <a href="javascript:" class="weui-search-bar__cancel-btn" id="searchCancel">确认</a>
+        </div>
+        <div class="weui-cells searchbar-result" id="searchResult" style="display: none;">
+            <div class="weui-cell weui-cell_access">
+                <div class="weui-cell__bd weui-cell_primary">
+                    <p>模糊搜索文本</p>
+                </div>
+            </div>
+            <div class="weui-cell weui-cell_access">
+                <div class="weui-cell__bd weui-cell_primary">
+                    <p>模糊搜索文本</p>
+                </div>
+            </div>
+            <div class="weui-cell weui-cell_access">
+                <div class="weui-cell__bd weui-cell_primary">
+                    <p>模糊搜索文本</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 小区列表循环 -->
+<div class="backgroud_ff mtop36">
+    <div class="weui-media-box weui-media-box_text ">
+        <h4 class="weui-media-box__title">
+            <i class="Hui-iconfont icocolorns opacity05 mright03">&#xe643;</i>摩卡假日
+            <span style="float: right; font-weight: normal; color: #666666; ">
+                <i class="Hui-iconfont icocolorhs opacity05 mright03">&#xe6c9;</i>1.5km
+            </span> 
+        </h4>
+        <p class="weui-media-box__desc texcolora0 mtop03">柳霞路和和平道的交界口为张家界的交</p>
+    </div>
+
+    <div class="weui-media-box weui-media-box_text ">
+        <h4 class="weui-media-box__title">
+            <i class="Hui-iconfont icocolorns opacity05 mright03">&#xe643;</i>摩卡假日
+            <span style="float: right; font-weight: normal; color: #666666; ">
+                <i class="Hui-iconfont icocolorhs opacity05 mright03">&#xe6c9;</i>1.5km
+            </span> 
+        </h4>
+        <p class="weui-media-box__desc texcolora0 mtop03 ">柳霞路和和平道的交界口为张家界的交为张家界的交</p>
+    </div>
+
+    <div class="weui-media-box weui-media-box_text ">
+        <h4 class="weui-media-box__title">
+            <i class="Hui-iconfont icocolorns opacity05 mright03">&#xe643;</i>摩卡假日
+            <span style="float: right; font-weight: normal; color: #666666; ">
+                <i class="Hui-iconfont icocolorhs opacity05 mright03">&#xe6c9;</i>1.5km
+            </span> 
+        </h4>
+        <p class="weui-media-box__desc texcolora0 mtop03 ">柳霞路和和平道的交界口为张家界的交为张家界的交</p>
+    </div>
+
+    <div class="weui-media-box weui-media-box_text ">
+        <h4 class="weui-media-box__title">
+            <i class="Hui-iconfont icocolorns opacity05 mright03">&#xe643;</i>摩卡假日
+            <span style="float: right; font-weight: normal; color: #666666; ">
+                <i class="Hui-iconfont icocolorhs opacity05 mright03">&#xe6c9;</i>1.5km
+            </span> 
+        </h4>
+        <p class="weui-media-box__desc texcolora0 mtop03">柳霞路和和平道的交界口为张家界的交</p>
+    </div>
+     <div class="weui-media-box weui-media-box_text ">
+        <h4 class="weui-media-box__title">
+            <i class="Hui-iconfont icocolorns opacity05 mright03">&#xe643;</i>摩卡假日
+            <span style="float: right; font-weight: normal; color: #666666; ">
+                <i class="Hui-iconfont icocolorhs opacity05 mright03">&#xe6c9;</i>1.5km
+            </span> 
+        </h4>
+        <p class="weui-media-box__desc texcolora0 mtop03 ">柳霞路和和平道的交界口为张家界的交为张家界的交</p>
+    </div>
+
+    <div class="weui-media-box weui-media-box_text ">
+        <h4 class="weui-media-box__title">
+            <i class="Hui-iconfont icocolorns opacity05 mright03">&#xe643;</i>摩卡假日
+            <span style="float: right; font-weight: normal; color: #666666; ">
+                <i class="Hui-iconfont icocolorhs opacity05 mright03">&#xe6c9;</i>1.5km
+            </span> 
+        </h4>
+        <p class="weui-media-box__desc texcolora0 mtop03">柳霞路和和平道的交界口为张家界的交</p>
+    </div>
+     <div class="weui-media-box weui-media-box_text ">
+        <h4 class="weui-media-box__title">
+            <i class="Hui-iconfont icocolorns opacity05 mright03">&#xe643;</i>摩卡假日
+            <span style="float: right; font-weight: normal; color: #666666; ">
+                <i class="Hui-iconfont icocolorhs opacity05 mright03">&#xe6c9;</i>1.5km
+            </span> 
+        </h4>
+        <p class="weui-media-box__desc texcolora0 mtop03 ">柳霞路和和平道的交界口为张家界的交为张家界的交</p>
+    </div>
+
+    <div class="weui-media-box weui-media-box_text ">
+        <h4 class="weui-media-box__title">
+            <i class="Hui-iconfont icocolorns opacity05 mright03">&#xe643;</i>摩卡假日
+            <span style="float: right; font-weight: normal; color: #666666; ">
+                <i class="Hui-iconfont icocolorhs opacity05 mright03">&#xe6c9;</i>1.5km
+            </span> 
+        </h4>
+        <p class="weui-media-box__desc texcolora0 mtop03">柳霞路和和平道的交界口为张家界的交</p>
+    </div>
+</div>
+</body>
+</html>

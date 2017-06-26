@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>{{$title}}</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+</head>
+<body class="bgcgray">
+    <include file="Wpublic/share"/>
+    <div class="bgcwhite mtop1em">
+        <article class="score_ins_area weui_article">
+             <section>
+                 <div class="graywd">
+                    <if condition="$content">
+                        {{$content}}
+                    <else/>
+                        暂无数据
+                    </if>
+                 </div>
+             </section>
+        </article>
+    </div>
+    <a href="javascript:history.back(-1);" >
+    <div class="bottom bgclred fcenter weui_panel wcolor fs14 pbtn repaybtn">
+         返回
+    </div>
+    </a>
+<script src="__ROOT__/Public/weixin/js/jquery.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/common.js"></script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>收货确认</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/new/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/new/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
+</head>
+<body class="backgroud_f3">
+<!-- 我的订单详情 -->
+    <div class="fontsize1 texcolor44 mtop06 mbottom05 mleft15p mright15p">
+        <div class="right15 mtop06 fontsize105 texcolor77 " >收货地址
+           <span class="ftright"><i class="Hui-iconfont fontsize1 mtop01 icocolorhs mright03 ">&#xe6a8;</i>已完成</span>
+        </div>
+    </div>
+<!-- 详细地址 -->
+    <div class="weui-media__box backgroud_ff">
+        <div class="mleft15p mright15p pbottom05 ptop05">
+        <!-- $orderinfo['username'] -->
+            <div class="pbottom08  bbtmsolidee">
+                <h4 class="weui-media__title texcolor44">订单号：<span class="texcolor66">{{$orderinfo['orderno']}}</span></h4>
+                <p class="weui-media__title mtop03 ftleft texcolor66 ">姓名：<span class="texcolor88">{{:msubstr($orderinfo['username'], 0,4)}}</span></p>
+                <p class="weui-media__title mtop03 fright texcolor66">电话：<span class="texcolor88">{{$orderinfo['userphone']}}</span></p>
+                <p class="mtop03 texcolor66">地址：<span class="texcolor88">{{$orderinfo['useraddress']}}</span></p>
+            </div>
+        </div>
+    </div>
+<!-- 商品信息 -->
+    <div class=" fontsize1 texcolor44 mleft15p mtop06 mbottom05">商品信息</div>
+    <div  class="weui-media-box  backgroud_ff bbtmsolidee ">
+        <if condition="$goodsinfo['isself'] eq 1">
+            <div class="pstabsolute marin0 ">
+                <img class="btltadius6" src="__ROOT__/Public/weixin/image/zy.png">
+            </div>
+        </if>
+        <div class="ftleft mright06">
+            <img class="weui-media__thumb bgwidth68 bgheight70 braderradius6" src="{{$orderinfo['image']|default='__ROOT__/Public/weixin/image/noimage.png'}}" alt="">
+        </div>
+        <div class="weui-media__bd  mtop_02 fontsize105">
+            <h4 class="weui-media__title texcolor44 mtop02">发起篡单：<span class=" texcolor77 ftright">{{$orderinfo['owername']}} 攒</span> </h4>
+            <h4 class="weui-media__title texcolor44 mtop02">购买数量：<span class=" texcolor77 ftright">{{$orderinfo['number']}} 份</span> </h4>
+            <h4 class="weui-media__title texcolor44 mtop02">支付金额：<span class=" texcolor77 ftright">{{$orderinfo['goods_amount']}} 元</span> </h4>
+            <h4 class="weui-media__title texcolor44 mtop02">总计商品：<span class=" texcolor77 ftright">共1件商品</span> </h4>
+        </div>
+    </div>
+    <div class="backgroud_ff ptop01 pbottom08">
+        <div class="mleft15p mright15p ">
+            <p class="weui-media__title  ftleft texcolor66">邮费<span class="texcolor2dq mleft05">￥：{{$orderinfo['fare']}}</span></p>
+            <p class="weui-media__title mtop03 fright texcolor66">优惠<span class="texcolor2dq mleft05">￥：0.00</span></p>
+            <p class="weui-media__title mtop03 texcolor66 mtop05">合计金额<span class="texcolor2dq  mleft05">￥：{{$orderinfo['pay_amount']}}</span></p>
+        </div>
+    </div>
+<!-- 下单时间 -->
+    <div class="weui-cells mtop08 mbottom26">
+        <div class="weui-cell">
+            <div class="weui-cell__bd width30">
+                <p class="texcolor66">下单时间</p>
+            </div>
+            <div class="weui-cell__ft width70 fright" >{{$orderinfo['create_time']}}</div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__bd width30">
+                <p class="texcolor66">收货方式</p>
+            </div>
+            <div class="weui-cell__ft width70 fright">小区自提</div>
+        </div>
+    </div>
+<!-- 固定在手机底部的不动 -->
+    <div class="weui_cellxq backgroud_ff  " style="bottom: 0px; position: fixed; width: 100%; border-top: 1px solid #dddddd; text-align: center; margin-right: 15px;">
+        <div class="datagrid3" style="margin-top: 0px; text-align: center;">
+            <if condition="$orderinfo[status] eq 5">
+                <a href="javascript:receivegoods('{{$orderinfo[orderno]}}');" class="texcolor2d"><div class="account_list_menu_a2">确认收货</div></a>
+            </if>
+        </div>
+    </div>
+<div class="weui-gallery" style="display: none">
+    <span class="weui-gallery__img" style="background-image: url();"></span>
+</div>
+<script src="__ROOT__/Public/weixin/js/jquery.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/common.js"></script>
+<script src="__ROOT__/Public/weixin/js/ilazyui.js"></script>
+<script type="text/javascript">
+function close_page () {
+    WeixinJSBridge.invoke('closeWindow',{},function(res){$.iLazy.prompts('<br><br>收货成功');});
+}
+function receivegoods (orderno) {
+    $.ajax({
+        url: 'interface.php?s=/home/order/receivegoods',
+        type: 'POST',
+        dataType: 'json',
+        data: {orderno: orderno},
+        success:function(data){
+            if (data.code == 2000) {
+                $.iLazy.alert('收货成功', close_page);
+            };
+        }
+    });
+}
+</script>
+</body>
+</html>

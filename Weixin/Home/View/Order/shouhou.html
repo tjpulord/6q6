@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>售后服务</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/new/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/new/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+    <link href="/Public/lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
+</head>
+<body class="backgroud_f3">
+<form action="" method="post" onsubmit="return check();">
+<!-- 商品概要展示 -->
+    <div class="backgroud_ff ptop06">            
+        <div class=" fontsize1 texcolor44 mleft15p mright15p mbottom05">订单编号：<span class="ftright">SYGS-D16101200010</span></div>
+        <div  class="weui-media-box  bbtmsolidee ">
+            <if condition="$goodsinfo['isself'] eq 1">
+                <div class="pstabsolute marin0 ">
+                    <img class="btltadius6" src="__ROOT__/Public/weixin/image/zy.png">
+                </div>
+            </if>
+            <div class="ftleft mright06">
+                <img class="weui-media__thumb bgwidth40 bgheight52 braderradius6" src="{{$orderinfo['image']|default='__ROOT__/Public/weixin/image/noimage.png'}}" alt="">
+            </div>
+            <div class="weui-media__bd  mtop_02 fontsize105">
+                <p class="weui-media__title texcolor88 mtop02 texshowline overflowhid">商品简单的描述和前面商品描述一样甘肃红富士</p>
+                <p class="weui-media__title texcolor88 mtop02">
+                    <span>数量<font class="texcolor2d mright03 mleft02" >100</font></span>
+                    <span>金额<font class="texcolor2d mright02 mleft02" >￥120.00</font>元</span>
+                </p>
+            </div>
+        </div>
+    </div>  
+<!-- 商品退货描述 -->
+       <div class="weui-cells__title mbottom04">
+            <label class="mright03"><i class="Hui-iconfont icocolorns fontsize12">&#xe70c;</i> </label>
+            <span class="texcolor44 fontsize17p " >问题描述</span>
+       </div>
+       <div class="backgroud_ff ptop03 pbottom10">   
+           <div class="weui-cells__form mtop06 backgroud_ff  mleft15p mright15p borderee ">
+                <div class="weui-cell">
+                    <input type="hidden" name="phone" value="{{$_SESSION['userinfo']['phone']}}">
+                    <div class="weui-cell__bd weui-cell__primary">
+                        <textarea class="weui-textarea texlineheight30 heinght48" placeholder="请输入内容您要反馈的内容,谢谢。请注意字数限制在10~400字" id="content" name="content" minlength="10" maxlength="400" rows="5" required="required"></textarea>
+                        <div class="weui-textarea-counter"><span id="length">0</span>/400</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!-- 上传照片 -->
+<div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <div class="weui-uploader ">
+                        <div class="weui-uploader__hd">
+                            <p class="weui-uploader__title"><i class="Hui-iconfont icocolorns fontsize1">&#xe612;</i> 上传照片</p>
+                            <div class="weui-uploader__info" id="imagenumber">
+                                <font class="texcolor44">{{:count($imagelist)}}</font>/4
+                            </div>
+                        </div>
+                        <div class="weui-uploader__bd">
+                            <ul class="weui-uploader__files" id="upload_image_list">
+                                <volist name="imagelist" id="ivo">
+                                    <li class="weui-uploader__file" style="background-image:url({{$ivo['image']}})"></li>
+                                </volist>
+                            </ul>
+
+                            <div class="weui-uploader__input-box"  onclick="$.iLazy.uploadmultiimage(dealimage);">
+                                <image class="weui-uploader__input" id="upload_image_div" type="file" accept="image/*" multiple="" >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="texcolora0 mleft15p mright15p fontsize06 mbottom1">
+                为了帮助我们更好的解决问题，请上传照片。最多5张，每张不超过5M，支持JPG/PNG/BMP。谢谢您的友好合作！
+            </div>
+        </div>
+        <div class="clearboth wbtn96 mcenter mbottom12 mtop2">
+            <input type="submit" class="weui-btn backgroud_ff642d" id="showTooltips" value="提 交">
+        </div>
+</form>
+<script src="__ROOT__/Public/weixin/js/jquery.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/common.js"></script>
+<script>
+    $(document).keydown(function(event) {
+        $("#length").html($('#content').val().length);
+    });
+    function check(){
+        var textl = $("#content").val().length;
+        if ( textl<10 || textl>1000) {
+            alert('情况说明需50~1000字');
+            return false;
+        }
+        return true;
+    }
+</script>
+</body>
+</html>

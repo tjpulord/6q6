@@ -1,0 +1,30 @@
+.td_bg_signin{
+	background: url(../image/bgsignin.png);
+	background-size: 100% 100%;
+	background-attachment: fixed;
+}
+
+.logo{
+	height: auto; 
+    overflow: hidden;
+    width: 40%; 
+}
+
+.logo img{width: 100%;}
+
+.weui_cells.weui_cells_access.invitation {
+    width: 60%;
+    left: 20%;
+    background: rgba(255, 120, 0, 0.82);
+    border-bottom-right-radius: 1em;
+    border-top-right-radius: 1em;
+    margin-top: 0.3em;
+}
+.weui_cell_bd.weui_cell_primary.invitation {
+    text-align: center;
+    color: white;
+}
+a.weui_cell.invitation {
+    height: 1%;
+    /* border-bottom-right-radius: 1em; */
+}

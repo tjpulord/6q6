@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>订单确认</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
+</head>
+<body class="backgroud_f3">
+    <!-- <div class="pstabsolute right15 mtop06 fontsize105 texcolor77" >
+        <i class="Hui-iconfont fontsize1 mtop01 icocolorhs mright03">&#xe6a8;</i>待支付
+    </div> -->
+<!-- 我的订单详情 -->
+    <!-- <div class=" fontsize1 texcolor44 mleft15p mtop06 mbottom05">收货地址</div> -->
+<!-- 详细地址 -->
+    <div class="weui_media_box backgroud_ff ptop06 ">
+        <div class="pbottom04">
+            <!-- <h4 class="weui_media_title texcolor44">订单号：<span class="texcolor66">SYGS-D16090700001</span></h4>   -->
+            <p class="weui_media_title  ftleft texcolor44" style="font-weight: bold;">姓名：{{$params['name']}}</p>
+            <p class="weui_media_title  fright texcolor44" style="font-weight: bold; ">电话：{{$params['mobile']}}</p>
+        </div>
+        <p class="mtop03 texcolor66 btpmdashedfd0 ptop05 texshowline overflowhid">收货地址：<span class="texcolor88">{{$params['address']}}</span></p>
+    </div>
+<!-- 商品信息 -->
+    <div class=" fontsize1 texcolor44 mleft15p mtop06 mbottom05">商品信息</div>
+    <div  class="weui_media_box weui_media_appmsg backgroud_ff bbtmsolidee pbottom10">
+        <if condition="$goodsinfo['isself'] eq 1">
+            <div class="pstabsolute marin0 ">
+                <img class="btltadius6" src="__ROOT__/Public/weixin/image/zy.png">
+            </div>
+        </if>
+        <div class="weui_media_hd_mx">
+            <img class="weui_media_appmsg_thumb bgwidth56 bgheight70 braderradius6" src="{{$goodsinfo['image']|default='__ROOT__/Public/weixin/image/noimage.png'}}" alt="">
+        </div>
+        <div class="weui_media_bd  mtop_02 fontsize105">
+            <h4 class="weui_media_title texcolor44 mtop02">发起篡单：<span class=" texcolor77 ftright">{{$goodsinfo['username']}}篡</span> </h4>
+            <h4 class="weui_media_title texcolor44 mtop02">购买数量：<span class=" texcolor77 ftright">{{$params['goodnum']}} 份</span></h4>
+            <h4 class="weui_media_title texcolor44 mtop02">支付金额：<span class=" texcolor77 ftright">{{$params['money']}} 元</span> </h4>
+            <h4 class="weui_media_title texcolor44 mtop02">总计商品：<span class=" texcolor77 ftright">共1件商品</span> </h4>
+        </div>
+    </div>
+    <div class="weui_media_box  backgroud_ff ptop05 pbottom08">
+        <p class="weui_media_title mtop03 ftleft texcolor66">邮费<span class="texcolor2dq mleft05">￥：{{$goodsinfo['post_fee']|default=0}}</span></p>
+        <p class="weui_media_title mtop03 fright texcolor66">优惠<span class="texcolor2dq mleft05">￥：0.00</span></p>
+     <!--    <p class="weui_media_title mtop03 texcolor66 mtop05" style="font-weight: bold;">合计金额<span class="texcolor2dq ftright mleft05">￥：1825.00</span></p> -->
+    </div>
+<!-- 下单时间 -->
+    <div class="weui_cells mtop08 mbottom26">
+        <div class="weui_cell">
+            <div class="weui_cell_bd width30">
+                <p class="texcolor66">订单编号</p>
+            </div>
+            <div class="weui_cell_ft width70 fright" >SYGS-D1610100001</div>
+        </div>
+        <div class="weui_cell">
+            <div class="weui_cell_bd width30">
+                <p class="texcolor66">下单时间</p>
+            </div>
+            <div class="weui_cell_ft width70 fright" >2016-10-10  10:10:10</div>
+        </div>
+        <!-- <div class="weui_cell">
+            <div class="weui_cell_bd width30">
+                <p class="texcolor66">派货时间</p>
+            </div>
+            <div class="weui_cell_ft width70 fright">2016-02-20  20:20:20</div>
+        </div> -->
+    </div>
+    <!-- 底部购买按钮 -->
+    <footer class="plan_view_footer zzhou">
+        <h2 class="plan_view_footer_leftnew" id=""><a class="hjje">总计<span class="mleft03">￥：{{$params['total']}}</span></a></h2>
+        <h2 class="plan_view_footer_rightnew"><a href="javascript:createorder();" id="commitbtn">提交订单</a></h2>
+    </footer>
+
+<script src="__ROOT__/Public/weixin/js/jquery.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/common.js"></script>
+<script src="__ROOT__/Public/weixin/js/ilazyui.js"></script>
+<script type="text/javascript">
+    var userid = "<?php echo $params['userid'] ?>";
+    var goodsid = "<?php echo $goodsinfo['id'] ?>";
+    var number  = "<?php echo $params['goodnum'] ?>";
+    function createorder () {
+        if (confirm('确认提交订单？')) {
+            $("#commitbtn").attr('href', 'javascript:;');
+            var username = "<?php echo $params['name'] ?>";
+            var userphone= "<?php echo $params['mobile'] ?>";
+            var useraddress= "<?php echo $params['address'] ?>";
+            $.ajax({
+                url: 'interface.php?s=/home/order/createorder',
+                type: 'POST',
+                dataType: 'json',
+                data: {userid:userid, goodsid:goodsid, number:number, username:username, userphone:userphone, useraddress:useraddress},
+                success: function(data){
+                    if (data.code == 2000) {
+                        location.href = "index.php?s=/home/order/order/orderno/"+data.data['orderno'];
+                    }else{
+                        $("#commitbtn").attr('href', 'javascript:createorder();');
+                    }
+                },
+                error: function(){
+                    $.iLazy.toast("网络错误");
+                }
+            });
+        };
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link href="__PUBLIC__/css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/lib/icheck/icheck.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="__PUBLIC__/css/default.css" />
+<link href="__PUBLIC__/lib/webuploader/0.1.5/webuploader.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/editor/kindeditor.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/kindeditor.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/lang/zh_CN.js"></script>
+<title> 添加管理员</title>
+</head>
+<body>
+<div class="pd-20">
+	<form action="{{:U('Admin/itemedit_act')}}" method="post" class="form form-horizontal" id="form-article-add">
+		<input type="hidden" name="id" id="id" value="{{$datas.id}}">
+		<input type="hidden" name="admin_id" id="admin_id" value="<?php echo cookie('admin_id');?>">
+		<input type="hidden" name="admin_name" id="admin_name" value="<?php echo cookie('admin');?>">
+		<div class="row cl">
+			<label class="form-label col-2"><span class="c-red">*</span>职位名称：</label>
+			<div class="formControls col-8">
+				<span class="select-box">
+				<select name="group_id" class="select">
+				    <volist name="grade_group" id="vo">
+					<option value="{{$vo.id}}" <?php echo ($vo['id'] == $datas['group_id'] ? "selected" :"");?>>{{$vo.name}}</option>
+					</volist>
+				</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-2"><span class="c-red">*</span>用户名：</label>
+			<div class="formControls col-8">
+				<input type="text" class="input-text" value="{{$datas.username}}" placeholder="请输入用户名..." id="username" name="username">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-2"><span class="c-red">*</span>登录密码：</label>
+			<div class="formControls col-8">
+<!-- 				<input type="password" class="input-text" value="{{$datas.password}}" placeholder="请输入登录密码..." id="password" name="password"> -->
+				<label class="form-label label label-danger radius"><i class="Hui-iconfont">&#xe6cd; </i> 系统提示：账户默认密码为 "888888"，为了保证账户安全，初次登陆后需进入【系统设置管理】修改密码. </label>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-2"><span class="c-red">*</span>真实姓名：</label>
+			<div class="formControls col-8">
+				<input type="text" class="input-text" value="{{$datas.name}}" placeholder="请输入真实姓名..." id="name" name="name">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-2"><span class="c-red">*</span>身份证号码：</label>
+			<div class="formControls col-8">
+				<input type="text" class="input-text" value="{{$datas.id_card}}" placeholder="请输入身份证号码..." id="id_card" name="id_card">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-2"><span class="c-red">*</span>手机号码：</label>
+			<div class="formControls col-8">
+				<input type="text" class="input-text" value="{{$datas.mobile}}" placeholder="请输入手机号码..." id="mobile" name="mobile">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-2"><span class="c-red">*</span>邮箱：</label>
+			<div class="formControls col-8">
+				<input type="text" class="input-text" value="{{$datas.email}}" placeholder="请输入邮箱..." id="email" name="email">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-2">是否启用：</label>
+			<div class="formControls col-1">
+				<label><input type="radio" name="is_del" id="is_del" value="0" <if condition="$datas.is_del eq 0">checked="true" </if>>
+				是</label>
+				<label><input type="radio" name="is_del" id="is_del" value="1" <if condition="$datas.is_del eq 1">checked="true" </if>>
+				否</label>
+			</div>
+		</div>
+
+		<div class="row cl">
+			<div class="col-10 col-offset-2">
+                <span id="doSubmit" class="btn btn-primary radius Hui-iconfont"><i class="Hui-iconfont">&#xe6a7; </i>提交并保存</span>
+				<button onClick="layer_close();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+			</div>
+		</div>
+	</form>
+</div>
+
+<script type="text/javascript" src="__PUBLIC__/lib/icheck/jquery.icheck.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/H-ui.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/H-ui.admin.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/CodeValid.js"></script>
+
+<script type="text/javascript">
+	/*关闭弹出框口*/
+function layer_close(){
+	var index = parent.layer.getFrameIndex(window.name);
+	parent.layer.close(index);
+}
+$(function()
+{
+	$('#doSubmit').click(function(event)
+	{
+		var page ='form-article-add';
+		var ipt = (page==undefined) ? $(":text") : $("#"+page).find(":text");
+	    var dat = (page==undefined) ? $("input[type='date']") : $("#"+page).find("input[type='date']");
+	    var hid = (page==undefined) ? $("input:hidden") : $("#"+page).find("input:hidden");
+	    var pwd = (page==undefined) ? $("input:password") : $("#"+page).find("input:password");
+
+	    for (var i = 0; i < ipt.length; i++)
+	    {
+	        var ipts = $(":text:eq("+i+")");
+	        if(ipts.val()=="")
+	        {
+	            var info= "请填写"+ipts.attr("placeholder");
+	            parent.layer.msg(info,{icon: 5,time:2000});
+	            ipts.focus();
+	            return false;
+	        }
+	        if(pwd.val()=="")
+	        {
+	            var info= "请填写"+pwd.attr("placeholder");
+	            parent.layer.msg(info,{icon: 5,time:2000});
+	            pwd.focus();
+	            return false;
+	        }
+			if($('#id_card').val() != "")
+	    	{
+	    		var codemsg = IdentityCodeValid($('#id_card').val());
+               if(codemsg != true)
+               {
+		            parent.layer.msg(codemsg,{icon: 5,time:2000});
+		            $('#id_card').focus();
+		    		return false;
+	    	   }
+            }
+
+            if($('#mobile').val() != "")
+	    	{
+               if(tel($('#mobile').val()) == false)
+               {
+		    		var info= "您的手机号码格式不正确...";
+		            parent.layer.msg(info,{icon: 5,time:2000});
+		            $('#mobile').focus();
+		    		return false;
+	    	   }
+            }
+
+            if($('#email').val() != "")
+	    	{
+               if(checkMail($('#email').val()) == false)
+               {
+		    		var info= "您的电子邮件格式不正确...";
+		            parent.layer.msg(info,{icon: 5,time:2000});
+		            $('#email').focus();
+		    		return false;
+	    	   }
+            }
+
+        }
+        $("#form-article-add").submit();
+	});
+});
+</script>
+
+</body>
+</html>

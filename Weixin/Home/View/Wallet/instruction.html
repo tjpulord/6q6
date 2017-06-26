@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>如何兑换积分</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+     <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+</head>
+<body class="bgcgray">
+    <include file="Wpublic/share"/>
+   <div class="bgcwhite mtop1em">
+        <article class="score_ins_area">
+                <header>
+                    <h1>{{$ruler['name']}}</h1>
+                    <time>{{$ruler['up_time']}} ~ {{$ruler['down_time']}}</time>
+                </header>
+                <article class="message_content">
+                    {{$ruler['content']}}
+                </article>
+                <footer>
+                    <a href="{{:U('wallet/exchange')}}" class="weui_btn bgcored  wb90 mbottom1em">我知道了</a>
+                </footer>
+            </article>
+    </div>
+<script src="__ROOT__/Public/weixin/js/jquery.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/common.js"></script>
+</body>
+</html>

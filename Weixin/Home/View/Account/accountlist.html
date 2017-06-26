@@ -1,0 +1,333 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>已加入计划账户</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+    <script>
+        function hidewin(a){
+            $(a).parent().parent().parent().hide();
+        }
+        function showdialog(a) {
+            // $.ajax({
+            //     url: 'weixin.php?s=/home/Account/yueinfo',
+            //     type: 'GET',
+            //     dataType: 'json',
+            //     data: {planid: a},
+            //     success: function(data){
+            //         alert(data.code);
+            //         $("#yue_article").text(data.info);
+            //     },
+            //     error: function(){
+            //         alert('获取余额信息失败');
+            //     },
+            // });
+            $(".planaccount_window").show();
+        }
+    </script>
+</head>
+<body  class="backgroud_hui">
+    <include file="Wpublic/share"/>
+    <div class="bd backgroud_hui" id="contain">
+        <div class="weui_tab">
+            <div class="weui_navbar bbtmborder">
+                <div class="weui_navbar_item <?php if(!$_GET['zt']){echo 'weui_bar_item_on';}?>" id='tabbar1'>
+                    全部
+                </div>
+                <div class="weui_navbar_item <?php if($_GET['zt'] == 'zc'){echo 'weui_bar_item_on';}?>" id='tabbar2' tab="zc">
+                    正常
+                </div>
+                <div class="weui_navbar_item <?php if($_GET['zt'] == 'bz'){echo 'weui_bar_item_on';}?>" id='tabbar3' tab="bz">
+                    不足
+                </div>
+                <div class="weui_navbar_item <?php if($_GET['zt'] == 'sx'){echo 'weui_bar_item_on';}?>" id='tabbar4' tab="sx">
+                    失效
+                </div>
+            </div>
+            <div class="weui_tab_bd">
+                <div class="font-size08 wb90 mcenter mtop05em graywd">提示：请及时关注余额并充值，计划失效后再充值，需要重新计算观察期。</div>
+                <div class="weui_panel weui_panel_access backgroud_hui">
+                    <div class="weui_panel_bd" id="content1">
+                        <volist name="accounts" id="account" it="">
+
+                            <!--列表开始-->
+                            <div class="weui_panel weui_panel_access mgnall10">
+                                <!--标题-->
+                                <div class="weui_panel_bd">
+                                    <div class="weui_cell">
+                                        <div class="weui_cell_bd weui_cell_primary">
+                                            <p>{{$account['uname']|default="匿名"}}:{{$account['title']}} </font></p>
+                                        </div>
+                                        <div class="weui_cell_ft">已加入<font style="color: #fe523a">{{$account['day']}}天</font></div>
+                                    </div>
+                                    <div class="weui_cell">
+                                        <div class="weui_cell_bd weui_cell_primary">
+                                            <p>账户余额：<font style="color: #fe523a">{{$account['amount']}}元</font></p>
+                                        </div>
+                                        <div class="weui_cell_ft">
+                                            <div class="account_list_div_span">
+                                                <span <?php if($account['status'] == 1){echo 'class="account_list_div_span_active_green"';}?>>正常</span>
+                                                <span <?php if($account['status'] == 2){echo 'class="account_list_div_span_active_red"';}?>>不足</span>
+                                                <span <?php if($account['status'] == 3){echo 'class="account_list_div_span_active_hui"';}?>>失效</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mleft1em graywd">
+                                        <p class="weui_media_desc">最高互助金额：{{$account['tmoney']}}元</p>
+                                        <p class="weui_media_desc mbottom1em">最高互助金额每天增长{{$account['dmoney']}}元</p>
+                                    </div>
+                                    <div class="weui_cell">
+                                        <div class="datagrid3 blanklink">
+                                            <ul>
+                                                <li><a href="{{:U('account/history',array('id'=>$account['id']))}}">账户流水</a></li>
+                                                <li class="borderleftgray">
+                                                    <?php if($account['status']==3){ ?>
+                                                        <a href="javascript:del({{$account['id']}});"><div class="account_list_menu_a2"><span class="bluecolor">删除</span></div></a>
+                                                    <?php }else{?>
+                                                        <a href="{{:U('account/recharge',array('id'=>$account['id']))}}"><div class="account_list_menu_a2"><span class="bluecolor">充值</span></div></a>
+                                                    <?php }?>
+
+                                                </li>
+                                                <li class="borderleftgray">
+                                                    <a href="{{:U('account/yueinfo', array('planid'=>$account['planid']))}}"><span class="orcored">帮助</span></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--列表结束-->
+
+
+                        </volist>
+                        <if condition="empty($accounts)"><div class="notfound"></div></if>
+                    </div>
+                    <div class="weui_panel_bd" id="content2" tab="zc">
+                        <volist name="accounts2[1]" id="account1">
+
+                            <!--列表开始-->
+                            <div class="weui_panel weui_panel_access mgnall10">
+                                <!--标题-->
+                                <div class="weui_panel_bd">
+                                    <div class="weui_cell">
+                                        <div class="weui_cell_bd weui_cell_primary">
+                                            <p>{{$account1['uname']|default="匿名"}}:{{$account1['title']}} </font></p>
+                                        </div>
+                                        <div class="weui_cell_ft">已加入<font style="color: #fe523a">{{$account1['day']}}天</font></div>
+                                    </div>
+                                    <div class="weui_cell">
+                                        <div class="weui_cell_bd weui_cell_primary">
+                                            <p>账户余额：<font style="color: #fe523a">{{$account1['amount']}}元</font></p>
+                                        </div>
+                                        <div class="weui_cell_ft">
+                                            <div class="account_list_div_span">
+                                                <span <?php if($account1['status'] == 1){echo 'class="account_list_div_span_active_green"';}?>>正常</span>
+                                                <span <?php if($account1['status'] == 2){echo 'class="account_list_div_span_active_red"';}?>>不足</span>
+                                                <span <?php if($account1['status'] == 3){echo 'class="account_list_div_span_active_hui"';}?>>失效</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mleft1em graywd">
+                                        <p class="weui_media_desc">最高互助金额：{{$account1['tmoney']}}元</p>
+                                        <p class="weui_media_desc mbottom1em">最高互助金额每天增长{{$account1['dmoney']}}元</p>
+                                    </div>
+                                    <div class="weui_cell">
+                                        <div class="datagrid3 blanklink">
+                                            <ul>
+                                                <li><a href="{{:U('account/history',array('id'=>$account1['id']))}}">账户流水</a></li>
+                                                <li class="borderleftgray">
+                                                    <?php if($account1['status']==3){ ?>
+                                                        <a href="javascript:del({{$account1['id']}});"><div class="account_list_menu_a2"><span class="bluecolor">删除</span></div></a>
+                                                    <?php }else{?>
+                                                        <a href="{{:U('account/recharge',array('id'=>$account1['id']))}}"><div class="account_list_menu_a2"><span class="bluecolor">充值</span></div></a>
+                                                    <?php }?>
+
+                                                </li>
+                                                <li class="borderleftgray">
+                                                    <a href="{{:U('account/yueinfo', array('planid'=>$account['planid']))}}"><span class="orcored">帮助</span></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--列表结束-->
+
+
+                        </volist>
+                        <if condition="empty($accounts2[1])"><div class="notfound"></div></if>
+                    </div>
+                    <div class="weui_panel_bd" id="content3" tab="bz">
+                        <volist name="accounts2[2]" id="account2">
+                            <!--列表开始-->
+                            <div class="weui_panel weui_panel_access mgnall10">
+                                <!--标题-->
+                                <div class="weui_panel_bd">
+                                    <div class="weui_cell">
+                                        <div class="weui_cell_bd weui_cell_primary">
+                                            <p>{{$account2['uname']|default="匿名"}}:{{$account2['title']}} </font></p>
+                                        </div>
+                                        <div class="weui_cell_ft">已加入<font style="color: #fe523a">{{$account2['day']}}天</font></div>
+                                    </div>
+                                    <div class="weui_cell">
+                                        <div class="weui_cell_bd weui_cell_primary">
+                                            <p>账户余额：<font style="color: #fe523a">{{$account2['amount']}}元</font></p>
+                                        </div>
+                                        <div class="weui_cell_ft">
+                                            <div class="account_list_div_span">
+                                                <span <?php if($account2['status'] == 1){echo 'class="account_list_div_span_active_green"';}?>>正常</span>
+                                                <span <?php if($account2['status'] == 2){echo 'class="account_list_div_span_active_red"';}?>>不足</span>
+                                                <span <?php if($account2['status'] == 3){echo 'class="account_list_div_span_active_hui"';}?>>失效</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mleft1em graywd">
+                                        <p class="weui_media_desc">最高互助金额：{{$account2['tmoney']}}元</p>
+                                        <p class="weui_media_desc mbottom1em">最高互助金额每天增长{{$account2['dmoney']}}元</p>
+                                    </div>
+                                    <div class="weui_cell">
+                                        <div class="datagrid3 blanklink">
+                                            <ul>
+                                                <li><a href="{{:U('account/history',array('id'=>$account2['id']))}}">账户流水</a></li>
+                                                <li class="borderleftgray">
+                                                    <?php if($account2['status']==3){ ?>
+                                                        <a href="javascript:del({{$account2['id']}});"><div class="account_list_menu_a2"><span class="bluecolor">删除</span></div></a>
+                                                    <?php }else{?>
+                                                        <a href="{{:U('account/recharge',array('id'=>$account2['id']))}}"><div class="account_list_menu_a2"><span class="bluecolor">充值</span></div></a>
+                                                    <?php }?>
+
+                                                </li>
+                                                <li class="borderleftgray">
+                                                    <a href="{{:U('account/yueinfo', array('planid'=>$account['planid']))}}"><span class="orcored">帮助</span></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--列表结束-->
+                        </volist>
+                        <if condition="empty($accounts2[2])"><div class="notfound"></div></if>
+                    </div>
+                    <div class="weui_panel_bd"  id="content4" tab="sx">
+                       <volist name="accounts2[3]" id="account3">
+
+                            <!--列表开始-->
+                            <div class="weui_panel weui_panel_access mgnall10">
+                                <!--标题-->
+                                <div class="weui_panel_bd">
+                                    <div class="weui_cell">
+                                        <div class="weui_cell_bd weui_cell_primary">
+                                            <p>{{$account3['uname']|default="匿名"}}:{{$account3['title']}} </font></p>
+                                        </div>
+                                        <div class="weui_cell_ft">已加入<font style="color: #fe523a">{{$account3['day']}}天</font></div>
+                                    </div>
+                                    <div class="weui_cell">
+                                        <div class="weui_cell_bd weui_cell_primary">
+                                            <p>账户余额：<font style="color: #fe523a">{{$account3['amount']}}元</font></p>
+                                        </div>
+                                        <div class="weui_cell_ft">
+                                            <div class="account_list_div_span">
+                                                <span <?php if($account3['status'] == 1){echo 'class="account_list_div_span_active_green"';}?>>正常</span>
+                                                <span <?php if($account3['status'] == 2){echo 'class="account_list_div_span_active_red"';}?>>不足</span>
+                                                <span <?php if($account3['status'] == 3){echo 'class="account_list_div_span_active_hui"';}?>>失效</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mleft1em graywd">
+                                        <p class="weui_media_desc">最高互助金额：{{$account3['tmoney']}}元</p>
+                                        <p class="weui_media_desc mbottom1em">最高互助金额每天增长{{$account3['dmoney']}}元</p>
+                                    </div>
+                                    <div class="weui_cell">
+                                        <div class="datagrid3 blanklink">
+                                            <ul>
+                                                <li><a href="{{:U('account/history',array('id'=>$account3['id']))}}">账户流水</a></li>
+                                                <li class="borderleftgray">
+                                                    <?php if($account3['status']==3){ ?>
+                                                        <a href="javascript:del({{$account3['id']}});"><div class="account_list_menu_a2"><span class="bluecolor">删除</span></div></a>
+                                                    <?php }else{?>
+                                                        <a href="{{:U('account/recharge',array('id'=>$account3['id']))}}"><div class="account_list_menu_a2"><span class="bluecolor">充值</span></div></a>
+                                                    <?php }?>
+
+                                                </li>
+                                                <li class="borderleftgray">
+                                                    <a href="{{:U('account/yueinfo', array('planid'=>$account['planid']))}}"><span class="orcored">帮助</span></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--列表结束-->
+                        </volist>
+                        <if condition="empty($accounts2[3])"><div class="notfound"></div></if>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div class="planaccount_window">
+    <section>
+        <header class="planaccount_window_header">
+            余额说明
+        </header>
+        <div class="planaccount_window_div">
+            <article id="yue_article">
+                {{$yueid}}
+                <br>
+            </article>
+        </div>
+        <footer>
+            <a class="weui_btn weui_btn_primary planaccount_window_btn" onclick="hidewin(this)">确定</a>
+        </footer>
+    </section>
+</div>
+<script src="__ROOT__/Public/weixin/js/jquery.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/common.js"></script>
+<script type="text/javascript">
+    $('#contain').on('click', '.weui_navbar_item', function () {
+        $("div[id*='content']").hide();
+        $("#content"+$(this).attr("id").replace("tabbar","")).show();
+        $('#contain').find(".weui_navbar_item").removeClass('weui_bar_item_on');
+        $(this).addClass('weui_bar_item_on');
+    });
+    function del(id)
+    {
+        if (confirm('是否删除此账户？')) {
+            $.ajax({
+                type: 'POST',
+                data:{id:id},
+                url: '<?php echo U("account/del"); ?>',
+                dataType: 'json',
+                success: function(data){
+                    alert(data);
+                    if (data) {
+                        history.go(0);
+                    }
+                },
+                error: function(xhr, type){
+                    $(".loading").html("网络故障，请稍候再试！");
+                }
+            });
+        }
+    }
+    $('#contain').find(".weui_navbar_item").removeClass('weui_bar_item_on');
+    $("div[id*='content']").hide();
+    <php>
+    if(isset($_GET['zt'])){
+        echo "$('div[tab=\"".$_GET['zt']."\"]').show();$(\".weui_navbar_item[tab='".$_GET['zt']."']\").addClass('weui_bar_item_on')";
+    }
+    else{
+        echo "$('.weui_navbar_item:eq(0)').addClass('weui_bar_item_on');$('#content1').show();";
+    }
+    </php>
+</script>
+</body>
+</html>

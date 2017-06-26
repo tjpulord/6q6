@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>捐款人页面  </title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <script src="__PUBLIC__/js/jquery1.8.1/jquery.js"></script>
+    <script type="text/javascript" src="__ROOT__/Public/weixin/js/ilazyui.js"></script>
+<script type="text/javascript">
+    window.page1=0;
+    window.status1=1;
+    function ajaxLoad1(sid)
+    {
+        if(window.status1){
+            window.page1++;
+            $.ajax({
+                url: '<?php echo U('Social/ajaxDonor');?>',
+                type: 'post',
+                dataType:'json',
+                data: {page: window.page1, sid:sid},
+                success: function(data){
+                    tianjia(data);
+                },
+                error: function(data){
+
+                }
+            });
+        }
+    }
+    function tianjia(data){
+        var li_clone="";
+        for(var i= 0,l = data.length;i<l;i++){
+            //处理数据并插入
+            var id = data[i].id;
+                thumb = data[i].header;
+                time = data[i].time;
+                money = data[i].money;
+                uname = data[i].uname;
+                userid = data[i].uid;
+                if (thumb == ""){
+                    thumb = "<?php echo C('HEADER');?>";
+                }
+                content = data[i].content;
+                title = data[i].title;
+                li_clone +='<a href="javascript:;" class="weui_media_box weui_media_appmsg juankuan_list_a"><div class="weui_media_hd"><img class="weui_media_appmsg_thumb juankuan_list_img" src="'+thumb+'" alt=""></div><div class="weui_media_bd"><h4 class="weui_media_title">'+uname+'</h4><h5 class="donores_list_jine">'+money+'</h5><p class="weui_media_desc juankuan_list_nr">会员编号:'+userid+'</p><p class="weui_media_desc juankuan_list_nr"><p class="weui_media_desc juankuan_list_nr">'+time+'</p></div></a>';
+
+        };
+        if(!li_clone){
+            $('#aaaa2').html('无更多数据');
+            $('#aaaa2').attr('href', 'javascript:;');
+        }
+        // alert(li_clone);
+        $("#aaaa3").before(li_clone);
+
+
+    }
+</script>
+</head>
+<body class="bgcgray">
+    <include file="Wpublic/share"/>
+    <div class="bd juankuan_list_body">
+        <div class="weui_tab juankuan_nr_body">
+            <div class="weui_panel_bd" id="content1">
+            <?php if ($donores){?>
+                <volist name="donores" id="donor">
+                    <a href="javascript:;" class="weui_media_box weui_media_appmsg juankuan_list_a">
+                        <div class="weui_media_hd">
+                            <img class="weui_media_appmsg_thumb juankuan_list_img" src="<?php if ($donor['header']){echo $donor['header'];} else {echo C('HEADER');}?>" alt="">
+                        </div>
+                        <div class="weui_media_bd">
+                            <h4 class="weui_media_title"><?php if ($donor['uname']){echo $donor['uname'];} else {echo C('MNAME');}?></h4>
+                            <h5 class="donores_list_jine">捐赠{{$donor['money']}}元</h5>
+                            <p class="weui_media_desc juankuan_list_nr">会员编号:{{$donor['uid']}}</p>
+                            <p class="weui_media_desc juankuan_list_nr"><?php echo date('Y-m-d H:i:s', $donor['addtime'])?></p>
+                        </div>
+                    </a>
+                </volist>
+                <div class="fcenter  mbottom4em" id="aaaa3">
+                    <a class="more_comments font-size08 gcolor " href="javascript:ajaxLoad1({{$_GET['sid']}});" ><span class="eeeeee">点击加载更多</span></a>
+                </div>
+                <?php } else{ ?>
+                <p>好可怜，还没有人捐款呢，去帮助Ta吧！</p>
+                <?php }?>
+            </div>
+        </div>
+    </div>
+
+<script src="__ROOT__/Public/weixin/js/jquery.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/common.js"></script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<html >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>已加入计划列表</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+</head>
+<body  class="backgroud_hui ptop1em">
+<include file="Wpublic/share"/>
+<volist name="accounts" id="account">
+    <!-- <div class="weui_panel_hd"><i class="icon Hui-iconfont orcored font-size15">&#xe616;</i><font style="font-size:1.3em; color:#444444;">{{$account['uname']}}:{{$account['title']}}</font></div>
+      <div class="weui_panel_bd">
+      <div class="weui_media_box weui_media_text weui_panel_ft" style="margin-bottom:0px;">
+        <p class="weui_media_desc">最高互助金额：<font style="color: #fe523a">{{$account['tmoney']}}万</font></p>
+        <p class="weui_media_desc">已加入<font style="color: #fe523a">{{$account['day']}}天</font></p>
+        <p class="weui_media_desc">最高互助金额每天增长<font style="color: #fe523a">{{$account['dmoney']}}元</font></p>
+      </div>
+    </div> -->
+
+<!--列表开始-->
+<div class="weui_panel weui_panel_access mgnall10">
+
+    <!--标题-->
+    <div class="weui_panel_bd">
+        <div class="weui_cell bbtmxborder">
+            <div class="weui_cell_bd weui_cell_primary ">
+                <p class="font-size11">{{$account['uname']|default="匿名"}}:{{$account['title']}}</p>
+            </div>
+            <div class="weui_cell_ft">已加入<font style="color: #fe523a">{{$account['day']}}天</font></div>
+        </div>
+        <!-- <div class="weui_cell">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>账户余额：<font style="color: #fe523a">{{$account['amount']}}元</font></p>
+            </div>
+            <div class="weui_cell_ft">
+                <div class="account_list_div_span">
+                    <span <?php if($account['status'] == 1){echo 'class="account_list_div_span_active_green"';}?>>正常</span>
+                    <span <?php if($account['status'] == 2){echo 'class="account_list_div_span_active_red"';}?>>不足</span>
+                    <span <?php if($account['status'] == 3){echo 'class="account_list_div_span_active_hui"';}?>>失效</span>
+                </div>
+            </div>
+        </div> -->
+        <div class="mleft1em graywd mtop05em">
+            <p class="weui_media_desc">最高互助金额：{{$account['tmoney']}}元</p>
+            <p class="weui_media_desc mbottom1em">最高互助金额每天增长{{$account['dmoney']}}元</p>
+        </div>
+        <div class="weui_cell">
+            <div class="datagrid2">
+                <ul>
+                    <li><a href="{{:U('account/history',array('id'=>$account['id']))}}"><span class="bcolor">账户流水</span></a></li>
+                    <li class="borderleftgray">
+                        <a href="{{:U('account/planview', array('id'=>$account['id']))}}"><span class="orcored">查看详情</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!--列表结束-->
+</volist>
+<if condition="empty($accounts)"><div class="notfound"></div></if>
+<script src="__ROOT__/Public/weixin/js/jquery.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/common.js"></script>
+<script type="text/javascript">
+    $('#contain').on('click', '.weui_navbar_item', function () {
+        $(this).addClass('weui_bar_item_on').siblings('.weui_bar_item_on').removeClass('weui_bar_item_on');
+        if ($(this).attr('id') == "tabbar1") {
+            $(".weui_panel_bd").addClass('unactive');
+            $("#content1").removeClass('unactive');
+        }else if($(this).attr('id') == "tabbar2"){
+            $(".weui_panel_bd").addClass('unactive');
+            $("#content2").removeClass('unactive');
+        } else if($(this).attr('id') == "tabbar3"){
+            $(".weui_panel_bd").addClass('unactive');
+            $("#content3").removeClass('unactive');
+        } else if($(this).attr('id') == "tabbar4"){
+            $(".weui_panel_bd").addClass('unactive');
+            $("#content4").removeClass('unactive');
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,353 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>详情</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/lib/jquery_swiper/css/idangerous.swiper.css">
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <script src="__PUBLIC__/js/jquery1.8.1/jquery.js"></script>
+    <script type="text/javascript" src="__ROOT__/Public/weixin/js/ilazyui.js"></script>
+
+</head>
+<script type="text/javascript">
+    window.islogin = {{$_SESSION['userinfo']['login']}};
+    window.userid  = "{{$_SESSION['userinfo']['id']}}";
+    window.aid = <?php echo $article['id'];?>;
+    function focusccc(cid,parentid)
+    {
+        $("#search_cancel").attr('onclick', "comment("+cid+','+parentid+")");
+        $("#ccc").attr('placeholder', "回复");
+        $("#ccc").focus();
+    }
+
+    function comment(parentid, cid, reuserid, reusername)
+    {
+        if (window.islogin) {
+            if (window.userid == reuserid) {
+                return true;
+            };
+            var dialog = new $.iLazy.prompts({
+                title:"请输入",
+                tips:"回复"+reusername+":",
+                yes:function(){
+                    var v = dialog.v.value;
+                    if(v.length>50){
+                        $.iLazy.toast("亲，回复内容不能超过50字");
+                        return false;
+                    }
+                    if(v.length==0 || v=="" || $.iLazy.isEmpty(v)){
+                        $.iLazy.toast("亲，请输入回复内容");
+                        return false;
+                    }
+
+
+                    $.ajax({
+                        url: "<?php echo U('Community/acceptComment');?>",
+                        type: 'post',
+                        dataType: 'json',
+                        data: {articleid: window.aid,commentid:cid,content:v, parentid:parentid, replyname:reuserid},
+                        success: function(data){
+                            if(data != 0){
+                                history.go(0);
+                                $("#search_cancel").attr('onclick', "comment(0)");
+                                // dialog.confirmbtn.disabled=false;
+
+                            }else{
+                                alert('评论失败！');
+                            }
+                        },
+                        error: function(){
+                            var data = {
+                                error: 1,
+                                type: 400
+                            };
+                        },
+                    });
+                    dialog.confirmbtn.unbind();
+                },
+                cancel:function(){
+                    dialog.v.value = "";
+                    dialog.hide();
+                    dialog.remove();
+                }
+            });
+            dialog.show();
+        } else {
+            login();
+        }
+    }
+    function zan(){
+        if (window.islogin) {
+            $.ajax({
+                url: "<?php echo U('Community/acceptZan');?>",
+                type: 'post',
+                dataType: 'json',
+                data: {articleid: window.aid},
+                success: function(data){
+                    console.log(data.err);
+                    if(data.err == 0){
+                        $(".zan_div").children('i').text('');
+                        $("#zannum").text(data.num);
+                        $("#zannum").parent().addClass('hasup');
+
+                    }else{
+                        alert('点赞失败！');
+                    }
+                },
+                error: function(){
+                    var data = {
+                        error: 1,
+                        type: 400
+                    };
+                },
+            })
+        } else {
+            login();
+        }
+    }
+    function login()
+    {
+        location.href = "weixin.php/home/register/signin?url="+window.location.href;
+    }
+</script>
+<body class="bgcgray">
+    <include file="Wpublic/share"/>
+    <div class="bd">
+    <!--我们介绍-->
+    <div id="touch_bd">
+    <article class="weui_article bgcwhite mtop1em">
+        <section>
+            <h2 class="title fs20 mt_2 bcolor">{{$article['title']}}</h2>
+            <section>
+                <h3 class="timeclr" style="margin-bottom: 0.5em;">{{$article['name']|default=$article['nickname']}}：<?php echo date('Y-m-d',$article['addtime']); ?></h3>
+                <img style="height: auto; width:100%" src="{{$article['thumb']}}">
+                <div class="graywd">
+                    <p > {{$article['content']}}</p>
+                </div>
+            </section>
+        </section>
+    </article>
+
+        <article class="article_comment swipercontainer" id="aaaa1">
+            <header class="comment_header">
+                <h2 >评论</h2>
+                <if condition="$zan2">
+                    <div class="zan_div hasup">
+                        <i class="icon Hui-iconfont">&#xe66d;</i>
+                        <span id="zannum"><?php if($zan){ echo $zan;}?></span>
+                    </div>
+                <else />
+                    <div class="zan_div" onclick="zan()">
+                        <i class="icon Hui-iconfont">&#xe697;</i>
+                        <span id="zannum"><?php if($zan){ echo $zan;}?></span>
+                    </div>
+                </if>
+            </header>
+
+            <volist name="comments[0]" id="cvo">
+                <section class="comment_bd bgcwhite" id="area{{$cvo['id']}}">
+                    <header class="comment_info">
+                        <img src="{{$cvo['header']|default=C('HEADER')}}" >
+                        <h3 class="name">{{$cvo['name']|default=$cvo['nickname']}}</h3>
+                        <time datetime="{{:date('Y-m-d H:i', $cvo['createtime'])}}">{{:date('Y-m-d H:i', $cvo['createtime'])}}</time>
+                            <span onclick="comment({{$cvo['id']}},{{$cvo['id']}}, '{{$cvo[userid]}}', '{{$cvo[name]}}')">回复</span>
+                    </header>
+                    <article class="comment_content">
+                        <p style="min-height:25px; margin-right: 0px;">{{$cvo['content']}}</p>
+                        <foreach name="comments[$cvo['id']]" item="rvo">
+                            <!-- <a href="javascript:;" onclick=""></a> -->
+                            <section class="comment_comment " id="area{{$rvo['id']}}" onclick="comment({{$cvo['id']}},{{$rvo['id']}},'{{$rvo[userid]}}', '{{$rvo[name1]}}')">
+                                <header class="comment_comtent_header">
+                                    <h3>
+                                    <span class="name"> {{$rvo['name1']}}
+                                    </span>回复<span>{{$rvo['name2']}}
+                                    </span>:
+                                    </h3>
+                                </header>
+                                <article class="comment_comtent_content">
+                                    <p>{{$rvo['content']}}</p>
+                                </article>
+                            </section>
+                        </foreach>
+                        <if condition="count($comments[$cvo['id']]) eq 6">
+                            <div id="position{{$pid}}" class="more_comments">
+                                <a class="more_huifu " href="javascript:jiazaihuifu({{$cvo['id']}});"><<展开全部回复>></a>
+                            </div>
+                        </if>
+                    </article>
+                </section>
+            </volist>
+        </article>
+
+        <div class="fcenter  mbottom4em" id="preloader">
+            <a class="more_comments font-size08 gcolor " href="javascript:jiazaicomment({{$article['id']}});" id="aaaa2"><span class="graywd">点击加载更多</span></a>
+        </div>
+
+        </div>
+
+        <div class="bottom bgclred fcenter weui_panel wcolor fs14 pbtn repaybtn" onclick="comment(0,0,'','');">
+            <i class="Hui-iconfont">&#xe647;</i>发布回复
+        </div>
+    </div>
+    <!--弹出框2-->
+<div class="weui_dialog_alert" id="dialog2" style="display: none;">
+    <div class="weui_mask"></div>
+    <div class="weui_dialog">
+        <div class="weui_dialog_hd"><strong class="weui_dialog_title" id="dialog2_title">提交成功</strong></div>
+        <div class="weui_dialog_bd" id="dialog2_content">工作人员将尽快与您联系！</div>
+        <div class="weui_dialog_ft">
+            <a href="javascript:hidden(2);" id="primary2" class="weui_btn_dialog primary">确定</a>
+        </div>
+    </div>
+</div>
+
+<div class="weui_dialog_confirm" id="dialogreplay" style="display:none;">
+    <div class="weui_mask"></div>
+    <div class="weui_dialog">
+        <div class="weui_dialog_hd"><strong class="weui_dialog_title">请您输入回复内容</strong></div>
+        <div class="weui_dialog_bd"><textarea class="weui_textarea" placeholder="请您输入回复内容" rows="3"></textarea></div>
+        <div class="weui_dialog_ft">
+            <a href="javascript:;" class="weui_btn_dialog default">取消</a>
+            <a href="javascript:;" class="weui_btn_dialog primary">确定</a>
+        </div>
+    </div>
+</div>
+
+<script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/common.js"></script>
+
+<script src="__ROOT__/Public/lib/jquery_swiper/js/idangerous.swiper.min.js"></script>
+<script type="text/javascript">
+function hidden(id)
+    {
+        $("#dialog"+id).hide();
+    }
+window.page1 =0;
+    $(".diybtn").focus(function(event) {
+        $(".diy_weiu_send").show();
+        $(".diybtn").css('width','78%');
+         document.getElementById('touch_bd').addEventListener('touchstart',function(){
+            $(".diybtn").blur();
+        })
+    });
+    $(".diybtn").blur(function(event) {
+        if($("#ccc").val() == ""){
+            $("#search_cancel").attr('onclick', "comment(0)");
+            $("#ccc").attr('placeholder', "评论");
+            $(".diy_weiu_send").hide();
+            $(".diybtn").css('width','95%');
+        }
+    });
+    function jiazaicomment()
+    {
+        // if(window.status1){
+            window.page1++;
+            $.ajax({
+                url: '<?php echo U("Community/ajaxComment");?>',
+                type: 'post',
+                dataType:'json',
+                data: {page: window.page1, aid:window.aid},
+                success: function(data){
+                    if (data.data != ""){
+                        $("#aaaa1").append(data.data);
+                        // createComments(data.data, "#aaaa1");
+                    }else {
+                        $('#aaaa2').html('无更多评论');
+                        $('#aaaa2').attr('href','javascript:;');
+                    }
+                },
+                error: function(data){
+                    $.iLazy.alert("网络加载错误");
+                }
+            });
+    }
+
+    function jiazaihuifu(pid)
+    {
+        // if(window.status1){
+        $.ajax({
+            url: '<?php echo U('Community/ajaxHuifu');?>',
+            type: 'post',
+            dataType:'json',
+            data: {page: 1, aid:window.aid, pid:pid},
+            success: function(data){
+                console.log(data);
+                $("#position"+pid).remove();
+                $("#area"+pid+" .comment_content p").nextAll().remove();
+                $("#area"+pid+" .comment_content").append(data.data);
+            },
+            error: function(data){
+
+            }
+        });
+        // }
+    }
+     function tianjia(zone,data){
+        if(zone == 1){
+            $("#content1").append(data);
+        }else if(zone == 2) {
+            $("#content2").append(data);
+        }
+
+
+
+    }
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        var weui_article = $(".weui_article");
+        weui_article.find('img').each(function(index) {
+            $(this).css('width', 'auto');
+            // var imgsrc = $(this).attr('src');
+            // if (imgsrc.indexOf("emoticons")>1) {
+            // };
+        });
+    });
+</script>
+
+<script>
+  var holdPosition = 0;
+  var mySwiper = new Swiper('.swipercontainer',{
+    slidesPerView:'auto',
+    mode:'vertical',
+    watchActiveIndex: true,
+    onTouchStart: function() {
+      holdPosition = 0;
+      alert('dddd');
+    },
+    onResistanceAfter: function(s, pos){
+      holdPosition = pos;
+    },
+    // onSlidePrev: function()
+    onTouchEnd: function(){
+      alert(holdPosition);
+      if (holdPosition>100) {
+        // mySwiper.setWrapperTranslate(0,-holdPosition,0)
+        // mySwiper.params.onlyExternal=true
+        mySwiper.params.calculateHeight =true;
+        $('#preloader').addClass('visible');
+        loadNewSlides();
+      }
+    }
+  });
+
+  function loadNewSlides(){
+    setTimeout(function(){
+      jiazaicomment();
+      // mySwiper.appendSlide('<div class="title">jphtml.com '+slideNumber+'</div>', 'swiper-slide '+color+'-slide');
+      //Release interactions and set wrapper
+      // mySwiper.setWrapperTranslate(0,0,0)
+      // mySwiper.params.onlyExternal=false;
+      //Update active slide
+      mySwiper.updateActiveSlide(0)
+      //Hide loader
+      $('#preloader').removeClass('visible');
+    },1000)
+  }
+  </script>
+</body>
+</html>

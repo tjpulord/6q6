@@ -1,0 +1,158 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="Public/lib/html5.js"></script>
+<script type="text/javascript" src="Public/lib/respond.min.js"></script>
+<script type="text/javascript" src="Public/lib/PIE_IE678.js"></script>
+<![endif]-->
+<link href="__PUBLIC__/css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/css/style.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
+    <title>会员列表</title>
+</head>
+<body>
+
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i>首页 <span class="c-gray en">&gt;</span> 会员系统 <span class="c-gray en">&gt;</span> 会员列表 <a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+<i class="Hui-iconfont">&#xe68f;</i></a></nav><div class="pd-20">
+    <form action="" method="post" id="submitForm">
+    <div class="cl pd-5 bg-1 bk-gray mt-20">
+    <span class="l">
+    </span>
+    <span class="r"><span class="label label-success radius">共有数据：<strong>{{$list|count}}</strong> 条</span></span> </div>
+    <div class="mt-20">
+        <table class="table table-border table-bordered table-bg table-hover table-sort">
+            <thead><tr class="text-c"><th>用户名</th><th>手机号码</th><th>微信号码</th><th>身份证号码</th><th>紧急联系人</th><th>推荐人id</th><th>用户状态</th><th>用户分组</th><th>操作</td></tr>
+            </thead>
+            <tbody>
+                <volist name="list" id="vo">
+                <tr class="text-l">
+                        <td>{{$vo.name}}</td>
+                        <td>{{$vo.phone}}</td>
+                        <td>{{$vo.weixin_num}}</td>
+                        <td>{{$vo.cardnumber}}</td>
+                        <td>{{$vo.contactor}}</td>
+                        <td>{{$vo.referenceid}}</td>
+                        <td>{{:getRadioValue($vo[status], "[正常,1],[失效,0]")}}</td>
+                        <td>{{:getSelectValue($vo[cateid], "my_category", "category=1")}}</td>
+                    <td><a style="text-decoration:none" class="ml-5" onClick="article_edit('编辑','.<?php echo U('User/itemedit',array('id'=>$vo['id'])); ?>')" href="javascript:;" title="编辑">
+                                <i class="Hui-iconfont">&#xe6df;</i>编辑
+                            </a><a style="text-decoration:none" class="ml-5" onClick="article_del('删除','.<?php echo U('User/itemdel',array('id'=>$vo['id'])); ?>')" href="javascript:;" title="删除">
+                                <i class="Hui-iconfont">&#xe6e2;</i>删除
+                            </a></td></tr>
+                </volist>
+            </tbody>
+        </table>
+    </div>
+    </form>
+</div>
+<script type="text/javascript" src="__PUBLIC__/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/lib/layer/1.9.3/layer.js"></script>
+<script type="text/javascript" src="__PUBLIC__/lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="__PUBLIC__/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript">
+function jump_other(title,url){
+    var w = w == undefined ? 800 : w;
+    var h = h == undefined ? 600 : h;
+    var index = layer.open({
+        type: 2,
+        area: [w+"px", h +"px"],
+        title: title,
+        content: url,
+        success: function(layero, index){
+            console.log(layero, index);
+        },
+        yes: function(index, layero){
+            //do something
+            layer.close(index); //如果设定了yes回调，需进行手工关闭
+        },
+        end:function(index,laero){
+            location.replace(location.href);
+        }
+    });
+    layer.full(index);
+}
+/*添加*/
+function article_add(title,url,w,h){
+    w = w == undefined ? 800 : w;
+    h = h == undefined ? 600 : h;
+    var index = layer.open({
+        type: 2,
+        area: [w+"px", h +"px"],
+        title: title,
+        content: url,
+        success: function(layero, index){
+            console.log(layero, index);
+        },
+        yes: function(index, layero){
+            //do something
+            layer.close(index); //如果设定了yes回调，需进行手工关闭
+        },
+        end:function(index,laero){
+            location.replace(location.href);
+        }
+    });
+    // layer.full(index);
+}
+/*编辑*/
+function article_edit(title,url,id,w,h){
+    w = w == undefined ? 800 : w;
+    h = h == undefined ? 600 : h;
+    var index = layer.open({
+        type: 2,
+        area: [w+"px", h +"px"],
+        title: title,
+        content: url,
+        success: function(layero, index){
+            console.log(layero, index);
+        },
+        yes: function(index, layero){
+            //do something
+            layer.close(index); //如果设定了yes回调，需进行手工关闭
+        },
+        end:function(index,laero){
+            location.replace(location.href);
+        }
+    });
+    // layer.full(index);
+}
+/*删除*/
+function article_del(title,url){
+    layer.confirm("确认要删除吗？",function(index)
+    {
+        $.getJSON(url,
+            function(msg){
+                if(msg.code == 2000)
+                {
+                    layer.msg("已删除!",{icon:6,time:1000});
+                    location.replace(location.href);
+                }else
+                {
+                    layer.msg("删除失败!",{icon:5,time:1000});
+                }
+        });
+    });
+}
+
+</script>
+<script type="text/javascript">
+var search = <?php if(empty($sdata)){echo "\"\"";}else{echo json_encode($sdata);}?>;
+$(document).ready(function(){
+    if(search!="")
+    {
+        for(var o in search)
+        {
+            $("#"+o+"").val(search[o]);
+        }
+    }
+});
+</script>
+</body>
+</html>

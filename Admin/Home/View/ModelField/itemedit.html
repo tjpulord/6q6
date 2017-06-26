@@ -1,0 +1,275 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link href="__PUBLIC__/css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/lib/icheck/icheck.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="__PUBLIC__/css/default.css" />
+<link href="__PUBLIC__/lib/webuploader/0.1.5/webuploader.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/editor/kindeditor.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/kindeditor.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/lang/zh_CN.js"></script>
+</head>
+<body>
+
+<div class="pd-20">
+	<form action="{{:U('ModelField/itemedit_act')}}" method="post" class="form form-horizontal" id="form-article-add">
+		<div class="row cl">
+			<label class="form-label col-2"><span class="c-red">*</span>选择数据库字段:</label>
+			<div class="formControls col-5">
+				<if condition="count($column) gt 0">
+	                <select name="itemkey" class="select">
+	                	<option value="">请选择对应的数据列名</option>
+	                	<volist name="column" id="col">
+	                		<option value="{{$col}}">{{$col}}</option>
+	                	</volist>
+	                </select>
+				<else/>
+        			<input type="text" name="itemkey" id="itemkey" class="input-text" value="{{$_GET['itemkey']}}" disable/>
+				</if>
+			</div>
+		</div>
+        <input type="hidden" name="id" id="id" value="{{$_GET['id']}}"></input>
+		<div class="row cl">
+			<label class="form-label col-2"><span class="c-red">*</span>字段名字:</label>
+			<div class="formControls col-5">
+				<input type="text" class="input-text" name="info[name]" id="name" title="字段名称">
+
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-2">字段提示:</label>
+			<div class="formControls col-5">
+                <input type="text" class="input-text" name="info[tip]" id="tip" title="字段提示">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-2">是否编辑页面展示:</label>
+			<div class="formControls col-5">
+                <input type="radio" class="input-radio" name="info[display]" id="display" value="1" />是
+                <input type="radio" class="input-radio" name="info[display]" id="display" value="0" />否
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-2">是否列表页面显示:</label>
+			<div class="formControls col-5">
+                <input type="radio" class="input-radio" name="info[listshow]" id="listshow" value="1" />是
+                <input type="radio" class="input-radio" name="info[listshow]" id="listshow" value="0" />否
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-2"><span class="c-red">*</span>字段类型:</label>
+			<div class="formControls col-5">
+                <select name="info[type]" class="select" id="filed_type" onchange="type_change()">
+                	<option title="纯文本类型" value="text">text</option>
+                	<option title="长文本" value="textarea">textarea</option>
+                	<option title="下拉选择框" value="select">select</option>
+                	<option title="搜索选择框" value="searches">searches</option>
+                	<option title="单选框" value="radio">radio</option>
+                	<option title="多选框" value="checkbox">checkbox</option>
+                	<option title="文本编辑器" value="editor">editor</option>
+                	<option title="图片、文件上传类型" value="file">file</option>
+                	<option title="日期控件" value="datetime">date</option>
+                	<option title="时间控件" value="dtime">time</option>
+                	<option title="大小字段类型" value="minmax">minmax</option>
+                	<option title="自动生成" value="auto">auto</option>
+                </select>
+			</div>
+		</div>
+
+		<div style="display:none" id="type_select">
+			<div class="row cl" >
+				<label class="form-label col-2">下拉选项:</label>
+				<div class="formControls col-5">
+	                <input type="text" class="input-text" name="info[options]" id="options" title="英文','分隔多个值">
+				</div>
+			</div>
+			<div class="row cl" >
+				<label class="form-label col-2">关联数据表名:</label>
+				<div class="formControls col-5">
+	                <input type="text" class="input-text" name="info[joindb]" id="joindb" title="与该字段关联查询的数据表名称">
+				</div>
+			</div>
+			<div class="row cl" >
+				<label class="form-label col-2">关联查询SQL语句:</label>
+				<div class="formControls col-5">
+	                <input type="text" class="input-text" name="info[where]" id="where" title="与该字段关联查询的SQL语句">
+				</div>
+			</div>
+			<div class="row cl" >
+				<label class="form-label col-2">选择字段:</label>
+				<div class="formControls col-5">
+	                <input type="text" class="input-text" name="info[colname]" id="colname" title="与该字段关联查询的SQL语句">
+				</div>
+			</div>
+		</div>
+
+		<div style="display:none" id="type_radio">
+			<div class="row cl" >
+				<label class="form-label col-2">单选选项:</label>
+				<div class="formControls col-5">
+	                <input type="text" class="input-text" name="info[optionr]" id="optionr" title="例子:[选项名1,值1],[选项名2,值2]...">
+				</div>
+			</div>
+		</div>
+		<div style="display:none" id="type_auto">
+			<div class="row cl" >
+				<label class="form-label col-2">自动生成函数名:</label>
+				<div class="formControls col-5">
+	                <input type="text" class="input-text" name="info[function]" id="function" title="设置自动生成的值或是函数">
+				</div>
+			</div>
+			<div class="row cl" >
+				<label class="form-label col-2">自动生成条件:</label>
+				<div class="formControls col-5">
+	                <input type="checkbox" class="input-radio" name="info[datacreate]" id="datacreate" value='1' />数据创建
+                	<input type="checkbox" class="input-radio" name="info[dataupdate]" id="dataupdate" value='1' />数据更新
+				</div>
+			</div>
+			<div class="row cl" >
+				<label class="form-label col-2">固定值:</label>
+				<div class="formControls col-5">
+	                <input type="text" class="input-text" name="info[constant]" id="constant" title="设置常亮值" />
+				</div>
+			</div>
+		</div>
+		<div style="display:none" id="type_minmax">
+			<div class="row cl" >
+				<label class="form-label col-2">数据类型:</label>
+				<div class="formControls col-5">
+					<select name="info[datatype]" class="select">
+						<option value="text">数值</option>
+						<option value="datetime">时间</option>
+					</select>
+				</div>
+			</div>
+			<div class="row cl" >
+				<label class="form-label col-2">最小/最大字段:</label>
+				<div class="formControls col-5">
+	                <input type="text" class="input-text" name="info[min]" style="width:43%" title="最小字段"> ——
+	                <input type="text" class="input-text" name="info[max]" style="width:44%" title="最大字段">
+				</div>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-2">列表显示函数:</label>
+			<div class="formControls col-5">
+                <input type="text" class="input-text" name="info[showfunc]" id="showfunc" title="在列表页面显示时调用的函数" />
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-2">css样式:</label>
+			<div class="formControls col-5">
+                <input type="text" class="input-text" name="info[css]" id="css" title="css样式">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-2">宽度:</label>
+			<div class="formControls col-5">
+                <input type="text" class="input-text" name="info[width]" id="width" title="列表中列宽度(%)">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-2">是否为必须字段:</label>
+			<div class="formControls col-5">
+                <input type="radio" class="input-radio" name="info[mustbe]" id="mustbe" value="1" />是
+                <input type="radio" class="input-radio" name="info[mustbe]" id="mustbe" value="0" />否
+				<!-- <if condition="$item.mustbe eq '1' ">
+	            <else/>
+					<input type="radio" class="input-radio" name="info[mustbe]" id="mustbe" value="1" />是
+	                <input type="radio" class="input-radio" name="info[mustbe]" id="mustbe" value="0" checked="checked" />否
+	            </if> -->
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-2">是否为密码:</label>
+			<div class="formControls col-5">
+                <input type="radio" class="input-radio" name="info[password]" id="password" value='1' />是
+                <input type="radio" class="input-radio" name="info[password]" id="password" value='0' />否
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-2">是否为搜索功能:</label>
+			<div class="formControls col-5">
+                <input type="radio" class="input-radio" name="info[search]" id="search" value="0" />否
+                <input type="radio" class="input-radio" name="info[search]" id="search" value="1" />模糊搜索
+                <input type="radio" class="input-radio" name="info[search]" id="search" value="2" />全匹配搜索
+                <input type="radio" class="input-radio" name="info[search]" id="search" value="3" />区间搜索
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-2">控件属性:</label>
+			<div class="formControls col-5">
+                <input type="text" class="input-text" name="info[formattribute]" id="formattribute" title="控件属性">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-2">正则验证:</label>
+			<div class="formControls col-5">
+                <input type="text" class="input-text" name="info[match]" id="match" title="正则验证">
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-5 col-offset-2">
+				<button  class="btn btn-primary radius" type="submit" id="submit_s"><i class="Hui-iconfont">&#xe632;</i> 保存并提交</button>
+				<button onClick="layer_close('form-article-add')" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+			</div>
+		</div>
+	</form>
+</div>
+<script type="text/javascript">
+
+$(document).ready(function() {
+	var json = '<?php echo json_encode($item); ?>';
+    var jobj = jQuery.parseJSON(json);
+    for(var o in jobj)
+    {
+        $(":text[name='info["+o+"]']").val(jobj[o]);
+        $("select[name='info["+o+"]']").val(jobj[o]);
+        $(":radio[name='info["+o+"]'][value='"+jobj[o]+"']").attr('checked', 'true');
+        $(":checkbox[name='info["+o+"]'][value='"+jobj[o]+"']").attr('checked', 'true');
+    }
+
+    type_change();
+});
+
+function type_change () {
+	var ftype = $("#filed_type").val();
+	$("#type_select").hide();
+	$("#type_radio").hide();
+	$("#type_auto").hide();
+	$("#type_minmax").hide();
+
+	$("#type_"+ftype).show();
+	if (ftype == "searches") {
+		$("#type_select").show();
+	};
+}
+
+	/*关闭弹出框口*/
+function layer_close()
+{
+	var index = parent.layer.getFrameIndex(window.name);
+	parent.layer.close(index);
+}
+
+function submition(){
+	var ik = $(".itemkey").val();
+	if (ik == "") {
+		alert("请选择对应的数据列名");
+		$(".itemkey").focus();
+		return false;
+	};
+
+	$('#form-article-add').submit();
+}
+</script>
+</body>
+</html>

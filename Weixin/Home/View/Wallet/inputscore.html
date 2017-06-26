@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>请输入兑换分数</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+</head>
+<script>
+      window.onload = function(){
+          var url = window.location.href;
+          var ps = url.split("#");
+          try{
+              if(ps[1] != 1){
+                  url += "#1";
+              }else{
+                  window.location = ps[0];
+              }
+          }catch(ex){
+              url += "#1";
+          }
+          window.location.replace(url);
+      };
+
+</script>
+<body class="backgroud_hui">
+  <include file="Wpublic/share"/>
+   <div class="bd backgroud_hui">
+       <div class="input_score">
+            <div class="weui_cells_title input_score_title">兑换数量</div>
+            <div class="input_score_input">
+                <input type="number" name="score" pattern="^\d+$" required="required" value="{{$wallet['score']}}" autofocus>
+            </div>
+       </div>
+      <div class="fcenter  mtop1em bgcnone ">
+        <a href="javascript:exchange();" class="weui_btn weui_btn_warn weui_btn_mini wb80"> 兑换 </a>
+        </div>
+       <div class="weui_dialog_confirm" id="dialog1" style="display: none;">
+          <div class="weui_mask"></div>
+          <div class="weui_dialog">
+              <div class="weui_dialog_hd"><strong class="weui_dialog_title" id="dialog_t">兑换提示</strong></div>
+              <div class="weui_dialog_bd" id="dialog_c">您将兑换{{$wallet['score']}}积分，是否继续</div>
+              <div class="weui_dialog_ft">
+                  <a href="javascript:cancel();" class="weui_btn_dialog default" id="cancel">取消</a>
+                  <a href="javascript:primary();" class="weui_btn_dialog primary" id="primary">确定</a>
+              </div>
+          </div>
+      </div>
+          <!--弹出框2-->
+      <div class="weui_dialog_alert" id="dialog2" style="display: none;">
+          <div class="weui_mask"></div>
+          <div class="weui_dialog">
+              <div class="weui_dialog_hd"><strong class="weui_dialog_title" id="dialog2_title">提示</strong></div>
+              <div class="weui_dialog_bd" id="dialog2_content">工作人员将尽快与您联系！</div>
+              <div class="weui_dialog_ft">
+                  <a href="javascript:hidden(2);" id="primary2" class="weui_btn_dialog primary">确定</a>
+              </div>
+          </div>
+      </div>
+    </div>
+<script src="__ROOT__/Public/weixin/js/jquery.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/common.js"></script>
+<script>
+window.maxscore = {{$wallet['score']}} ;
+  window.status1 = 0;
+  function  exchange()
+  {
+    var score = $('input[name="score"]').val();
+    var ex = /^\d+$/;
+    if (!ex.test(score)) {
+      $('#dialog2_content').html('积分必须为整数');
+      $("#dialog2").show();
+       return false;
+    }
+    if (score > window.maxscore){
+      $('#dialog2_content').html('你输入的积分超过你的最大积分');;
+      $("#dialog2").show();
+    } else{
+      $('#dialog_c').html('您将兑换'+score+'积分，是否继续');
+      $("#dialog1").show();
+    }
+  }
+  function hidden(id)
+    {
+        $("#dialog"+id).hide();
+    }
+  function cancel()
+  {
+    $("#dialog1").hide('slow/400/fast', function() {
+      return false;
+    });
+  }
+  function primary()
+  {
+    if(window.status1 == 2){
+      $("#dialog1").hide();
+      return false;
+    }
+    var score = $('input[name="score"]').val();
+    var ex = /^\d+$/;
+    if (!ex.test(score)) {
+      $('#dialog2_content').html('积分必须为整数');
+      $("#dialog2").show();
+       return false;
+    }
+    if (score > window.maxscore){
+      $('#dialog2_content').html('你输入的积分超过你的最大积分');;
+      $("#dialog2").show();
+      return false;
+    } else {
+        $.ajax({
+          type: "post",
+          url: '/interface.php?s=/home/Score/payScore',
+          async: false,
+          data: {goodsid: 1,userid: '{{$_SESSION['userinfo']['id']}}', score:score},
+          dataType: "json",
+          success: function(data){
+            console.log(data);
+              if (data.code == 2000){
+                  $('#dialog2_content').html(data.msg);;
+                  $("#dialog2").show();
+                  window.status1 = 1;
+                  location.href="{{:U('wallet/index')}}";
+              } else {
+                window.status1 = 2;
+                $('#dialog_c').html(data.msg);
+                $("#dialog1").show();
+              }
+          },
+          error:function() {
+              return false;
+          }
+      });
+    }
+  }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>资讯频道</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+</head>
+<script type="text/javascript">
+    window.page1=0;
+    window.status1=1;
+    window.page2=0;
+    window.status2=1;
+    window.page3=0;
+    window.status3=1;
+    function ajaxLoad(zone)
+    {
+        if(zone==1){
+            var cid=1;
+            if(window.status1){
+                window.page1++;
+                $.ajax({
+                    url: "<?php echo U('Issues/loadArticle')?>",
+                    type: 'post',
+                    dataType:'json',
+                    data: {page: window.page1,cid:zone},
+                    success: function(data){
+                        if(data.error){
+                            window.status1=0;
+                            $('.eeeeee').html('无更多数据');
+                        }else{
+                            tianjia(data.data);
+                        }
+                    },
+                    error: function(data){
+
+                    }
+                });
+            }
+        }
+        if(zone==2){
+            var cid=2;
+            if(window.status1){
+                window.page2++;
+                $.ajax({
+                    url: "<?php echo U('Issues/loadArticle')?>",
+                    type: 'post',
+                    dataType:'json',
+                    data: {page: window.page2,cid:zone},
+                    success: function(data){
+                        if(data.error){
+                            window.status2=0;
+                            $('.graywd').html('无更多数据');
+                        }else{
+                            tianjia(data.data);
+                        }
+                    },
+                    error: function(data){
+
+                    }
+                });
+            }
+        }
+        if(zone==3){
+            var cid=3;
+            if(window.status3){
+                window.page3++;
+                $.ajax({
+                    url: "<?php echo U('Issues/loadArticle')?>",
+                    type: 'post',
+                    dataType:'json',
+                    data: {page: window.page3,cid:zone},
+                    success: function(data){
+                        if(data.error){
+                            window.status3=0;
+                            $('.graywd').html('无更多数据');
+                        }else{
+                            tianjia(data.data);
+                        }
+                    },
+                    error: function(data){
+
+                    }
+                });
+            }
+        }
+
+    }
+     function tianjia(data){
+        var li_clone="";
+        for(var i= 0,l = data.length;i<l;i++){
+            //处理数据并插入
+            var id = data[i].id;
+                thumb = data[i].thumb;
+                content = data[i].content;
+                title = data[i].title;
+                addtime = data[i].addtime;
+            var str = '<div class="weui_panel weui_panel_access"><div class="weui_panel_bd" ><a href="http://<?php echo $_SERVER["HTTP_HOST"];?>/weixin.php/home/Issues/article/id/'+id+'" class="weui_media_box weui_media_appmsg"><div class="weui_media_hd"><img class="weui_media_appmsg_thumb" src="'+thumb+'" alt=""></div><div class="weui_media_bd"><h4 class="weui_media_title">'+title+'</h4><p class="weui_media_desc">'+addtime+'</p><p class="weui_media_desc">'+content+'</p></div></a></div></div>';
+                 li_clone += str;
+
+        };
+        $("#content").append(li_clone);
+    }
+
+</script>
+<body class="bgcgray">
+    <include file="Wpublic/share"/>
+    <div class="bd">
+        <div>
+           <div class="navbar">
+                <div class="bd" style="height: 100%;">
+                    <div class="weui_tab">
+                        <div class="weui_navbar ">
+                            <div class="weui_navbar_item <?php if($_GET['cid']==1 || !isset($_GET['cid']))echo 'weui_bar_item_on';?>" id='tabbar1' onclick="location.href='<?php echo U('Issues/index',array('cid'=>1));?>';">
+                                <!-- <a href="<?php echo U('Issues/index',array('cid'=>1));?>"> -->
+                                <!-- <span class="wcolor"> -->最新动态<!-- </span> -->
+                                <!-- </a> -->
+                            </div>
+                            <div class="weui_navbar_item <?php if($_GET['cid']==2)echo 'weui_bar_item_on';?>" id='tabbar2' onclick="location.href='<?php echo U('Issues/index',array('cid'=>2));?>';">
+                                 <!-- <a href="<?php echo U('Issues/index',array('cid'=>2));?>"> -->
+                                <!-- <span class="wcolor"> -->最新公告<!-- </span> -->
+                                <!-- </a> -->
+                            </div>
+                            <div class="weui_navbar_item <?php if($_GET['cid']==3)echo 'weui_bar_item_on';?>" id='tabbar3' onclick="location.href='<?php echo U('Issues/index',array('cid'=>3));?>';">
+                                <!-- <a href="<?php echo U('Issues/index',array('cid'=>3));?>"> -->
+                                <!-- <span class="wcolor"> -->健康养生<!-- </span> -->
+                                <!-- </a> -->
+                            </div>
+                        </div>
+                        <div class="weui_tab_bd ">
+                            <div class=" weui_panel_access mtop05em">
+                                <div class="weui_panel_bd" id="content">
+                                    <volist name="art_list" id="art">
+                                        <div class="weui_panel weui_panel_access">
+                                            <div class="weui_panel_bd" >
+                                                <a href="<?php echo U('Issues/article',array('id'=>$art['id']))?>" class="weui_media_box weui_media_appmsg">
+                                                    <div class="listthumb">
+                                                        <img class="bradiu4" src="{{$art.thumb|default='__ROOT__/Public/weixin/image/noimage.png'}}" alt="">
+                                                    </div>
+                                                    <div class="weui_media_bd">
+                                                        <h4 class="weui_media_title">{{$art.title}}</h4>
+                                                        <p class="weui_media_desc" style="color: #a0a0a0;">{{$art.addtime|date="Y-m-d",###}}</p>
+                                                        <p class="weui_media_desc"><?php echo msubstr(strip_tags($art['content']),1,300);?></p>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </volist>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+         <?php if($art_list){ ?>
+        <div class="fcenter  mbottom4em mtop08em" id="position2">
+            <a class="more_comments font-size1 gcolor "  href="javascript:ajaxLoad(<?php echo isset($_GET['cid'])?$_GET['cid']:1;?>);" id="aaaa2"><span class="graywd">点击加载更多</span></a>
+        </div>
+         <?php }else{ ?>
+         <?php } ?>
+    </div>
+<script src="__PUBLIC__/js/jquery1.8.1/jquery.js"></script>
+<script type="text/javascript" src="__ROOT__/Public/weixin/js/ilazyui.js"></script>
+<script type="text/javascript">
+<php>echo "var mrz=$('.weui_navbar').find('.weui_navbar_item:eq(".(isset($_GET['cid']) ? $_GET['cid']-1 : 0 ).")');"; </php>
+// $.iLazy.menucolor({o:$(".weui_navbar"),i:".weui_navbar_item",n:"#FFB43F",a:"#FF624D",d:mrz});
+</script>
+<script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/common.js"></script>
+</body>
+</html>

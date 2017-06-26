@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>我的积分</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+</head>
+<body class="backgroud_hui">
+  <include file="Wpublic/share"/>
+   <div class="bd backgroud_hui">
+       <div class="mycenter_head">
+            <header>
+                <a href="<?php echo U('MyCenter/myinfo');?>">&nbsp;</a>
+            </header>
+            <div class="mycenter_header_img bradiu10 top15 mleft_5em">
+                <img src="{{$_SESSION['userinfo']['header']|default='__ROOT__/Public/weixin/image/tx.png'}}"
+
+                >
+                 <php>
+                    if(isset($_SESSION['userinfo']['header']))
+                    {
+                      //echo "class='imggray'";
+                    }
+                  </php>
+            </div>
+            <div class="top13 pstrelative fcenter wcolor">
+                 <p>{{$_SESSION['userinfo']['name'] | default=$_SESSION['userinfo']['nickname']}}</p>
+                 <p>同当号:{{$_SESSION['userinfo']['id']}}</p>
+            </div>
+       </div>
+       <div class="jifen_section">
+            <div class="weui_cells weui_cells_access">
+
+                <a class="weui_cell" href="javascript:;">
+                    <div class="weui_cell_hd gerenzhongxin">
+                      <i class="icon Hui-iconfont iconfont_color_blue"></i>
+                    </div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p class="ztcolor">我的积分</p>
+                    </div>
+                    <div class="jifen1">{{$wallet['score']}}</div>
+                </a>
+            </div>
+       </div>
+             <div class="weui_cells weui_cells_access">
+
+                <a class="weui_cell" href="<?php echo U('wallet/guide');?>">
+                    <div class="weui_cell_hd gerenzhongxin">
+                      <i class="icon Hui-iconfont iconfont_color_green1"></i>
+                    </div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p class="ztcolor">积分规则</p>
+                    </div>
+                    <div class="weui_cell_ft"></div>
+                </a>
+                <a class="weui_cell" href="{{:U('wallet/exchange')}}">
+                    <div class="weui_cell_hd gerenzhongxin">
+                      <i class="icon Hui-iconfont iconfont_color_red"></i>
+                    </div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p class="ztcolor">积分兑换</p>
+                    </div>
+                    <div class="weui_cell_ft"></div>
+                </a>
+            </div>
+       </div>
+    </div>
+<script src="__ROOT__/Public/weixin/js/jquery.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/common.js"></script>
+</body>
+</html>

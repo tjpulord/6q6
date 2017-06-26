@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>详情</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <script src="__PUBLIC__/js/jquery1.8.1/jquery.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script type="text/javascript" src="__ROOT__/Public/weixin/js/ilazyui.js"></script>
+</head>
+<script type="text/javascript">
+    window.islogin = {{$login}};
+    window.userid  = "{{$_SESSION['userinfo']['id']}}";
+    window.aid = "<?php echo $social['id'];?>";
+    function focusccc(cid,parentid)
+    {
+        $("#search_cancel").attr('onclick', "comment("+cid+","+parentid+")");
+        $("#ccc").attr('placeholder', "回复");
+        $("#ccc").focus();
+    }
+    function comment(parentid, cid, reuserid, reusername)
+    {
+        if (window.islogin) {
+            if (window.userid == reuserid) {
+                return true;
+            };
+            var dialog = new $.iLazy.prompts({
+                title:"请输入",
+                tips:"回复"+reusername+":",
+                yes:function(){
+                    var v = dialog.v.value;
+                    if(v.length>50){
+                        $.iLazy.toast("亲，回复内容不能超过50字");
+                        return false;
+                    }
+                    if(v.length==0 || v=="" || $.iLazy.isEmpty(v)){
+                        $.iLazy.toast("亲，请输入回复内容");
+                        return false;
+                    }
+                    $.ajax({
+                        url: "<?php echo U('Social/acceptComment');?>",
+                        type: 'post',
+                        dataType: 'json',
+                        data: {socialid: window.aid,commentid:cid,content:v, parentid:parentid, replyname:reuserid},
+                        success: function(data){
+                            if(data != 0){
+                                history.go(0);
+                                $("#search_cancel").attr('onclick', "comment(0)");
+                                $("#ccc").val("");
+                                $("#ccc").blur();
+
+                            }else{
+                                alert('评论失败！');
+                            }
+                        },
+                        error: function(){
+                            var data = {
+                                error: 1,
+                                type: 400
+                            };
+                        },
+                    });
+                    // 评论内容不能重复提交
+                    dialog.confirmbtn.unbind();
+                },
+                cancel:function(){
+                    dialog.v.value = "";
+                    dialog.hide();
+                    dialog.remove();
+                }
+            });
+            dialog.show();
+        } else {
+            login();
+        }
+    }
+
+
+    function zan(){
+        if (window.islogin) {
+            $.ajax({
+                url: "<?php echo U('Social/acceptZan');?>",
+                type: 'post',
+                dataType: 'json',
+                data: {socialid: window.aid},
+                success: function(data){
+                    console.log(data.err);
+                    if(data.err == 0){
+                        $("#zan").text('');
+                        $("#zannum").text(data.num);
+                    }else{
+                        alert('点赞失败！');
+                    }
+                },
+                error: function(){
+                    var data = {
+                        error: 1,
+                        type: 400
+                    };
+                },
+            })
+        } else {
+            login();
+        }
+    }
+    function login()
+    {
+        location.href = "weixin.php/home/register/signin?url="+window.location.href;
+    }
+    function donation()
+    {
+        if (window.islogin) {
+            $("#dialog1").show();
+        } else {
+            login();
+        }
+    }
+    function donation1()
+    {
+        if (window.islogin) {
+            $("#dialog1").show();
+            var userid = "{{$_SESSION['userinfo']['id']}}",
+                money = $('input[name="money"]').val(),
+                socialid = $('input[name="socialid"]').val();
+            if (money.length != 0 &&　!isNaN(money)){
+                $("#dialog1").hide();
+                $("#loadingToast").show();
+                $.ajax({
+                    url: '/interface.php?s=/home/order/donate',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {userid: userid, planid: socialid, money: money},
+                    success: function(data){
+                        console.log(data);
+                        if (data.code == 2000) {
+                            $("#loadingToast").hide();
+                            $("#toast").show();
+                            $("#toast").hide('slow/400/fast');
+                            location.href = "/interface.php?s=/home/pay/payorder/userid/"+userid+"/orderid/"+data.data.order_no+'&url={{:urlencode(U("Social/article",array("id"=>$social["id"])))}}';
+                        } else {
+                            $("#loadingToast").hide();
+                            $("#dialog2_title").text('错误提示');
+                            $("#dialog2_content").text(data.msg);
+                            $("#dialog2").show();
+                        }
+                    },
+                    error: function(){
+                        $("#loadingToast").hide();
+                        $("#dialog2_title").text('错误提示');
+                        $("#dialog2_content").text('网络故障，请联系管理员！');
+                        $("#dialog2").show();
+                    }
+                });
+            } else {
+                $("#dialog1").hide();
+                $("#dialog2_title").text('提示');
+                if (money.length == 0){
+                    $("#dialog2_content").text('请输入捐助金额');
+                }else{
+                    $("#dialog2_content").text('金额输入不合法');
+                }
+                $("#dialog2").show();
+            }
+        } else {
+            login();
+        }
+    }
+    function hidden(id)
+    {
+        $("#dialog"+id).hide();
+    }
+</script>
+<body class="bgcgray">
+<include file="Wpublic/share"/>
+   <div class="bd">
+   <div id="touch_bd">
+        <article class="weui_article">
+            <section style="margin-bottom: 0px;">
+                <div class="title">
+                    <h2 class="title1">{{$social['title']}}</h2>
+                    <h3 class="timeclr">发布日期：<?php echo date('Y-m-d',$social['addtime']); ?></h3>
+                </div>
+            <div class="donate_jine">
+                <div class="dingwei">
+                    <if condition=" $social['goal'] egt 100000">
+                        <h2 class="juankuan_jine_h2_left1" style="font-size: 18px; margin-bottom: 15px; text-align: center;">{{:round($social['goal']/10000.0, 1)}}万元<br><span style=" font-size: 14px; color: #777777;">目标金额</span></h2>
+                    <else/>
+                        <h2 class="juankuan_jine_h2_left1" style="font-size: 18px;  margin-bottom: 15px; text-align: center;">{{$social['goal']}}元<br><span style=" font-size: 14px; color: #777777;">目标金额</span></h2>
+                    </if>
+                </div>
+                <div class="dingwei2">
+                    <h2 class="juankuan_jine_h2_h21">{{$social['funds']|default="0"}}元<br><span style="font-size: 14px; color: #777777;">已筹金额</span></h2>
+                </div>
+                <div class="dingwei3">
+                    <if condition="$social['status'] eq 3">
+                        <p class="zhuangtai1">已经<br>结束</p>
+                    <elseif condition="$enddate and $social['goal'] gt $social['funds']" />
+                        <p class="zhuangtai">正在<br>进行</p>
+                    <else/>
+                        <p class="zhuangtai1">已经<br>结束</p>
+                    </if>
+                </div>
+            </div>
+            </section>
+        </article>
+        <div class="bgcwhite">
+        <article class="weui_article " >
+            <section>
+                <section >
+                    <div class="graywd">
+                        <p style="margin:0px;"> {{$social['content']}}</p>
+                    </div>
+                </section>
+            </section>
+        </article>
+        </div>
+
+        <article class="article_comment" id="aaaa1">
+            <div class="bgclred fcenter weui_panel wcolor fs16 pbd repaybtn radius  mleft1em  mright1em" onclick="comment(0,0,'','');" style="margin-top: 10px;">
+                <i class="Hui-iconfont">&#xe647;</i>发布回复
+            </div>
+
+            <div class="juankuan_chengyuan bgcwhite bbtmborder mtop1em">
+                <header>
+                    <h2 class="juankuan_chengyuan_h2_left">最近捐款的成员</h2>
+                    <h2 class="juankuan_chengyuan_h2_right">
+                        <a href="<?php echo U('Social/Donores',array('sid'=>$social['id']));?>" class="remove_a"><i class="icon Hui-iconfont" style="color:#ff642d;"></i>{{$count['count']}}人捐款</a>
+                    </h2>
+                </header>
+            </div>
+            <div class="juankuan_touxiang_div bgcwhite">
+                <ul>
+                    <volist name="donores" id="donor">
+                    <li>
+                        <a href="<?php echo U('Social/Donores',array('sid'=>$social['id']));?>" class="remove_a">
+                            <div class="juankuan_touxiang_li"><img src="<?php if ($donor['header']){echo $donor['header'];} else {echo C('HEADER');}?>" alt=""></div>
+                        </a>
+                    </li>
+                    </volist>
+
+                </ul>
+            </div>
+            <header class="comment_header">
+                <h2 >评论</h2>
+            </header>
+            <volist name="comments[0]" id="cvo">
+                <section class="comment_bd bgcwhite" id="area{{$cvo['id']}}">
+                    <header class="comment_info">
+                        <img src="{{$cvo['header']|default=C('HEADER')}}" >
+                        <h3 class="name">{{$cvo['name']|default=$cvo['nickname']}}</h3>
+                        <time datetime="{{:date('Y-m-d H:i', $cvo['createtime'])}}">{{:date('Y-m-d H:i', $cvo['createtime'])}}</time>
+                            <span onclick="comment({{$cvo['id']}},{{$cvo['id']}}, '{{$cvo[userid]}}', '{{$cvo[name]}}')">回复</span>
+                    </header>
+                    <article class="comment_content">
+                        <p style="min-height:25px; margin-right: 0px;">{{$cvo['content']}}</p>
+                        <foreach name="comments[$cvo['id']]" item="rvo">
+                            <!-- <a href="javascript:;" onclick=""></a> -->
+                            <section class="comment_comment " id="area{{$rvo['id']}}" onclick="comment({{$cvo['id']}},{{$rvo['id']}},'{{$rvo[userid]}}', '{{$rvo[name1]}}')">
+                                <header class="comment_comtent_header">
+                                    <h3>
+                                    <span class="name"> {{$rvo['name1']}}
+                                    </span>回复<span>{{$rvo['name2']}}
+                                    </span>:
+                                    </h3>
+                                </header>
+                                <article class="comment_comtent_content">
+                                    <p>{{$rvo['content']}}</p>
+                                </article>
+                            </section>
+                        </foreach>
+                        <if condition="count($comments[$cvo['id']]) eq 6">
+                            <div id="position{{$pid}}" class="more_comments">
+                                <a class="more_huifu " href="javascript:jiazaihuifu({{$cvo['id']}});"><<展开全部回复>></a>
+                            </div>
+                        </if>
+                    </article>
+                </section>
+            </volist>
+        </article>
+
+        <div class="fcenter  mbottom4em" id="preloader">
+            <a class="more_comments font-size08 gcolor " href="javascript:jiazaicomment({{$article['id']}});" id="aaaa2"><span class="graywd">点击加载更多</span></a>
+        </div>
+        </div>
+        <!-- <div class="bottom bgclred fcenter weui_panel wcolor fs14 pbtn repaybtn" onclick="comment(0,0);">
+            <i class="Hui-iconfont">&#xe647;</i>发布回复
+        </div> -->
+        <footer class="plan_view_footer">
+            <h1 class="plan_view_footer_left mt_2" id="share_btn"><a>分享</a></h1>
+            <h2 class="plan_view_footer_right">
+                <if condition="$social['status'] eq 1 and $enddate and $social['goal'] gt $social['funds']">
+                    <a href="javascript:donation();">支援救助</a>
+                <else/>
+                    <a href="javascript:$.iLazy.alert('活动已结束');" style="color:#eeeeee; opacity:0.5">已经结束</a>
+                </if>
+            </h2>
+        </footer>
+    </div>
+    <!--弹出框1-->
+<div class="weui_dialog_confirm" id="dialog1" style="display: none;">
+    <div class="weui_mask"></div>
+    <div class="weui_dialog">
+        <div class="weui_dialog_hd"><strong class="weui_dialog_title">请输入捐助金额</strong></div>
+        <div class="weui_dialog_bd">
+            <form action="">
+                <input type="hidden" name="socialid" value="{{$social['id']}}">
+                <input type="hidden" name="userid" value="{{$_SESSION['userinfo']['id']}}">
+                <div class="weui_cells">
+                    <div class="weui_cell">
+                        <label class="weui_label">金额</label>
+                        <div class="weui_cell_bd weui_cell_primary">
+                            <input class="weui_input" type="number" name="money" maxlength="6" size="5" placeholder="请输入捐助金额" required="required" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="weui_dialog_ft">
+            <a href="javascript:hidden(1);" id="default1" class="weui_btn_dialog default">取消</a>
+            <a href="javascript:donation1();" id="primary1" class="weui_btn_dialog primary">确定</a>
+        </div>
+    </div>
+</div>
+<!--弹出框2-->
+<div class="weui_dialog_alert" id="dialog2" style="display: none;">
+    <div class="weui_mask"></div>
+    <div class="weui_dialog">
+        <div class="weui_dialog_hd"><strong class="weui_dialog_title" id="dialog2_title">提交成功</strong></div>
+        <div class="weui_dialog_bd" id="dialog2_content">工作人员将尽快与您联系！</div>
+        <div class="weui_dialog_ft">
+            <a href="javascript:hidden(2);" id="primary2" class="weui_btn_dialog primary">确定</a>
+        </div>
+    </div>
+</div>
+<div id="toast" style="display: none;">
+            <div class="weui_mask_transparent"></div>
+            <div class="weui_toast">
+                <i class="weui_icon_toast"></i>
+                <p class="weui_toast_content">下单成功</p>
+            </div>
+        </div>
+        <div id="loadingToast" class="weui_loading_toast" style="display:none;">
+            <div class="weui_mask_transparent"></div>
+            <div class="weui_toast">
+                <div class="weui_loading">
+                    <div class="weui_loading_leaf weui_loading_leaf_0"></div>
+                    <div class="weui_loading_leaf weui_loading_leaf_1"></div>
+                    <div class="weui_loading_leaf weui_loading_leaf_2"></div>
+                    <div class="weui_loading_leaf weui_loading_leaf_3"></div>
+                    <div class="weui_loading_leaf weui_loading_leaf_4"></div>
+                    <div class="weui_loading_leaf weui_loading_leaf_5"></div>
+                    <div class="weui_loading_leaf weui_loading_leaf_6"></div>
+                    <div class="weui_loading_leaf weui_loading_leaf_7"></div>
+                    <div class="weui_loading_leaf weui_loading_leaf_8"></div>
+                    <div class="weui_loading_leaf weui_loading_leaf_9"></div>
+                    <div class="weui_loading_leaf weui_loading_leaf_10"></div>
+                    <div class="weui_loading_leaf weui_loading_leaf_11"></div>
+                </div>
+                <p class="weui_toast_content">正在提交订单信息</p>
+            </div>
+        </div>
+<script src="__ROOT__/Public/weixin/js/common.js"></script>
+<script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+<script type="text/javascript">
+window.page1 = 0;
+    $(".diybtn").focus(function(event) {
+        $(".diy_weiu_send").show();
+        $(".diybtn").css('width','78%');
+         document.getElementById('touch_bd').addEventListener('touchstart',function(){
+            $(".diybtn").blur();
+        })
+    });
+    $(".diybtn").blur(function(event) {
+        if($("#ccc").val() == ""){
+            $("#search_cancel").attr('onclick', "comment(0)");
+            $("#ccc").attr('placeholder', "评论");
+            $(".diy_weiu_send").hide();
+            $(".diybtn").css('width','95%');
+        }
+    });
+ function jiazaicomment(pid)
+    {
+        // if(window.status1){
+            window.page1++;
+            $.ajax({
+                url: '<?php echo U('Social/ajaxComment');?>',
+                type: 'post',
+                dataType:'json',
+                data: {page: window.page1, aid:window.aid, pid:pid},
+                success: function(data){
+                    // $(".more_comments").remove();
+                    if (data.data != ""){
+                        $("#aaaa1").append(data.data);
+                    }else {
+                        $('#aaaa2').html('无更多评论');
+                        $('#aaaa2').attr('href','javascript:;');
+                    }
+                },
+                error: function(data){
+
+                }
+            });
+        // }
+    }
+    function jiazaihuifu(pid)
+    {
+        $.ajax({
+            url: '<?php echo U("Social/ajaxHuifu");?>',
+            type: 'post',
+            dataType:'json',
+            data: {page: 1, aid:window.aid, pid:pid},
+            success: function(data){
+                console.log(data);
+                $("#position"+pid).remove();
+                $("#area"+pid+" .comment_content p").nextAll().remove();
+                $("#area"+pid+" .comment_content").append(data.data);
+            },
+            error: function(data){
+
+            }
+        });
+    }
+     function tianjia(zone,data){
+        if(zone == 1){
+            $("#content1").append(data);
+        }else if(zone == 2) {
+            $("#content2").append(data);
+        }
+
+
+
+    }
+</script>
+<script type="text/javascript">
+    imgurl = [];
+    $(document).ready(function() {
+        var weui_article = $(".weui_article");
+        weui_article.find('img').each(function(index) {
+            var imgsrc = $(this).attr('src');
+            if (imgsrc.indexOf("emoticons")>1) {
+                $(this).attr('style', 'width:auto');
+            }else{
+                $(this).bind('click', function(event) {
+                    wx.previewImage({
+                        current: $(this).attr('src'),
+                        urls: imgurl
+                    });
+                });
+            }
+            imgurl[index] = $(this).attr('src');
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>客服</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+</head>
+<body  class="bgcgray">
+    
+    <div id="container" class="container">
+        <div class="cellnormalbgc  normalbgc">
+            <div class="hd">
+                <div class="page_title">同当互助客服</div>
+                <p align="center ">
+                    <img src="{{$data['weixin_kefu']}}" alt="" class="mgnall10" style="width:8em;">
+                </p>
+                <p align="center "><span class="wcolor">请长按并识别二维码添加我为好友</span></p>
+            </div>
+        </div>
+        <div class="bd">
+
+            <!-- <div class="weui_cells">
+                <div class="weui_cell">
+                    <div class="weui_cells_bd weui_cell_primary">
+                         <p><i class="Hui-iconfont iconfont_color_orange">&#xe6c7;</i> <span class="bcolor"> 客服电话</span></p>
+                    </div>
+                    <div class="graywd"><a class="graywd" href="tel:{{$data['rexiandianhua']}}">{{$data['rexiandianhua']}}</a></div>
+                </div>
+            </div>
+            <div class="weui_cells">
+                <div class="weui_cell">
+                    <div class="weui_cells_bd weui_cell_primary">
+                        <p><i class="Hui-iconfont iconfont_color_blue">&#xe67b;</i> <span class="bcolor">客服 QQ</span></p>
+                    </div>
+                    <div class="graywd">{{$data['qq1']}}</div>
+                </div>
+            </div> -->
+
+    <div class="mycenter_section">
+        <div class="weui_cells weui_cells_form">
+            <div class="weui_cell">
+                <div class="weui_cells_bd weui_cell_primary">
+                     <p><i class="Hui-iconfont iconfont_color_orange">&#xe6c7;</i> <span class="bcolor"> 客服电话</span></p>
+                </div>
+                <div class="graywd">
+                    <a class="graywd " href="tel:{{$data['rexiandianhua']}}">{{$data['rexiandianhua']}}</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="weui_cells weui_cells_form">
+            <div class="weui_cell">
+                   <div class="weui_cells_bd weui_cell_primary">
+                        <p><i class="Hui-iconfont iconfont_color_blue1">&#xe67b;</i> <span class="bcolor">客服 QQ</span></p>
+                    </div>
+                    <div class="graywd ">{{$data['qq']}}</div>
+                </div>
+
+                <div class="weui_cell">
+                    <div class="weui_cells_bd weui_cell_primary">
+                        <p> <i class="Hui-iconfont iconfont_color_green">&#xe622;</i> <span class="bcolor">客服微信</span></p>
+                    </div>
+                    <div class="graywd ">{{$data['weixin']}}</div>
+                </div>
+            </div>
+        </div>
+
+    <div class="mycenter_section">
+            <div class="weui_cells weui_cells_form">
+                <div class="weui_cell">
+                    <p> <i class="Hui-iconfont iconfont_color_orange1">&#xe63b;</i> <span class="bcolor">客服邮箱</span></p>
+                </div>
+                <div class=" weui_cell_primary graywd bhh">{{$data['email']}}</div>
+            </div>
+       </div>
+
+        <!-- <div class="weui_cells">
+                <div class="weui_cell">
+                    <div class="weui_cells_bd weui_cell_primary">
+                        <p><i class="Hui-iconfont iconfont_color_blue">&#xe62e;</i> <span class="bcolor">技术支持</span></p>
+                    </div>
+                    <div class="graywd"><a class="graywd" href="http://www.truekey.cc">天津出奇网络科技有限公司</a></div>
+                </div>
+        </div>
+ -->
+    </div>
+<script src="__ROOT__/Public/weixin/js/jquery.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/common.js"></script>
+</body>
+</html>

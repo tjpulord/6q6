@@ -1,0 +1,72 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1,maximum-scale=1, user-scalable=no" name="viewport">
+    <title>登录</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+    <link href="/Public/lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/login.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+</head>
+<body class="td_bg_signin">
+   <!--注册信息表单-->
+   <form action="" method="post" id="register">
+        <div class="logo mcenter mtop12 ">
+            <img src="__ROOT__/Public/weixin/image/weixin.jpg" alt="">
+        </div>
+
+        <div class="weui_cells_form bgcolornone wbtn80 mcenter mtop2">
+            <div class="l_ui_cell bradradius10 opacitypng">
+                <div class="weui_cell_hd">
+                    <label class="weui_label wbtn13" ><i class="Hui-iconfont icocolorff" >&#xe6c7;</i></label>
+                </div>
+                <div class="weui_cell_bd weui_cell_primary mleft02">
+                    <input class="weui_input texcolorff mtop_02 " type="tel" name="phone"  value="" placeholder="请输入手机号码" required="required"/>
+                </div>
+            </div>
+        </div>
+
+        <div class=" weui_cells_form bgcolornone wbtn80 mcenter mtop1">
+            <div class="l_ui_cell bradradius10 opacitypng">
+                <div class="weui_cell_hd">
+                    <label class="weui_label wbtn13"><i class="Hui-iconfont icocolorff ">&#xe63f;</i> </label>
+                </div>
+                <div class="weui_cell_bd weui_cell_primary mleft02">
+                    <input class="weui_input texcolorff mtop_02"  name="password"  type="password" value="" minlength="6" placeholder="请输入密码" required="required" />
+                </div>
+            </div>
+        </div>
+
+        <div class="weui_cells_form wbtn80 mcenter mtop2 ">
+            <input type="submit" class="weui_btn braderradius8 opacityypng texcolorff fontsize1" value="登  录">
+        </div>
+
+        <div class=" weui_cells_form bgcolornone wbtn80 mcenter mtop08 fright texcolorff opacity60">
+                <a class="texcolorff fontsize08" href="<?php echo 'http://'.$_SERVER['SERVER_NAME'].'/weixin.php/home/Register/resetpwd?url='.urlencode($_GET['url']);?>">忘记密码?</a>
+                <a class="texcolorff fontsize08 mright02 pleft05" href="<?php echo 'http://'.$_SERVER['SERVER_NAME'].'/weixin.php/home/Register/login?url='.urlencode($_GET['url']);?>">前往注册</a>
+        </div>
+    </form>
+    <div id="toast" style="display: none;">
+        <div class="weui_mask_transparent"></div>
+</div>
+
+<div class="weui_extra_area texcolorff opacity60 fontsize06 mbottom08">
+    <p>版权所有：京ICP备16030282号</p>
+    <p>天津出奇科技有限公司</p>
+</div>
+<script src="__ROOT__/Public/weixin/js/jquery.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/common.js"></script>
+<script type="text/javascript">
+    function dosubmit () {
+        if ($("#agree").is(":checked")) {
+            $('#register').submit();
+        }else{
+            // $("#toast").show(300).delay(2000).hide(300);
+        }
+    }
+</script>
+</body>
+</html>

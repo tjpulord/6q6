@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>我发起的攒单列表</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/scrollbar.css"/>
+    <script src="__ROOT__/Public/weixin/js/jquery.min.js"></script>
+    <script src="__ROOT__/Public/weixin/js/ilazyuiscroll.js"></script>
+    <script src="__ROOT__/Public/weixin/js/ilazyui.js"></script>
+    <script src="__ROOT__/Public/js/jquery.touchSwipe.min.js"></script>
+    <script src="__ROOT__/Public/js/idangerous.swiper-1.9.1.min.js"></script>
+    <script src="__ROOT__/Public/js/idangerous.swiper.scrollbar-1.2.js"></script>
+    <script type="text/javascript">
+        var statusid = <?php echo $status ?>;
+        $(function(){
+            $('#'+statusid).addClass('weui_bar_item_on texcolor2d bbtmsolid4br');
+            $('.weui_navbar_item').on("click", function(){
+                $(this).addClass('weui_bar_item_on texcolor2d bbtmsolid4br').siblings('.weui_bar_item_on').removeClass('weui_bar_item_on texcolor2d bbtmsolid4br');
+                location.href = "index.php?s=/home/order/cuandanlist/status/"+$(this).attr('id');
+            });
+        });
+    </script>
+</head>
+<body class="backgroud_f3">
+    <div class="weui_navbar bbtmborder pstfixe zzhou10000">
+        <div class="weui_navbar_item" id='0'>
+            全部
+        </div>
+        <div class="weui_navbar_item" id='2' tab="zc">
+            代发货
+        </div>
+        <div class="weui_navbar_item" id='3' tab="bz">
+            已发货
+        </div>
+        <div class="weui_navbar_item" id='4' tab="sx">
+            已完成
+        </div>
+    </div>
+<!-- 上下拉刷新 -->
+<div id="wrapper" style="margin-top: 48px;">
+<div id="scroller">
+<div id="pullDown">
+    <span class="pullDownLabel">下拉刷新...</span>
+</div>
+<!-- 上门自提发货状态，筹单中没有发货和发货状态的按钮 -->
+    <div class="weui_panel_bd backgroud_ff mbottom1">
+        <volist name="goodslist" id="gg">
+        <div class=" fontsize105 texcolor44">
+            <p class="mleft15p ftleft ptop06 pbottom02">{{$gg['name']}}</p>
+            <P class="mright15p fright pbottom02 ptop06"><i class="Hui-iconfont fontsize1 mtop01 icocolorhs">&#xe6c9;</i><span class="mleft03">西青区  华庄子</span></P>
+        </div>
+        <div class=" fontsize08 texcolora0 ">
+            <div class="mright15p mleft15p bbtmdashedd0 pbottom06" >
+                <p class="ftleft">篡单号:<span class="texspacing" >{{$gg['goodsid']}}</span> </p>
+                <p class="fright">{{$gg['startend']}}</p>
+            </div>
+        </div>
+        <a href="javascript:void(0);" class="weui_media_box weui_media_appmsg ">
+            <div class="weui_media_hd1 mbottom05">
+                <img class="weui_media_appmsg_thumb bgwidth12 bgheight13 braderradius6" src="{{$gg['image']|default='__ROOT__/Public/weixin/image/noimage.png'}}" alt="">
+            </div>
+            <div class="weui_media_bd mtop_10">
+                <p class="texcolor44  mbottom05 ">正在篡单……</p>
+                <p class="weui_media_desc_sy texwordwrap mtop06">
+                    <div class="braderradius6 backgroud_ee heinght40">
+                        <div class="braderradius6 backgroud_a9 heinght40" style="width: {{$olist[$gg['id']]['ratio']}}%;"></div>
+                    </div>
+                    <div class="mtop02">
+                        <div class="weui_media_title ftleft " style="width: 30%;">
+                            <P class="texcolor2dq fontsize06">{{$olist[$gg['id']]['number']}}<span>份</span></P>
+                            <P class="texcolorb0 fontsize06 mtop_02">已购</P>
+                        </div>
+
+                        <div class="weui_media_title ftleft  texcenter " style="width: 40%;">
+                            <P class="texcolora0 fontsize06">{{$gg['min']}}<span>份</span></P>
+                            <P class="texcolorb0 fontsize06 mtop_02">总需</P>
+                        </div>
+
+                        <div class="weui_media_title fright" style="width: 30%;">
+                            <P class="texcolor4bq fontsize06">{{$olist[$gg['id']]['left']}}<span>份</span></P>
+                            <P class="texcolorb0 fontsize06 mtop_02">剩余</P>
+                        </div>
+                    </div>
+                </p>
+                <h4 class="ftleft texcolor44 mtop05 mright05 fontsize17p texweightno ">篡单正在进行中 >>
+                </h4>
+            </div>
+        </a>
+        <div class="weui_cellb ">
+            <div class="datagrid3">
+                <ul>
+                    <li class="bluelink">
+                        <a href="" class="texcolor2d">修改运单号</a>
+                    </li>
+                    <li class="borderleftgray greenlink">
+                        <a href="{{:U('order/cuandan', array('id'=>$gg['id']))}}" class="texcolor2d"><div class="account_list_menu_a2">详情</div></a>
+                    </li>
+                    <li class="borderleftgray blanklink orangelink">
+                        <a href="{{:U('Order/cuandan')}}" class="texcolor2d">等待发货</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        </volist>
+    </div>
+<!-- 上门自提发货，有发货状态和发货、帮助、运单号等处理。 -->
+    <!-- <div class="weui_panel_bd backgroud_ff mbottom1" >
+        <div class=" fontsize105 texcolor44">
+            <p class="mleft15p ftleft ptop06 pbottom02">青海湖山羊</p>
+            <P class="mright15p fright pbottom02 ptop06"><i class="Hui-iconfont fontsize1 mtop01 icocolorhs">&#xe6c9;</i><span class="mleft03">西青区  华庄子</span></P>
+        </div>
+        <div class=" fontsize08 texcolora0 ">
+            <div class="mright15p mleft15p bbtmdashedd0 pbottom06" >
+                <p class="ftleft">篡单号:<span class="texspacing" >SYGS-16090700002</span> </p>
+                <p class="fright">2016-10-10</p>
+            </div>
+        </div>
+        <a href="javascript:void(0);" class="weui_media_box weui_media_appmsg ">
+            <div class="weui_media_hd1 mbottom05">
+                <img class="weui_media_appmsg_thumb bgwidth12 bgheight13 braderradius6" src="__ROOT__/Public/weixin/image/noimage.png" alt="">
+            </div>
+
+            <div class="weui_media_bd mtop_10">
+                <p class="texcolor44  mbottom05 ftleft">篡单完成</p>
+                <p class="texcolor2d  mbottom05 fright">代发货</p>
+                <p class="weui_media_desc_sy texwordwrap mtop06">
+                    <div class="braderradius6 backgroud_ee heinght40">
+                        <div class="braderradius6 backgroud_a9 heinght40" style="width:18%;"></div>
+                    </div>
+                    <div class="mtop02">
+                        <div class="weui_media_title ftleft " style="width: 30%;">
+                            <P class="texcolor2dq fontsize06">10000<span>只</span></P>
+                            <P class="texcolorb0 fontsize06 mtop_02">已购</P>
+                        </div>
+                        <div class="weui_media_title ftleft  texcenter " style="width: 40%;">
+                            <P class="texcolora0 fontsize06">10000<span>只</span></P>
+                            <P class="texcolorb0 fontsize06 mtop_02">总需</P>
+                        </div>
+                        <div class="weui_media_title fright" style="width: 30%;">
+                            <P class="texcolor4bq fontsize06">10000<span>只</span></P>
+                            <P class="texcolorb0 fontsize06 mtop_02">剩余</P>
+                        </div>
+                    </div>
+                </p>
+                <h4 class="ftleft texcolor44 mtop05  mright05 fontsize17p texweightno ">有新的订单请查看 >>
+                    <div class="pstabsolute mleft1120 fontsize12p">
+                      <p class="backgroud_ff642d  bgwidth14  texindent0 fcenter texshowpoint texcolorff mtop_252 braderradius100 texlineheight16">100</p>
+                    </div>
+                </h4>
+            </div>
+        </a>
+        <div class="weui_cellb ">
+            <div class="datagrid3">
+                <ul>
+                    <li class="bluelink">
+                        <a href="" class="texcolor2d">修改运单号</a>
+                    </li>
+                    <li class="borderleftgray greenlink">
+                            <a href="" class="texcolor2d"><div class="account_list_menu_a2">详情</div></a>
+                    </li>
+                    <li class="borderleftgray blanklink orangelink">
+                        <a href="{{:U('Order/cuandan')}}" class="texcolor2d">发货</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- 上门自提发货，有发货状态和发货、帮助、运单号等处理。 -->
+    <!-- <div class="weui_panel_bd backgroud_ff mbottom1">
+        <div class=" fontsize105 texcolor44">
+            <p class="mleft15p ftleft ptop06 pbottom02">青海湖山羊</p>
+            <P class="mright15p fright pbottom02 ptop06"><i class="Hui-iconfont fontsize1 mtop01 icocolorhs">&#xe6c9;</i><span class="mleft03">西青区  华庄子</span></P>
+        </div>
+        <div class=" fontsize08 texcolora0 ">
+            <div class="mright15p mleft15p bbtmdashedd0 pbottom06" >
+                <p class="ftleft">篡单号:<span class="texspacing" >SYGS-16090700003</span> </p>
+                <p class="fright">2016-10-10</p>
+            </div>
+        </div>
+        <a href="javascript:void(0);" class="weui_media_box weui_media_appmsg ">
+            <div class="weui_media_hd1 mbottom05">
+                <img class="weui_media_appmsg_thumb bgwidth12 bgheight13 braderradius6" src="__ROOT__/Public/weixin/image/noimage.png" alt="">
+            </div>
+
+            <div class="weui_media_bd mtop_10">
+                <p class="texcolor44  mbottom05 ftleft">篡单完成</p>
+                <p class="texcolor2d  mbottom05 fright">已发货</p>
+                <p class="weui_media_desc_sy texwordwrap mtop06">
+                    <div class="braderradius6 backgroud_ee heinght40">
+                        <div class="braderradius6 backgroud_a9 heinght40" style="width: 96%;"></div>
+                    </div>
+
+                    <div class="mtop02">
+                        <div class="weui_media_title ftleft " style="width: 30%;">
+                            <P class="texcolor2dq fontsize06">10000<span>只</span></P>
+                            <P class="texcolorb0 fontsize06 mtop_02">已购</P>
+                        </div>
+                        <div class="weui_media_title ftleft  texcenter " style="width: 40%;">
+                            <P class="texcolora0 fontsize06">10000<span>只</span></P>
+                            <P class="texcolorb0 fontsize06 mtop_02">总需</P>
+                        </div>
+                        <div class="weui_media_title fright" style="width: 30%;">
+                            <P class="texcolor4bq fontsize06">10000<span>只</span></P>
+                            <P class="texcolorb0 fontsize06 mtop_02">剩余</P>
+                        </div>
+                    </div>
+                </p>
+                <h4 class="ftleft texcolor44 mtop05  mright05 fontsize17p texweightno ">有新的订单请查看 >>
+                    <div class="pstabsolute mleft1120 fontsize12p">
+                      <p class="backgroud_ff642d  bgwidth14  texindent0 fcenter texshowpoint texcolorff mtop_252 braderradius100 texlineheight16">100</p>
+                    </div>
+                </h4>
+            </div>
+        </a>
+        <div class="weui_cellb ">
+            <div class="datagrid3">
+                <ul>
+                    <li class="bluelink">
+                        <a href="" class="texcolor2d">修改运单号</a>
+                    </li>
+                    <li class="borderleftgray greenlink">
+                            <a href="" class="texcolor2d"><div class="account_list_menu_a2">详情</div></a>
+                    </li>
+                    <li class="borderleftgray blanklink orangelink">
+                        <a href="{{:U('Order/cuandan')}}" class="texcolor2d">扫码收货</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- <div class="weui_panel_bd backgroud_ff mbottom1">
+        <div class=" fontsize105 texcolor44">
+            <p class="mleft15p ftleft ptop06 pbottom02">青海湖山羊</p>
+            <P class="mright15p fright pbottom02 ptop06"><i class="Hui-iconfont fontsize1 mtop01 icocolorhs">&#xe6c9;</i><span class="mleft03">西青区  华庄子</span></P>
+        </div>
+        <div class=" fontsize08 texcolora0 ">
+            <div class="mright15p mleft15p bbtmdashedd0 pbottom06" >
+                <p class="ftleft">篡单号:<span class="texspacing" >SYGS-16090700003</span> </p>
+                <p class="fright">2016-10-10</p>
+            </div>
+        </div>
+        <a href="javascript:void(0);" class="weui_media_box weui_media_appmsg ">
+            <div class="weui_media_hd1 mbottom05">
+                <img class="weui_media_appmsg_thumb bgwidth12 bgheight13 braderradius6" src="__ROOT__/Public/weixin/image/noimage.png" alt="">
+            </div>
+
+            <div class="weui_media_bd mtop_10">
+                <p class="texcolor44  mbottom05 ftleft">篡单完成</p>
+                <p class="texcolor2d  mbottom05 fright">已完成</p>
+                <p class="weui_media_desc_sy texwordwrap mtop06">
+                    <div class="braderradius6 backgroud_ee heinght40">
+                        <div class="braderradius6 backgroud_a9 heinght40" style="width: 96%;"></div>
+                    </div>
+
+                    <div class="mtop02">
+                        <div class="weui_media_title ftleft " style="width: 30%;">
+                            <P class="texcolor2dq fontsize06">10000<span>只</span></P>
+                            <P class="texcolorb0 fontsize06 mtop_02">已购</P>
+                        </div>
+                        <div class="weui_media_title ftleft  texcenter " style="width: 40%;">
+                            <P class="texcolora0 fontsize06">10000<span>只</span></P>
+                            <P class="texcolorb0 fontsize06 mtop_02">总需</P>
+                        </div>
+                        <div class="weui_media_title fright" style="width: 30%;">
+                            <P class="texcolor4bq fontsize06">10000<span>只</span></P>
+                            <P class="texcolorb0 fontsize06 mtop_02">剩余</P>
+                        </div>
+                    </div>
+                </p>
+                <h4 class="ftleft texcolor44 mtop05  mright05 fontsize17p texweightno ">对不起暂无新订单 >>
+
+                </h4>
+            </div>
+        </a>
+        <div class="weui_cellb ">
+            <div class="datagrid3">
+                <ul>
+                    <li class="bluelink">
+                        <a href="" class="texcolor2d">修改运单号</a>
+                    </li>
+                    <li class="borderleftgray greenlink">
+                            <a href="" class="texcolor2d"><div class="account_list_menu_a2">详情</div></a>
+                    </li>
+                    <li class="borderleftgray blanklink orangelink">
+                        <a href="{{:U('Order/cuandan')}}" class="texcolor2d">发货完成</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div> -->
+
+    <div id="pullUp">
+        <span class="pullUpLabel">上拉加载更多...</span>
+    </div>
+    <p>&nbsp;</p>
+</div>
+</div>
+<script type="text/javascript">
+    ilazyscrollbar.init({
+    wapper:'wrapper',       //容器
+    scroll:'myScrollbar',   //滑动容器
+    upbtn:'pullUp',         //上拉按钮
+    downbtn:'pullDown',     //下拉按钮
+    puaction:function(){
+        // location.reload();
+    },
+    pdaction:function(){
+        // jiazaicomment(goodsid);
+    }
+});
+</script>
+<script src="__ROOT__/Public/weixin/js/jquery.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/common.js"></script>
+</body>
+</html>

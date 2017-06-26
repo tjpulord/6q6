@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>已加入计划详情</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+</head>
+<body  class="backgroud_hui">
+<include file="Wpublic/share"/>
+    <div class="bd backgroud_hui" id="contain">
+        <section class="account_planview_header bgcseagreen ">
+            <header class="mcenter">
+                <h1>{{$account['title']}}</h1>
+            </header>
+            <div class="datagrid2 bgcseagreen wcolor  pallz5em">
+                <ul>
+                    <li>
+                        <p class=" mleft1em opacity90">累计参与份数</p>
+                        <p class=" mleft1em">{{$fenshu}}（份）</p>
+                    </li>
+                    <li>
+                        <p class=" mleft1em opacity90">加入计划天数</p>
+                        <p class=" mleft1em"><?php echo diffday($account['addintime']); ?>（天）</p>
+                        <!-- <p class=" mleft1em">{{:floor((time()-$account['addintime'])/86400)}}（天）</p> -->
+                    </li>
+                    <li>
+                        <p class=" mleft1em opacity90">累计互助事件</p>
+                        <p class=" mleft1em"><?php echo $mutual['count'] ? $mutual['count'] : 0;?>（次）</p>
+                    </li>
+                    <li>
+                        <p class=" mleft1em opacity90">累计互助金额</p>
+                        <p class=" mleft1em"><?php echo $mutual['sum'] ? $mutual['sum'] : 0;?>（元）</p>
+                    </li>
+                </ul>
+            </div>
+        </section>
+        <section class="account_planview_section">
+            <div class="weui_cells">
+                <div class="weui_cell">
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p>姓名</p>
+                    </div>
+                    <div class="weui_cell_ft">{{$account['username']}}</div>
+                </div>
+                <div class="weui_cell">
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p>身份证号</p>
+                    </div>
+                    <div class="weui_cell_ft">{{$account['cardnumber']}}</div>
+                </div>
+            </div>
+        </section>
+        <section class="account_planview_section">
+            <div class="weui_cells cancel_a_style">
+                <a class="weui_cell " href="javascript:;">
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p>保障状态</p>
+                    </div>
+                    <div class="weui_cell_ft">{{$account['baozhangqi']}}</div>
+                </a>
+                <div class="weui_cell">
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p>申请时间</p>
+                    </div>
+                    <div class="weui_cell_ft">{{:date("Y-m-d", $account['addintime'])}}</div>
+                </div>
+            </div>
+        </section>
+        <section class="account_planview_section">
+            <div class="weui_cells weui_cells_access">
+                <a class="weui_cell" href="{{:U('account/payruler',array('id'=>$account['planid']))}}">
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p>计划规则</p>
+                    </div>
+                    <div class="weui_cell_ft">
+                    </div>
+                </a>
+                <a class="weui_cell" href="{{:U('account/other',array('id'=>$account['planid']))}}">
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p>平台公约</p>
+                    </div>
+                    <div class="weui_cell_ft">
+                    </div>
+                </a>
+            </div>
+        </section>
+        <section class="account_planview_section">
+            <div class="weui_cells weui_cells_access">
+                <?php if($account['baozhangqi'] == "保障期"){?>
+                <a class="weui_cell" href="{{:U('account/mutualmoney',array('pid'=>$account['planid'],'cardnumber'=>$account['cardnumber']))}}">
+                <?php }else{?>
+                <a class="weui_cell" href="javascript:alert('此账户目前处于观察期，不可申请互助金');">
+                <?php }?>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p>申请互助金</p>
+                    </div>
+                    <div class="weui_cell_ft">
+                    </div>
+                </a>
+                <a class="weui_cell" href="{{:U('account/faq',array('id'=>$account['planid']))}}">
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p>常见问题</p>
+                    </div>
+                    <div class="weui_cell_ft">
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <div class="weui_btn normalbgc wb90 mtop1em mbottom1em" id="share_btn">分享您的计划，邀朋友一起互助</div>
+
+    </div>
+<script src="__ROOT__/Public/weixin/js/jquery.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/common.js"></script>
+<script type="text/javascript">
+    $('#contain').on('click', '.weui_navbar_item', function () {
+        $(this).addClass('weui_bar_item_on').siblings('.weui_bar_item_on').removeClass('weui_bar_item_on');
+        if ($(this).attr('id') == "tabbar1") {
+            $(".weui_panel_bd").addClass('unactive');
+            $("#content1").removeClass('unactive');
+        }else if($(this).attr('id') == "tabbar2"){
+            $(".weui_panel_bd").addClass('unactive');
+            $("#content2").removeClass('unactive');
+        } else if($(this).attr('id') == "tabbar3"){
+            $(".weui_panel_bd").addClass('unactive');
+            $("#content3").removeClass('unactive');
+        } else if($(this).attr('id') == "tabbar4"){
+            $(".weui_panel_bd").addClass('unactive');
+            $("#content4").removeClass('unactive');
+        }
+    });
+</script>
+</body>
+</html>

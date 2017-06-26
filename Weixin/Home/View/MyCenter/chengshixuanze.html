@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>请选择城市</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/new/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/new/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script src="__ROOT__/Public/weixin/js/zepto.min.js"></script>
+    <!-- <script src="__ROOT__/Public/weixin/js/example.js"></script> -->
+</head>
+<body class="backgroud_f3">
+<div class="zzhou10000 mtop0 pstabsolute width100">
+<!-- 头部搜素栏目 输入名称后显示出城市名称-->
+	<div class="page__bd" >
+        <div class="weui-search-bar" id="searchBar" >
+            <form class="weui-search-bar__form">
+                <div class="weui-search-bar__box">
+                    <i class="weui-icon-search"></i>
+                    <input type="search" class="weui-search-bar__input" id="searchInput" placeholder="搜索" required="">
+                    <a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
+                </div>
+                <label class="weui-search-bar__label" id="searchText" style="transform-origin: 0px 0px 0px; opacity: 1; transform: scale(1, 1);">
+                    <i class="weui-icon-search"></i>
+                    <span>输入城市名称搜索</span>
+                </label>
+            </form>
+            <a href="javascript:" class="weui-search-bar__cancel-btn" id="searchCancel">确认</a>
+        </div>
+        <div class="weui-cells searchbar-result" id="searchResult" style="display: none;">
+            <div class="weui-cell weui-cell_access">
+                <div class="weui-cell__bd weui-cell_primary">
+                    <p>模糊搜索文本</p>
+                </div>
+            </div>
+            <div class="weui-cell weui-cell_access">
+                <div class="weui-cell__bd weui-cell_primary">
+                    <p>模糊搜索文本</p>
+                </div>
+            </div>
+            <div class="weui-cell weui-cell_access">
+                <div class="weui-cell__bd weui-cell_primary">
+                    <p>模糊搜索文本</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 城市选择列表循环 -->
+    <div class="mtop28">
+        <div class="weui-cell backgroud_ff ptop05 pbottom05">
+            <div class="weui-cell__bd">
+                <p>热门城市</p>
+            </div>
+            <div class="weui-cell__ft">
+            <i class="Hui-iconfont icocolorhs">&#xe6c9;</i> 当前城市</div>
+        </div>
+       
+        <div class="page__bd page__bd_spacing mtop06 mbottom06 texcenter">
+            <div class="weui-flex mtop03">
+                <div class="weui-flex__item "><div class="placeholder3t">北京</div></div>
+                <div class="weui-flex__item "><div class="placeholder3t">天津</div></div>
+                <div class="weui-flex__item "><div class="placeholder3t">上海</div></div>
+            </div>
+
+            <div class="weui-flex mtop03">
+                <div class="weui-flex__item"><div class="placeholder3t">辽宁</div></div>
+                <div class="weui-flex__item"><div class="placeholder3t">深圳</div></div>
+                <div class="weui-flex__item"><div class="placeholder3t">甘肃</div></div>
+            </div>
+        </div>
+        <div>
+            <div class="weui-panelcs weui-panel_access">
+                <div class="weui-panel__hdcs texcolor2d">A</div>
+                <div class="weui-panel__bd backgroud_f3">
+                    <div class="weui-media-boxcs ">鞍山</div>
+                    <div class="weui-media-boxcs ">安阳</div>
+                </div>
+            </div>
+            <!-- 可以删除以下list -->
+            <div class="weui-panelcs weui-panel_access">
+                <div class="weui-panel__hdcs texcolor2d">B</div>
+                <div class="weui-panel__bd backgroud_f3">
+                    <div class="weui-media-boxcs ">鞍山</div>
+                    <div class="weui-media-boxcs ">安阳</div>
+                </div>
+            </div>     
+            <div class="weui-panelcs weui-panel_access">
+                <div class="weui-panel__hdcs texcolor2d">C</div>
+                <div class="weui-panel__bd backgroud_f3">
+                    <div class="weui-media-boxcs ">鞍山</div>
+                    <div class="weui-media-boxcs ">安阳</div>
+                </div>
+            </div>
+            <div class="weui-panelcs weui-panel_access">
+                <div class="weui-panel__hdcs texcolor2d">D</div>
+                <div class="weui-panel__bd backgroud_f3">
+                    <div class="weui-media-boxcs ">鞍山</div>
+                    <div class="weui-media-boxcs ">安阳</div>
+                </div>
+            </div>
+            <div class="weui-panelcs weui-panel_access">
+                <div class="weui-panel__hdcs texcolor2d">E</div>
+                <div class="weui-panel__bd backgroud_f3">
+                    <div class="weui-media-boxcs ">鞍山</div>
+                    <div class="weui-media-boxcs ">安阳</div>
+                    <div class="weui-media-boxcs ">安阳</div>
+                </div>
+            </div>
+            <div class="weui-panelcs weui-panel_access">
+                <div class="weui-panel__hdcs texcolor2d">F</div>
+                <div class="weui-panel__bd backgroud_f3">
+                    <div class="weui-media-boxcs ">鞍山</div>
+                    <div class="weui-media-boxcs ">安阳</div>
+                    <div class="weui-media-boxcs ">安阳</div>
+                    <div class="weui-media-boxcs ">安阳</div>
+                    <div class="weui-media-boxcs ">安阳</div>
+                    <div class="weui-media-boxcs ">安阳</div>
+                </div>
+            </div>
+        </div>
+    </div> 
+</div>
+</body>
+</html>

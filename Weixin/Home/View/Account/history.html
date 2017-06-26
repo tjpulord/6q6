@@ -1,0 +1,141 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>账户流水</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+</head>
+<body  class="backgroud_hui">
+   <div class="bd backgroud_hui" id="contain">
+        <header class="account_history_header bgcored">
+            <h1>账户余额：{{$account['amount']|default="0"}}元</h1>
+            <h2>均摊共支出<?php if($zhichu[0]['sum']){echo $zhichu[0]['sum'];} else {echo 0;}?>元，已帮助<?php if($zhichu[0]['count']){echo $zhichu[0]['count'];} else {echo 0;}?>家庭</h2>
+        </header>
+        <div class="weui_tab account_history_tab_height">
+            <div class="weui_navbar ">
+                <div class="weui_navbar_item weui_bar_item_on" id='tabbar1'>
+                    全部流水
+                </div>
+                <div class="weui_navbar_item" id='tabbar2'>
+                    支出
+                </div>
+                <div class="weui_navbar_item" id='tabbar3'>
+                    收入
+                </div>
+            </div>
+
+
+            <!--  <div class="weui_navbar">
+                <div class="weui_navbar_item <?php if(!$_GET['zt']){echo 'weui_bar_item_on';}?>" id='tabbar1'>
+                    全部
+                </div>
+                <div class="weui_navbar_item <?php if($_GET['zt'] == 'zc'){echo 'weui_bar_item_on';}?>" id='tabbar2'>
+                    正常
+                </div>
+                <div class="weui_navbar_item <?php if($_GET['zt'] == 'bz'){echo 'weui_bar_item_on';}?>" id='tabbar3'>
+                    不足
+                </div>
+                <div class="weui_navbar_item <?php if($_GET['zt'] == 'sx'){echo 'weui_bar_item_on';}?>" id='tabbar4'>
+                    失效
+                </div>
+            </div> -->
+            <div class="weui_tab_bd account_history_bd_height">
+                <div class="weui_panel weui_panel_access backgroud_hui">
+                    <section class="account_history_list_section flheight3">
+                        <header class="account_history_list_header">
+                            <h1>
+                                交易内容
+                            </h1>
+                            <h2>
+                                交易金额
+                            </h2>
+                            <time>
+                                交易时间
+                            </time>
+                        </header>
+                    </section>
+                    <div class="weui_panel_bd" id="content1">
+                        <volist name="logs" id="log">
+                            <section class="account_history_list_section flheight3">
+                                <header class="account_history_list_header">
+                                    <h1>
+                                        {{$log['title']}}
+                                    </h1>
+                                    <h2 <?php if($log['flow'] == 1){ echo 'class="zhichu"';}?>>
+                                        {{$log['trade']}}元
+                                    </h2>
+                                    <time class="graywd">
+                                        {{:date("Y-m-d", $log['addtime'])}}
+                                    </time>
+                                </header>
+                            </section>
+                        </volist>
+                        <if condition="empty($logs)"><div class="notfound"></div></if>
+                    </div>
+                    <div class="weui_panel_bd unactive" id="content2">
+                        <volist name="logs1[1]" id="log2">
+                            <section class="account_history_list_section flheight3">
+                                <header class="account_history_list_header">
+                                    <h1>
+                                        {{$log2['title']}}
+                                    </h1>
+                                    <h2 class="zhichu">
+                                        {{$log2['trade']}}元
+                                    </h2>
+                                    <time class="graywd">
+                                        {{:date("Y-m-d", $log2['addtime'])}}
+                                    </time>
+                                </header>
+                            </section>
+                        </volist>
+                        <if condition="empty($logs1[1])"><div class="notfound"></div></if>
+                    </div>
+                    <div class="weui_panel_bd unactive" id="content3">
+                        <volist name="logs1[0]" id="log1">
+                            <section class="account_history_list_section flheight3">
+                                <header class="account_history_list_header">
+                                    <h1>
+                                        {{$log1['title']}}
+                                    </h1>
+                                    <h2>
+                                        {{$log1['trade']}}元
+                                    </h2>
+                                    <time class="graywd">
+                                        {{:date("Y-m-d", $log1['addtime'])}}
+                                    </time>
+                                </header>
+                            </section>
+                        </volist>
+                        <if condition="empty($logs1[0])"><div class="notfound"></div></if>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="__ROOT__/Public/weixin/js/jquery.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/common.js"></script>
+<script type="text/javascript">
+    $('#contain').on('click', '.weui_navbar_item', function () {
+        $(this).addClass('weui_bar_item_on').siblings('.weui_bar_item_on').removeClass('weui_bar_item_on');
+        if ($(this).attr('id') == "tabbar1") {
+            $(".weui_panel_bd").addClass('unactive');
+            $("#content1").removeClass('unactive');
+        }else if($(this).attr('id') == "tabbar2"){
+            $(".weui_panel_bd").addClass('unactive');
+            $("#content2").removeClass('unactive');
+        } else if($(this).attr('id') == "tabbar3"){
+            $(".weui_panel_bd").addClass('unactive');
+            $("#content3").removeClass('unactive');
+        } else if($(this).attr('id') == "tabbar4"){
+            $(".weui_panel_bd").addClass('unactive');
+            $("#content4").removeClass('unactive');
+        }
+    });
+</script>
+</body>
+</html>

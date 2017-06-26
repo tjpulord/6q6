@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>编辑个人资料</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/new/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/new/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
+    <script src="__PUBLIC__/js/jquery1.8.1/jquery.js"></script>
+    <script type="text/javascript" src="__ROOT__/Public/weixin/js/ilazyui.js"></script>
+    <script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+    <script src="__ROOT__/Public/weixin/js/common.js"></script>
+    <script type="text/javascript" src="__ROOT__/Public/js/LocalResizeIMG.js"></script>
+    <script type="text/javascript" src="__ROOT__/Public/js/patch/mobileBUGFix.mini.js"></script>
+    <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+</head>
+{{$script}}
+
+<body class="backgroud_f3">
+<form action="" method="post" >
+    <div class="bd backgroud_hui">
+        <div class="myinfo_section_header mtop03">
+            <div class="weui-cell myinfo_touxiang">
+                <div class="weui-cell__hd"><label class="weui-label texcolor2dq">基础资料</label></div>
+            </div>
+        </div>
+        <div class="mycenter_section">
+            <div class="weui-cells weui-cells_form mtop_00">
+                <div class="weui-cell">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label texcolor44">手机号码</label>
+                    </div>
+                    <div class="weui-cell__bd weui-cell_primary texcolor77">
+                        <div class="fright">{{$user['mobile']}}<i class="icon Hui-iconfont icocolorns mleft03"></i></div>
+                    </div>
+                </div>
+
+                <div class="weui-cell">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label texcolor44">所属小区</label>
+                    </div>
+                    <input type='hidden' value="{{$zone['id']|default=$user['zoneid']}}">
+                    <a class="weui-cell__bd weui-cell_primary texcolor77" href="index.php?s=/home/Register/xuanzexiaoqu">
+                        <div class="fright">{{$zone['fullname']|default=$user['address']}}<i class="icon Hui-iconfont icocolorns mleft03">&#xe6c9;</i></div>
+                    </a>
+                </div>
+
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label texcolor44">真实姓名</label></div>
+                    <div class="weui-cell__bd weui-cell_primary texcolor77">
+                        <input class="weui-input fright" type="text" name="name" value="{{$user['name']}}" placeholder="请输入您的姓名">
+                    </div>
+                </div>
+
+                <div class="weui-cell weui-cell_select weui-cell_select-after">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label texcolor44">性别</label>
+                    </div>
+                    <div class="weui-cell__bd weui-cell_primary texcolor77" style="direction: rtl; color: #777777;">
+                        <select class="weui-select " name="sex">
+                            <option value="1" <?php if($user['sex'] == 1){ echo 'selected="selected"'; } ?>>男</option>
+                            <option value="2" <?php if($user['sex'] == 2){ echo 'selected="selected"'; } ?>>女</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+         </div>
+        <div class="mycenter_section">
+            <div class="weui-cells weui-cells_form">
+                 <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label texcolor44">楼号门牌</label></div>
+                    <div class="weui-cell__bd weui-cell_primary texcolor77">
+                        <input class="weui-input fright" type="text" name="address" value="{{$user['address']}}" placeholder="请输入您的楼号门牌号">
+                    </div>
+                </div>
+
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label texcolor44">邮箱</label></div>
+                    <div class="weui-cell__bd weui-cell_primary texcolor77">
+                        <input class="weui-input fright" type="text" name="mail" pattern="^[a-zA-Z][0-9a-zA-Z]*@{1}[0-9a-zA-Z]+\.(com|net|cn|com\.cn)$" value="{{$user['mail']}}" placeholder="请输入您的邮箱">
+                    </div>
+                </div>
+                <!-- <div class="weui-cell">
+                    <div class="weui-cell_hd"><label class="weui-label">身份证号</label></div>
+                    <div class="weui-cell_bd weui-cell_primary">
+                        <input class="weui-input" type="text" name="cardnumber" pattern="^\d{6}(18|19|20)?\d{2}(0[1-9]|1[12])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$" value="{{$user['cardnumber']}}" placeholder="请输入身份证号">
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <div class="texcolor2dq">
+            <label class="weui-label left15 mtop08 pstrelative">实名认证</label>
+        </div>
+        <div class="mycenter_section mtop_06">
+           <div class="weui-cells weui-cells_form" >
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label">身份证号</label></div>
+                    <div class="weui-cell__bd weui-cell_primary">
+                        <input class="weui-input fright" type="text" name="cardnumber" pattern="^\d{6}(18|19|20)?\d{2}(0[1-9]|1[12])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$" value="{{$user['cardnumber']}}" placeholder="请输入身份证号">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="weui-cells weui-cells_form " >
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <div class="weui-uploader ">
+                        <div class="weui-uploader__hd">
+                            <p class="weui-uploader__title">上传身份证照<font class="fontsize08 texcolor88">(如样例所示)</font></p>
+                            <div class="weui-uploader__info" id="imagenumber">
+                                <font class="texcolor44">{{:count($imagelist)}}</font>/3
+                            </div>
+                        </div>
+                        <div class="weui-uploader__bd mtop03">
+                            <ul class="weui-uploader__files" id="upload_image_list">
+                                <volist name="imagelist" id="ivo">
+                                    <li class="weui-uploader__file" style="background-image:url({{$ivo['image']}})"></li>
+                                    <div class="weui-uploader__file-content1 width70p fontsize08">照片仅供平台审核使用</div>
+                                </volist>
+                            </ul>
+                            <div class="weui-uploader__input-box"  onclick="$.iLazy.uploadmultiimage(dealimage);">
+                                <image class="weui-uploader__input" id="upload_image_div" type="file" accept="image/*" multiple="" >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <div class="weui-uploader__hd">
+                        <p class="weui-uploader__title">样例展示</p>
+                    </div>
+                    <div class="weui-uploader__bd ">
+                        <ul class="weui-uploader__files ftleft" >
+                            <li class="weui-uploader__file borderee" style="background-image:url(__ROOT__/Public/weixin/image/bz1.png);"></li>
+
+                            <li class="weui-uploader__file borderee" style="background-image:url(__ROOT__/Public/weixin/image/bz2.png);"></li>
+
+                            <li class="weui-uploader__file borderee" style="background-image:url(__ROOT__/Public/weixin/image/bz3.png);"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!-- 楼号认证 -->
+       <!--  <div class="texcolor2dq">
+            <label class="weui-label left15 mtop08 pstrelative">楼号认证</label>
+        </div>
+        <div class="weui-cells weui-cells_form mtop05">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <div class="weui-uploader ">
+                        <div class="weui-uploader__hd">
+                            <p class="weui-uploader__title">上传房产证</p>
+                            <div class="weui-uploader__info" id="imagenumber">
+                                <font class="texcolor44">{{:count($imagelist)}}</font>/2
+                            </div>
+                        </div>
+                        <div class="weui-uploader__bd mtop03">
+                            <ul class="weui-uploader__files" id="upload_image_list">
+                                <volist name="imagelist" id="ivo">
+                                    <li class="weui-uploader__file" style="background-image:url({{$ivo['image']}})"></li>
+                                    <div class="weui-uploader__file-content1 width70p fontsize08">照片仅供平台审核使用</div>
+                                </volist>
+                            </ul>
+                            <div class="weui-uploader__input-box"  onclick="$.iLazy.uploadmultiimage(dealimage);">
+                                <image class="weui-uploader__input" id="upload_image_div" type="file" accept="image/*" multiple="" >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        <div class="mycenter_section clearboth wbtn96 mcenter mbottom12 mtop2">
+            <if condition="$user['auth'] eq 0">
+                <input type="submit" class="weui-btn weui-btn_primary  backgroud_ff642d " id="showTooltips" value="提交认证">
+            <elseif condition="$user['auth'] eq 1" />
+                <a href="javascript:;" class="weui-btn weui-btn_default texcolor2d ">等待审核</a>
+            <elseif condition="$user['auth'] eq 2"/>
+                <a href="javascript:;" class="weui-btn weui-btn_default texcolora0 ">认证通过</a>
+            <else/>
+                <input type="submit" class="weui-btn weui-btn_primary backgroud_ff642d "  id="showTooltips" value="重新认证">
+            </if>
+        </div>
+    </div>
+</form>
+<div class="weui-gallery" id="gallery">
+    <span class="weui-gallery__img" id="galleryImg"></span>
+    <div class="weui-gallery__opr">
+        <a href="javascript:delimage()" class="weui-gallery__del">
+            <i class="weui-icon-delete weui-icon_gallery-delete"></i>
+        </a>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var imagenumber = <?php echo count($imagelist) ?>;
+    function dealimage(arg) {
+        if (imagenumber >= 4) {
+            $.iLazy.alert("图片数量超出");
+            return false;
+        }
+        $.ajax({
+            url: 'index.php?s=/home/MyCenter/saveimage',
+            type: 'POST',
+            dataType: 'json',
+            data: {image: arg},
+            success: function(data){
+                if (data.code == 0) {
+                    $.iLazy.alert('图片保存失败');
+                }else{
+                    $("#upload_image_list").append('<li class="weui-uploader__file" style="background-image:url('+arg+')"></li>');
+                    imagenumber += 1;
+                    $("#imagenumber").html(imagenumber+"/4");
+                }
+            }
+        });
+    }
+
+    function delimage(){
+        var imageurl = $('#galleryImg').css('background-image');
+        var pos = imageurl.indexOf('/upload/');
+        var imgstr = imageurl.substr(pos);
+        imgstr = imgstr.substr(0, imgstr.length-1);
+        // var imagenumber = parseInt($("#imagenumber").html().substr(0,1));
+        $.ajax({
+            url: 'index.php?s=/home/MyCenter/delimage',
+            type: 'POST',
+            dataType: 'json',
+            data: {image: imgstr},
+            success: function(data){
+                if (data.code == 0) {
+                    $.iLazy.alert('图片删除失败');
+                }else{
+                    $("#upload_image_list li").each(function() {
+                        var tt=$(this).css('background-image');
+                        if (tt == imageurl) {
+                            $(this).remove();
+                            imagenumber -= 1;
+                        }
+                    });
+                    $("#imagenumber").html(imagenumber+"/4");
+                }
+            }
+        });
+    }
+</script>
+<script type="text/javascript">
+    $(function() {
+        var tmpl = '<li class="weui-uploader__file" style="background-image:url(#url#)"></li>',
+            $gallery = $("#gallery"), $galleryImg = $("#galleryImg"),
+            $uploaderInput = $("#uploaderInput"),
+            $uploaderFiles = $("#upload_image_list")
+            ;
+        $uploaderFiles.on('click', 'li', function() {
+            $("#galleryImg").attr('style', this.getAttribute('style'));
+            $("#gallery").fadeIn(100);
+        });
+        $gallery.on('click', function() {
+            $("#gallery").fadeOut(100);
+        });
+
+
+        pushHistory();
+        window.addEventListener('popstate', function(e) {
+            location.href = "index.php?s=/home/MyCenter/index";
+        }, false);
+        function pushHistory () {
+            var state = {
+                title: 'title',
+                url: "#"
+            };
+            window.history.pushState(state, "title", "#");
+        }
+    });
+
+</script>
+<script src="__ROOT__/Public/weixin/js/zepto.min.js"></script>
+<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+</body>
+</html>

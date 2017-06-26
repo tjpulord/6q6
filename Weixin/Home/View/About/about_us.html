@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>关于我们</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+    .graywd img{width: 100%; height: auto; max-height: auto;}
+    </style>
+</head>
+<body class="backgroud_f3">
+        <div class="bgimage" >
+                <img src="{{$user['header']|default='__ROOT__/Public/weixin/image/shequ_banner02.png'}}"></a>
+        </div>
+        
+        <div class="weui_cells weui_cells_form">
+                <div class="weui_cell">
+                    <div class="weui_cells_bd weui_cell_primary">
+                            <p><i class="Hui-iconfont icocolorns">&#xe6c7;</i> <span class="bcolor">客服电话</span></p>
+                    </div>
+                    <div class="texcolor77 ">18698100503</div>
+                </div>
+
+                    <div class="weui_cell">
+                        <div class="weui_cells_bd weui_cell_primary">
+                            <p> <i class="Hui-iconfont icocolorls">&#xe622;</i> <span class="bcolor">客服 QQ</span></p>
+                        </div>
+                        <div class="texcolor77 ">917118809</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mycenter_section">
+                <div class="weui_cells weui_cells_access">
+
+                    <a class="weui_cell" href="<?php echo U('Message/index');?>">
+                        <div class="weui_cell_hd icoadtexcenter">
+                          <i class="icon Hui-iconfont icocolorhs">&#xe6c6;</i>
+                        </div>
+                        <div class="weui_cell_bd weui_cell_primary">
+                            <p class="texcolor44 ">平台说明<?php if ($mes_num){ ?>
+                              <span style="float:right; color:red">new</span><?php }?>
+                            </p>
+                        </div>
+                        <div class="weui_cell_ft"></div>
+                    </a>
+                    <a class="weui_cell" href="{{:U("volunteer/index")}}">
+                        <div class="weui_cell_hd icoadtexcenter">
+                          <i class="icon Hui-iconfont icocolorqh">&#xe6f1;</i>
+                        </div>
+                        <div class="weui_cell_bd weui_cell_primary">
+                            <p class="texcolor44">版本信息</p>
+                        </div>
+                        <div class="weui_cell_ft"></div>
+                    </a>
+                </div>
+            </div>
+
+
+   
+<script src="__ROOT__/Public/weixin/js/jquery.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/common.js"></script>
+</body>
+</html>

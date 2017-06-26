@@ -1,0 +1,7 @@
+懒人方法类:
+   Base.class.php	// 配置文件通用类
+   Common.class.php	// 公用函数类
+   Form.class.php	// 前端输出模型
+   iLazy.class.php	// 数据库操作类
+   Temp.class.php	// 模板输出控制器类
+

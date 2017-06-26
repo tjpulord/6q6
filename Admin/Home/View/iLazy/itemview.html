@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link href="__PUBLIC__/css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/lib/icheck/icheck.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="__PUBLIC__/css/default.css" />
+<link href="__PUBLIC__/lib/webuploader/0.1.5/webuploader.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/editor/kindeditor.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/kindeditor.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/lang/zh_CN.js"></script>
+<title>添加代理</title>
+</head>
+<body>
+<div class="pd-20">
+	<form  method="post" class="form form-horizontal" id="form-article-add">
+		<input type="hidden" name="admin_id" id="admin_id" value="<?php echo cookie('admin_id');?>">
+		<input type="hidden" name="id" id="id" value="{{$data.id}}">
+		<?php
+			//var_dump($input);
+		?>
+		<volist name="input" id="v">
+			<div class="row cl">
+				<if condition="$v.mustbe eq true and $v.type neq 'area'">
+					<span class="c-red">*</span>
+				</if>
+				<label class="form-label col-2">
+					{{$v.lable}}
+				</label>
+				<div class="formControls col-8">
+					{{$v.show}}
+				</div>
+			</div>
+		</volist>
+		<div class="row cl">
+			<div class="col-8 col-offset-2">
+				<input type="hidden" name="doSubmit" value="ok">
+				<input type="button" name="doSubmits" id="doSubmit" class="btn btn-primary radius Hui-iconfont" value="确定&#xe6a7;">
+				<button onClick="layer_close('form-article-add')" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+			</div>
+		</div>
+	</form>
+</div>
+<script type="text/javascript" src="__PUBLIC__/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/lib/layer/1.9.3/layer.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/mLazy.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.provincesCity.js"></script>
+<script type="text/javascript" src="{{:U('Base/getAreaJs')}}"></script>
+<if condition="$save">
+<script type="text/javascript">
+layer.msg("保存成功",{icon: 6,time:1000},function(){
+	layer_close();
+});
+
+</script>
+</if>
+
+<script type="text/javascript">
+var search = <?php if(empty($data)){echo "\"\"";}else{echo json_encode($data);}?>;
+/*关闭弹出框口*/
+function layer_close(){
+	var index = parent.layer.getFrameIndex(window.name);
+	parent.layer.close(index);
+}
+$(document).ready(function() {
+	$("#doSubmit").bind("click",function(){
+		<?php
+			foreach($input as $k => $v)
+			{
+				if($v['mustbe'] && $v['name']!='area')
+				{
+					echo "                if($.mLazy.isEmpty($(\"#".$v['name']."\").val())){\n";
+					echo "                        layer.msg(\"".$v['lable']."不能为空!\",{icon: 5,time:1000});\n";
+					echo "                        $(\"#".$v['name']."\").focus();\n";
+					echo "		                  return false;\n";
+					echo "                }\n";
+				}
+				else if($v['mustbe'] && $v['name']=='area')
+				{
+		?>
+		if(!$.mLazy.isEmpty($("#province").val()) && $("#province").val()=="0")
+		{
+			layer.msg("请选择省份",{icon:5,time:1000});
+			$("#province").focus();
+			return false;
+		}
+		if(!$.mLazy.isEmpty($("#city").val()) && $("#city").val()=="0")
+		{
+			layer.msg("请选择城市",{icon:5,time:1000});
+			$("#city").focus();
+			return false;
+		}
+		if(!$.mLazy.isEmpty($("#country").val()) && $("#country").val()=="0")
+		{
+			layer.msg("请选择区县",{icon:5,time:1000});
+			$("#country").focus();
+			return false;
+		}
+		<?php } ?>
+		<?php } ?>
+		$("#form-article-add").submit();
+	});
+        var provincepanel = document.getElementById("provincePanel");
+		if(provincepanel!=null)
+		{
+			$("#provincePanel").ProvinceCity({{$data.province|default=0}},{{$data.city|default=0}},{{$data.country|default=0}});
+		}
+        if(search!="")
+        {
+	        for(var o in search)
+	        {
+		        $("#"+o+"").val(search[o]);
+	        }
+		}
+});
+</script>
+</body>
+</html>

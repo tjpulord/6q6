@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>志愿者申请</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+      <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <script src="__PUBLIC__/js/jquery1.8.1/jquery.js"></script>
+    <script type="text/javascript" src="__ROOT__/Public/weixin/js/ilazyui.js"></script>
+</head>
+<body class="backgroud_hui">
+    <include file="Wpublic/share"/>
+<form action="{{:U('Volunteer/submit')}}" method="post" onsubmit="return check_modify();">
+   <div class="bd backgroud_hui">
+       <div class="application_section1">
+            <div class="weui_cells ">
+                <a class="weui_cell remove_a" href="javascript:;">
+                    <div class="weui_cell_bd weui_cell_primary ">
+                        <p class="bcolor">姓名</p>
+                    </div>
+                    <div class="weui_cell_ft">{{$_SESSION['userinfo']['name']|default="未设置，请先到设置个人姓名"}}<i class="icon Hui-iconfont iconfont_color_green"></i></div>
+                </a>
+
+                <a class="weui_cell remove_a" href="javascript:;">
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p class="bcolor">手机号码</p>
+                    </div>
+                    <div class="weui_cell_ft">{{$_SESSION['userinfo']['phone']}}<i class="icon Hui-iconfont iconfont_color_green"></i></div>
+                </a>
+            </div>
+       </div>
+       <input type="hidden" name="userid" value="{{$_SESSION['userinfo']['id']}}">
+       <input type="hidden" name="mobile" value="{{$_SESSION['userinfo']['phone']}}">
+       <div class="application_section2">
+            <div class="weui_cells weui_cells_form">
+                <div class="weui_cell">
+                    <div class="weui_cell_hd bcolor"><label class="weui_label">微信号</label></div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <input class="weui_input" type="text" name="weixin" value="{{$info['weixin']}}" placeholder="请输入你的微信号" required="required">
+                    </div>
+                </div>
+                <div class="weui_cell">
+                    <div class="weui_cell_hd bcolor"><label class="weui_label">工作单位</label></div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <input class="weui_input" type="text" name="company" value="{{$info['company']}}" placeholder="请输入公司名称" required="required">
+                    </div>
+                </div>
+
+                <div class="weui_cell">
+                    <div class="weui_cell_hd  bcolor"><label class="weui_label">职务类型</label></div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <input class="weui_input" type="text" name="job" value="{{$info['job']|default=$_SESSION['userinfo']['job']}}" placeholder="请输入您的职务" required="required">
+                    </div>
+                </div>
+             </div>
+
+            <div class="weui_cells weui_cells_form">
+                <div class="weui_cell">
+                    <div class="weui_cell_hd bcolor"><label class="weui_label">所在城市</label></div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <input class="weui_input" type="text" name="city" placeholder="请输入您所在城市" value="{{$info['city']|default=$_SESSION['userinfo']['city']}}" required="required">
+                    </div>
+                </div>
+
+                <div class="weui_cell">
+                    <div class="weui_cell_hd bcolor"><label class="weui_label ">其他资源</label></div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <input class="weui_input" type="text" name="resource" value="{{$info['resource']}}" placeholder="其他组织协会等志愿者资源">
+                    </div>
+                </div>
+            </div>
+            <if condition="$info">
+                <div class="weui_cells weui_cells_form">
+                <div class="weui_cell">
+                    <div class="weui_cell_hd"><label class="weui_label">申请状态</label></div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <if condition="$info['status'] eq 1">
+                            <input class="weui_input" type="text" value="审核中" readonly>
+                        <elseif condition="$info['status'] eq 2" />
+                            <input class="weui_input" type="text" value="审核通过" readonly>
+                        <else/>
+                            <input class="weui_input" type="text" value="未通过" readonly>
+                        </if>
+                    </div>
+                </div>
+            </div>
+            <div class="weui_cells weui_cells_form">
+                <div class="weui_cells_title">意见反馈</div>
+                <div class="weui_cell">
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <textarea class="weui_textarea" rows="3" readonly>{{$info['response']}}</textarea>
+                    </div>
+                </div>
+            </div>
+            </if>
+                <p class="ziyuanzhebeizhu">备注：工作和其他资源是为了更好整合志愿者个体资源，为会员们提供更好的帮助</p>
+       </div>
+        <div class="weui_btn_area">
+            <if condition="$info['status'] eq 2">
+                <input type="button" class="weui_btn normalbgc" id="showTooltips" onclick="history.go(-1);" value="返回">
+            <elseif condition="$info['status'] eq 1 or $info['status'] eq 3" />
+                <input type="submit" class="weui_btn normalbgc" id="showTooltips" value="修改申请">
+            <else/>
+            <input type="submit" class="weui_btn normalbgc" id="showTooltips" value="提交申请">
+            </if>
+        </div>
+    </div>
+    </form>
+<script src="__ROOT__/Public/weixin/js/jquery.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/common.js"></script>
+<script type="text/javascript">
+    var volinfo = <?php echo json_encode($info); ?>;
+    $(function() {
+        $('#upload_image').change(function() {
+            var file = this.files[0];
+            var r = new FileReader();
+            r.readAsDataURL(file);
+            $(r).load(function() {
+                $('.weui_uploader_input_wrp').css('background-image','url('+this.result+')');
+            })
+           // ajaxSendImage(this, '<?php echo U('Community/acceptImage');?>');
+        });
+
+        $('.weui_icon_warn').on('click', function() {
+            $('.weui_icon_warn').parent().parent().remove();
+            $('.weui_uploader_input_wrp').show();
+        });
+    })
+
+
+    // 检查表单是否修改过
+    function check_modify(){
+        // $('input').each(function(index) {
+        //     if ($(this).val() != $volinfo[$(this).attr('name')]) {
+        //         return true;
+        //     };
+        // });
+        if (!volinfo) {
+            return true;
+        };
+        for (var i in volinfo) {
+            var xx = $(":input[name='"+i+"']").val();
+            // alert(i+":"+xx+","+volinfo[i]);
+            if (xx && xx != volinfo[i]) {
+                return true;
+            }
+        }
+        alert("请修改内容后提交");
+        return false;
+    }
+</script>
+</body>
+</html>

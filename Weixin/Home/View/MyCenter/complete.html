@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>意见反馈</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+    <link href="/Public/lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
+</head>
+<body class="backgroud_f3">
+       <form action="" method="post" onsubmit="return check();">
+           <div class="weui_cells_title ">
+                <label class="mright03"><i class="Hui-iconfont icocolorns fontsize126">&#xe70c;</i> </label>
+                <span class="texcolor44 fontsize18p " >意见反馈</span>
+           </div>
+
+           <div class="weui_cells_form mtop06 backgroud_ff mleft15p mright15p borderee">
+                <div class="weui_cell">
+                <input type="hidden" name="phone" value="{{$_SESSION['userinfo']['phone']}}">
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <textarea class="weui_textarea texlineheight30 backgroud_ff" placeholder="请输入内容您要反馈的内容,谢谢。请注意字数限制在10~400字" id="content" name="content" minlength="10" maxlength="400" rows="5" required="required"></textarea>
+                        <div class="weui_textarea_counter"><span id="length">0</span>/400</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clearboth wbtn96 mcenter mbottom12 mtop2">
+                <input type="submit" class="weui_btn backgroud_ff642d pbtn3" id="showTooltips" value="提 交">
+            </div>
+        </form>
+<script src="__ROOT__/Public/weixin/js/jquery.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/common.js"></script>
+<script>
+    $(document).keydown(function(event) {
+        $("#length").html($('#content').val().length);
+    });
+    function check(){
+        var textl = $("#content").val().length;
+        if ( textl<10 || textl>1000) {
+            alert('情况说明需50~1000字');
+            return false;
+        }
+        return true;
+    }
+</script>
+</body>
+</html>

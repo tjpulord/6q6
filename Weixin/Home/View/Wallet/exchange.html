@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>积分兑换</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+
+<script>
+      window.onload = function(){
+          var url = window.location.href;
+          var ps = url.split("#");
+          try{
+              if(ps[1] != 1){
+                  url += "#1";
+              }else{
+                  window.location = ps[0];
+              }
+          }catch(ex){
+              url += "#1";
+          }
+          window.location.replace(url);
+      };
+
+</script>
+</head>
+<body class="backgroud_hui">
+  <include file="Wpublic/share"/>
+   <div class="bd backgroud_hui">
+       <div class="exchange_head">
+            <div class="exchange_header_huiyuan">
+                <p>同当积分数量</p>
+                <h1>{{$wallet['score']}}</h1>
+            </div>
+       </div>
+      <!--  <div class="exchange_head">
+            <div class="exchange_header_huiyuan">
+                <h1>积分数量</h1>
+                <p>{{$wallet['score']}}</p>
+            </div>
+            <div class="exchange_jifen_rule">
+                <h2 class="exchange_jifen_rule_left">{{$ruler['score']}}分兑换1元</h2>
+                <h2 class="exchange_jifen_rule_right"><a href="{{:U('wallet/instruction')}}">如何兑换积分?</a></h2>
+            </div>
+       </div> -->
+       <div class="weui_cells weui_cell weui_cells_access ">
+            <div class=" orcored" >
+                说明：{{$ruler['score']}} 积分兑换 1 元
+            </div>
+      </div>
+      <div class="weui_cells weui_panel_access">
+            <a class="weui_cell weui_panel_ft" href="<?php echo U('wallet/instruction');?>">
+                <i class="Hui-iconfont orcored">&#xe6a8;</i> &nbsp;&nbsp;如何兑换积分?
+            </a>
+       </div>
+       <div class="fcenter  mtop1em bgcnone ">
+        <a href="{{:U('wallet/inputscore')}}" class="weui_btn bgcored  wb90"> 兑换 </a>
+        </div>
+    </div>
+<script src="__ROOT__/Public/weixin/js/jquery.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/common.js"></script>
+</body>
+</html>

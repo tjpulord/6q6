@@ -1,0 +1,156 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="Public/lib/html5.js"></script>
+<script type="text/javascript" src="Public/lib/respond.min.js"></script>
+<script type="text/javascript" src="Public/lib/PIE_IE678.js"></script>
+<![endif]-->
+<link href="__PUBLIC__/css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/css/style.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="http://lib.h-ui.net/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>权限管理</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 权限管理 <span class="c-gray en">&gt;</span> 职位管理 <a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+<i class="Hui-iconfont">&#xe68f;</i></a>
+</nav>
+
+<div class="pd-20">
+	<div class="cl pd-5 bg-1 bk-gray mt-20">
+	    <span class="l"><a class="btn btn-primary radius" onclick="article_edit(' 添加新职位','<?php echo U('GradeGroup/itemedit'); ?>')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加新职位</a>
+    	</span>
+    	<span class="l" style="margin-left: 20px;">
+    		<a class="btn btn-primary radius" href="{{:U('Admin/listview')}}"><i class="Hui-iconfont">&#xe62d;</i> 系统管理员信息</a>
+    	</span>
+		<span class="r"><span class="label label-success radius">共有数据：<strong>{{$list|count}}</strong> 条</span></span>
+	</div>
+	<div class="mt-20">
+		<table class="table table-border table-bordered table-bg table-hover table-sort">
+			<thead>
+				<tr class="text-c">
+					<th>ID</th>
+					<th>职位名称</th>
+					<th>是否启用</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<volist name="list" id="vo">
+				<tr class="text-l">
+					<td class="text-c">{{$vo.id}}</td>
+					<td class="text-c">{{$vo.name}}</td>
+					<td class="text-c">
+					<if condition="$vo.isuse eq '0'">
+						<span class="btn btn-success radius">已启用</span>
+					<else/>
+						<span class="btn btn-warning radius">已禁用</span>
+					 </if>
+					<td class="text-c">
+					<a href="javascript:void(0);"
+					onClick=article_edit('编辑职位权限','{{:U("GradeGroup/itemedit",array("id"=>$vo["id"]))}}');><i class="Hui-iconfont">&#xe63c;</i> 权限管理</a>
+					<a  class="ml-5" onClick="article_del('<?php echo U('GradeGroup/del_act',array('id'=>$vo['id'])); ?>','10001')" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i>删除</a>
+					</td>
+				</tr>
+				</volist>
+			</tbody>
+		</table>
+		<div id="page" class="pagin">{{$page}}</div>
+	</div>
+</div>
+
+<script type="text/javascript" src="__PUBLIC__/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/lib/layer/1.9.3/layer.js"></script>
+<script type="text/javascript" src="__PUBLIC__/lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="__PUBLIC__/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<!-- <script type="text/javascript" src="__PUBLIC__/js/H-ui.admin.js"></script> -->
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript">
+// $('.table-sort').dataTable({
+// 	"aaSorting": [[ 1, "desc" ]],//默认第几个排序
+// 	"bStateSave": true,//状态保存
+// 	"aoColumnDefs": [
+// 	  //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
+// 	  {"orderable":false,"aTargets":[0,8]}// 制定列不参与排序
+// 	]
+// });
+
+/*添加*/
+function article_add(title,url,w,h)
+{
+	w = w == undefined ? 800 : w;
+	h = h == undefined ? 600 : h;
+	var index = layer.open({
+		type: 2,
+		area: [w+'px', h +'px'],
+		title: title,
+		content: url,
+		success: function(layero, index)
+		{
+		    console.log(layero, index);
+		},
+		yes: function(index, layero)
+		{
+		    //do something
+		    layer.close(index); //如果设定了yes回调，需进行手工关闭
+		},
+		end:function(index,laero)
+		{
+			location.replace(location.href);
+		}
+	});
+	//layer.full(index);
+}
+/*编辑*/
+function article_edit(title,url,id,w,h){
+	var index = layer.open({
+		type: 2,
+		title: title,
+		content: url,
+		end:function(){
+			location.reload();
+		}
+	});
+	layer.full(index);
+}
+/*删除*/
+function article_del(url){
+	layer.confirm('确认要删除吗？',function(index)
+	{
+		getAjax('get',url,'');
+		if(JsonData.code == 2000)
+		{
+			layer.msg('删除成功!',{icon:6,time:1000});
+			location.replace(location.href);
+		}else
+		{
+			layer.msg('删除失败!',{icon:5,time:1000});
+		}
+	});
+}
+
+/**-搜索**/
+function search_act(title,url)
+{
+	var params = '?'+$('#searchForm').serialize();
+	url = url+params;
+	var index = layer.open({
+		type: 2,
+		title: title,
+		content: url
+	});
+	layer.full(index);
+}
+</script>
+</body>
+</html>

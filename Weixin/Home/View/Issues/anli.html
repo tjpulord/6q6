@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>详情</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <script src="__PUBLIC__/js/jquery1.8.1/jquery.js"></script>
+    <script type="text/javascript" src="__ROOT__/Public/weixin/js/ilazyui.js"></script>
+</head>
+<body class="bgcgray">
+<include file="Wpublic/share"/>
+   <div class="bd">
+   <article class="weui_article bgcwhite mtop1em">
+        <section>
+            <h2 class="title fs20 mt_2 bcolor">{{$article['title']}}</h2>
+            <section>
+                <h3 class="timeclr" style="margin-bottom: 0.5em;">发布时间：<?php echo date('Y-m-d',$article['addtime']); ?></h3>
+                <!-- <if condition="$article['thumb'] neq ''">
+                    <img style="height: auto; width:100%" src="{{$article['thumb']}}">
+                </if> -->
+                <div class="graywd">
+                    <p > {{$article['content']}}</p>
+                </div>
+            </section>
+        </section>
+    </article>
+         <!-- <div class="bottom bgclred fcenter weui_panel wcolor fs14 pbtn repaybtn" id="share_btn">
+            <i class="Hui-iconfont">&#xe6aa;</i> 分享
+        </div> -->
+    </div>
+<script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/common.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        var weui_article = $(".weui_article");
+        weui_article.find('img').each(function(index) {
+            $(this).css('width', 'auto');
+            // var imgsrc = $(this).attr('src');
+            // if (imgsrc.indexOf("emoticons")>1) {
+            //    $(this).attr('style', 'width:auto');
+            // };
+        });
+    });
+</script>
+</body>
+</html>

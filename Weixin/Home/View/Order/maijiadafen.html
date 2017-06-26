@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>卖家打分</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/new/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/new/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
+</head>
+<body class="backgroud_f3">
+<!-- 卖家商品性息 -->
+    <div  class="weui-media-box ">
+        <if condition="$goodsinfo['isself'] eq 1">
+            <div class="pstabsolute marin0 ">
+                <img class="btltadius6" src="__ROOT__/Public/weixin/image/zy.png">
+            </div>
+        </if>
+        <div class="ftleft mright06">
+            <img class="weui-media__thumb bgwidth68 bgheight70 braderradius6" src="{{$orderinfo['image']|default='__ROOT__/Public/weixin/image/noimage.png'}}" alt="">
+        </div>
+        <div class="weui-media__bd  mtop_02 fontsize105">
+            <p class="weui-media__title texcolor44 mtop02">发起篡单：<span class=" texcolor77 ftright">{{$orderinfo['owername']}} 攒</span> </p>
+            <p class="weui-media__title texcolor44 mtop02">购买数量：<span class=" texcolor77 ftright">{{$orderinfo['number']}} 份</span> </p>
+            <p class="weui-media__title texcolor44 mtop02">支付金额：<span class=" texcolor77 ftright">{{$orderinfo['goods_amount']}} 元</span> </p>
+            <p class="weui-media__title texcolor44 mtop02">总计商品：<span class=" texcolor77 ftright">共1件商品</span> </p>
+        </div>
+    </div>
+    <!-- 评价 -->
+    <div class="mtop_08">
+        <div class="weui-loadmorepj weui-loadmore_linepj ">
+            <span class="weui-loadmore__tipspj">匿名评价</span>
+        </div>
+        <div class="texcenter">
+        	<div class="weui-cellxx weui-cells_checkbox   mleftauto backgroud_f3 mtop12">
+	            <label class="weui-cellxx weui-check__label ftleft" for="s11">
+	                <div class="weui-cell__hd">
+	                    <input type="checkbox" class="weui-check" name="checkbox1" id="s11" checked="checked">
+	                    <!-- <i class="weui-icon-checked"></i>实色星 &#xe6ff; -->
+	                    <i class="Hui-iconfont fontsize20 icocolora0">&#xe702;</i>
+	                </div>
+	            </label>
+	            <label class="weui-cellxx weui-check__label ftleft" for="s12" >
+	                <div class="weui-cell__hd">
+	                    <input type="checkbox" name="checkbox1" class="weui-check" id="s12">
+	                    <!-- <i class="weui-icon-checked"></i> -->
+	                    <i class="Hui-iconfont fontsize20 icocolora0">&#xe702;</i>
+	                </div>
+	            </label>
+	            <label class="weui-cellxx weui-check__label ftleft" for="s12" >
+                <div class="weui-cell__hd">
+                    <input type="checkbox" name="checkbox1" class="weui-check" id="s12">
+                    <!-- <i class="weui-icon-checked"></i> -->
+                    <i class="Hui-iconfont fontsize20 icocolora0">&#xe702;</i>
+                </div>
+	            </label>
+	             <label class="weui-cellxx weui-check__label ftleft" for="s12" >
+                <div class="weui-cell__hd">
+                    <input type="checkbox" name="checkbox1" class="weui-check" id="s12">
+                    <!-- <i class="weui-icon-checked"></i> -->
+                    <i class="Hui-iconfont fontsize20 icocolora0">&#xe702;</i>
+                </div>
+	            </label>  
+	            <label class="weui-cellxx weui-check__label ftleft" for="s12" >
+                <div class="weui-cell__hd">
+                    <input type="checkbox" name="checkbox1" class="weui-check" id="s12">
+                    <!-- <i class="weui-icon-checked"></i> -->
+                    <i class="Hui-iconfont fontsize20 icocolora0">&#xe702;</i>
+                </div>
+	            </label>
+        	</div>
+        	<div class="texcenter mtop06 texcolor2dq">
+        	<!-- 一个星星展示 -->
+        		<span>非常不满意，各方面都很差</span>
+        		<!-- 二个星星展示 -->
+        		<!-- <span>不满意，各方面都较差</span>-->
+        		<!-- 三个星星展示 -->
+        		<!-- <span>一般，一些地方需要改善</span> -->
+        		<!-- 四个星星展示 -->
+        		<!-- <span>比较满意，但仍需改善</span> -->
+        		<!-- 五个星星展示 -->
+        		<!-- <span>非常满意，无可挑剔</span>  -->
+        	</div>
+        </div>
+			<div class="page__bd page__bd_spacing fontsize09 mtop06">
+			   <!--一星二星三星展示  -->
+			    <div class="weui-flex">
+			        <div class="weui-flex__item">
+			        	<div class="placeholder3t">包装破损 <i class="Hui-iconfont icocolora0">&#xe66e;</i></div>
+			        </div>
+
+			        <div class="weui-flex__item">
+			        	<div class="placeholder3t">快递缓慢 <i class="Hui-iconfont icocolora0">&#xe66e;</i></div>
+			        </div>
+
+			        <div class="weui-flex__item">
+			        	<div class="placeholder3t">物品损坏 <i class="Hui-iconfont icocolora0">&#xe66e;</i></div>
+			        </div>
+			    </div>
+			    <div class="weui-flex">
+			        <div class="weui-flex__item">
+			        	<div class="placeholder3t">物品发送错误 <i class="Hui-iconfont icocolora0">&#xe66e;</i></div>
+			        </div>
+			        <div class="weui-flex__item">
+			        	<div class="placeholder3t">服务态度恶劣 <i class="Hui-iconfont icocolora0">&#xe66e;</i></div>
+			        </div>
+			    </div>
+			    <div class="weui-flex">
+			        <div class="weui-flex__item">
+			        	<div class="placeholder3t">物品发送错误 <i class="Hui-iconfont icocolora0">&#xe66e;</i></div>
+			        </div>
+			        
+			        <div class="weui-flex__item">
+			        	<div class="placeholder3t">服务态度恶劣 <i class="Hui-iconfont icocolora0">&#xe66e;</i></div>
+			        </div>
+			    </div>
+			     <!-- 四星五星展示 -->
+			    <!-- <div class="weui-flex">
+			        <div class="weui-flex__item">
+			        	<div class="placeholder3t">包装精致 <i class="Hui-iconfont icocolora0">&#xe66e;</i></div>
+			        </div>
+			        <div class="weui-flex__item">
+			        	<div class="placeholder3t">快递很快 <i class="Hui-iconfont icocolora0">&#xe66e;</i></div>
+			        </div>
+			        <div class="weui-flex__item">
+			        	<div class="placeholder3t">物品精美 <i class="Hui-iconfont icocolora0">&#xe66e;</i></div>
+			        </div>
+			    </div>
+			    <div class="weui-flex">
+			        <div class="weui-flex__item">
+			        	<div class="placeholder3t">推荐做法很好 <i class="Hui-iconfont icocolora0">&#xe66e;</i></div>
+			        </div>
+			        <div class="weui-flex__item">
+			        	<div class="placeholder3t">服务态度很好 <i class="Hui-iconfont icocolora0">&#xe66e;</i></div>
+			        </div>
+			    </div>
+			    <div class="weui-flex">
+			        <div class="weui-flex__item">
+			        	<div class="placeholder3t">家乡自然的味道 <i class="Hui-iconfont icocolora0">&#xe66e;</i></div>
+			        </div>			      
+			        <div class="weui-flex__item">
+			        	<div class="placeholder3t">绿色天然口感好 <i class="Hui-iconfont icocolora0">&#xe66e;</i></div>
+			        </div>
+			    </div> -->
+			</div>
+			   
+
+
+
+<!-- 问题描述 -->
+				<div class="weui-cells__title mbottom04">
+				    <label class="mright03"><i class="Hui-iconfont icocolorns fontsize12">&#xe70c;</i> </label>
+				    <span class="texcolor44 fontsize17p " >意见描述</span>
+				</div>
+				<div class=" ptop03 pbottom10">   
+				   <div class="weui-cells__form mtop06 backgroud_ff  mleft15p mright15p borderee ">
+				        <div class="weui-cell">
+				            <input type="hidden" name="phone" value="{{$_SESSION['userinfo']['phone']}}">
+				            <div class="weui-cell__bd weui-cell__primary">
+				                <textarea class="weui-textarea texlineheight30 heinght48" placeholder="请输入内容您的其他意见内容，谢谢。请注意字数限制在10~400字" id="content" name="content" minlength="10" maxlength="400" rows="5" required="required"></textarea>
+				                <div class="weui-textarea-counter"><span id="length">0</span>/400</div>
+				            </div>
+				        </div>
+				    </div>
+				</div>      
+
+<!-- 确认按钮 -->
+<div class="clearboth wbtn96 mcenter mbottom12 mtop2">
+    <input type="submit" class="weui-btn backgroud_ff642d" id="showTooltips" value="提 交">
+</div>
+
+
+
+
+
+
+
+
+
+
+			
+</div>
+</body>
+</html>

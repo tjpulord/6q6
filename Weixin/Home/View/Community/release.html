@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>社区互动</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/0.4.3/weui.min.css">
+    <script src="__PUBLIC__/js/jquery1.8.1/jquery.js"></script>
+    <script type="text/javascript" src="__ROOT__/Public/weixin/js/ilazyui.js"></script>
+    <script type="text/javascript" src="__ROOT__/Public/js/LocalResizeIMG.js"></script>
+    <script type="text/javascript" src="__ROOT__/Public/js/patch/mobileBUGFix.mini.js"></script>
+</head>
+<body class="bgcgray">
+    <include file="Wpublic/share"/>
+    <div class="weui_cells weui_cells_form">
+    <form action="<?php echo U('Community/submitData');?>" id="form1"  method="post">
+        <div class="weui_cell">
+            <div class="weui_cell_bd weui_cell_primary">
+                <input class="weui_input" type="text" placeholder="请输入标题" name="title">
+            </div>
+        </div>
+        <div class="weui_cell">
+            <div class="weui_cell_bd weui_cell_primary">
+                <div class="weui_uploader">
+                    <div class="weui_uploader_hd weui_cell">
+                        <div class="weui_cell_bd weui_cell_primary">图片上传</div>
+                        <!-- <div class="weui_cell_ft">0/2</div> -->
+                    </div>
+                    <div class="weui_uploader_bd">
+                        <ul class="weui_uploader_files" id="image_bd">
+                           <!--  <li class="weui_uploader_file weui_uploader_status" style="background-image:url(http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/)">
+                               <div class="weui_uploader_status_content">
+                                   <i class="weui_icon_warn"></i>
+                                   <p>第二张为</p>
+                               </div>
+                           </li> -->
+                            <!-- <li class="weui_uploader_file weui_uploader_status" style="background-image:url(http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/)">
+                                <div class="weui_uploader_status_content">
+                                    <i class="weui_icon_waiting"></i>
+                                </div>
+                            </li> -->
+                        </ul>
+                        <div class="weui_uploader_input_wrp" id="header">
+                            <img src="" alt="" class="weui_uploader_input" onclick="$.iLazy.uploadimage('#upload_view','#upload_val','#header');" type="file" accept="image/jpg,image/jpeg,image/png,image/gif" id="upload_view">
+                            <input  type="hidden" name="thumb" value=""  id="upload_val">
+                        </div>
+                    </div>
+                   <!--  <div class="upload_img_hint">
+                       <p>请上传两张图片，第一张为列表封面图(最佳比例为50*50)，第二张为内容图(最佳比例为320*200)</p>
+                   </div>
+                    -->
+                </div>
+            </div>
+        </div>
+        <div class="weui_cell">
+            <div class="weui_cell_bd weui_cell_primary">
+                <textarea class="weui_textarea" placeholder="请输入内容,至少5个字" rows="3" minlength="50" maxlength="400" name="content"></textarea>
+                <div class="weui_textarea_counter"><span id="zishu">0</span>/400</div>
+            </div>
+        </div>
+        </form>
+    </div>
+    <div class="weui_btn_area">
+        <a class="weui_btn normalbgc" href="javascript:formsubmit();" id="showTooltips">确定</a>
+    </div>
+<script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/common.js"></script>
+<script type="text/javascript">
+    function formsubmit() {
+        if($.iLazy.isEmpty($("input[name='title']").val()))
+        {
+            alert("请输入话题标题");
+            return false;
+        }
+        // if($.iLazy.isEmpty($("#upload_val").val()))
+        // {
+        //     alert("请上传话题封面图片");
+        //     return false;
+        // }
+        if($.iLazy.isEmpty($("textarea[name='content']").val()) || $("textarea[name='content']").val().length<5)
+        {
+            alert("请输入话题内容,并且内容长度大于5个字符");
+            return false;
+        }
+
+        $('#form1').submit();
+    }
+    function ajaxSendText(key, value, url)
+    {
+        $.ajax({
+            url: url,
+            type: 'post',
+            dataType: 'json',
+            data: {key: key,value:value},
+            success: function(data){
+                return data;
+            },
+            error: function(){
+                var data = {
+                    error: 1,
+                    type: 400
+                };
+            },
+        })
+    }
+
+
+    $("textarea[name='content']").bind('keyup', function(event) {
+        $("#zishu").text($(this).val().length);
+    });
+    $("textarea[name='content']").blur(function(event) {
+        if ($(this).val().length < 5) {
+            alert("请输入话题内容,并且内容长度大于5个字符");
+        }else if ($(this).val().length>400) {
+            alert("话题内容不能超过400字");
+        }
+    });
+</script>
+</body>
+</html>

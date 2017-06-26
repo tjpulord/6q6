@@ -1,0 +1,267 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link href="__PUBLIC__/css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/lib/icheck/icheck.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="__PUBLIC__/css/default.css" />
+<link href="__PUBLIC__/lib/webuploader/0.1.5/webuploader.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/editor/kindeditor.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/kindeditor.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/lang/zh_CN.js"></script>
+<title> 权限管理</title>
+</head>
+<body>
+<div class="pd-20">
+	<form action="{{:U('GradeGroup/itemedit')}}" method="post" class="form form-horizontal" id="form_add">
+		<input type="hidden" name="id" id="id" value="{{$datas.id}}">
+		<div class="row cl">
+			<label class="form-label col-2"><span class="c-red">*</span>职位名称：</label>
+			<div class="formControls col-8">
+				<input type="text" class="input-text" value="{{$datas.name}}" placeholder="请输入职位名称..." id="name" name="name">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-2">是否启用：</label>
+			<div class="formControls col-1">
+				<label><input type="radio" name="isuse" id="isuse" value="0" <if condition="$datas.isuse eq 0">checked="true" </if>>
+				是</label>
+				<label><input type="radio" name="isuse" id="isuse" value="1" <if condition="$datas.isuse eq 1">checked="true" </if>>
+				否</label>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-2">职位描述：</label>
+			<div class="formControls col-8">
+				<textarea name="content" id="content" cols="" rows="" class="textarea"  placeholder="职位描述..." datatype="*10-100" dragonfly="true"  onKeyUp="textarealength(this,200)">{{$datas.content}}</textarea>
+				<p class="textarea-numberbar">
+				<em class="textarea-length">0</em>/200</p>
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-2"><span class="c-red">*</span>权限列表：</label>
+			<div class=" col-8">
+
+				<table class="table">
+					<tr>
+						<td>
+							<input type="checkbox" id="_" onClick="selectalls(this);">
+						    <label for="_">全选全部功能模块</label>
+						</td>
+						<td>全部变更范围</td>
+					</tr>
+				</table>
+				<ul id="Huifold1" class="Huifold">
+				<volist name="list" id="vo">
+					  <li class="item">
+					    <h4>
+					    {{$vo.name}}
+					    <b>+</b></h4>
+					    <div class="info">
+					       <table class="table table-border table-bordered radius table-bg">
+					       		<thead>
+					       			<tr>
+					       				<td colspan="3">
+						       				<input type="checkbox" id="{{$vo.name}}_" onClick="selectall(this,'{{$vo.name}}_');">
+										    <label for="{{$vo.name}}_">全选(本模块操作)</label>
+									    </td>
+					       			</tr>
+
+					       			<tr>
+					       				<th width="40%">功能名称</th>
+					       				<!-- <th width="10%">操作</th> -->
+					       				<th width="30%">权限</th>
+					       			</tr>
+					       		</thead>
+					       		<volist name="vo.list" id="v">
+					       		<tr>
+					       			<td>{{$v.name}} ({{$v.url}})</td>
+					       			<td>
+									    <input type="checkbox" id="{{$vo.name}}_{{$v.name}}_{{$v.url|str_replace='/','_',###}}_w" value="1" name="flaglist[{{$v.url|str_replace='/','_',###}}_w]" value="{{$v.url|str_replace='/','_',###}}_w">
+									    <label for="{{$vo.name}}_{{$v.name}}_{{$v.url|str_replace='/','_',###}}_w">启用
+									    </label>
+									</td>
+					       		</tr>
+					       		</volist>
+					       </table>
+					    </div>
+					  </li>
+				</volist>
+			</ul>
+			</div>
+		</div>
+
+		<div class="row cl">
+			<div class="col-10 col-offset-2">
+                <span id="doSubmit" class="btn btn-primary radius Hui-iconfont"><i class="Hui-iconfont">&#xe6a7; </i>提交并保存</span>
+				<button onClick="layer_close();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+			</div>
+		</div>
+	</form>
+</div>
+
+<script type="text/javascript" src="__PUBLIC__/lib/icheck/jquery.icheck.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/H-ui.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/H-ui.admin.js"></script>
+
+
+<if condition="$save">
+<script type="text/javascript">
+	var index = parent.layer.msg("保存成功",{icon: 6,time:2000},function()
+	{
+		layer_close();
+	});
+</script>
+</if>
+
+<script type="text/javascript">
+	/*关闭弹出框口*/
+function layer_close(){
+	var index = parent.layer.getFrameIndex(window.name);
+	parent.layer.close(index);
+}
+$(function()
+{
+	$('#doSubmit').click(function(event)
+	{
+		if($("#name").val().length >255 || $("#name").val().length ==0)
+		{
+			parent.layer.msg('职位名称长度不合法,请重新输入!',{icon:5,time:2000});
+		}
+		$('#form_add').submit();
+	});
+});
+
+
+$(function(){
+	$.Huifold("#Huifold1 .item h4","#Huifold1 .item .info","fast",3,"click"); //5个参数顺序不可打乱，分别是：相应区,隐藏显示的内容,速度,类型,事件
+	$(".Huifold").find(".info").show();
+	$(".Huifold").find("b").html("-");
+});
+
+$(function(){
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+});
+var json = <?php if(empty($data)){echo "\"\"";}else{echo json_encode($data);}?>;
+$(document).ready(function() {
+	if(json!="")
+	{
+		for(var o in json)
+		{
+			if(o!='flag')
+			{
+				$(":text[name='"+o+"']").val(json[o]);
+				$(":hidden[name='"+o+"']").val(json[o]);
+				$("select[name='"+o+"']").val(json[o]);
+			}
+			else
+			{
+				var jsn = json[o];
+				for(var j in jsn)
+				{
+					if($("input[name='flaglist["+j+"]']").attr("type")=="checkbox")
+					{
+						$("input[name='flaglist["+j+"]']").attr("checked","true");
+					}
+					if($("select[name='flaglist["+j+"]']").is("select"))
+					{
+						$("select[name='flaglist["+j+"]']").val(jsn[j]);
+					}
+				}
+			}
+
+		}
+	}
+});
+
+function larer_submit()
+{
+	if($(":text[name='name']").val()==""){
+		layer.msg("请输入菜单名称");
+		$(":text[name='name']").focus();
+		return false;
+	}
+	return true;
+}
+
+/**
+ * @cc 全选
+ * @author peterfzh@126.com
+ */
+function selectall(obj,slt,vals){
+	if(vals==undefined)
+	{
+		if(obj.checked){
+			var chk = document.getElementsByTagName("input");
+			for(i=0;i<chk.length;i++)
+			{
+				if(chk[i].id != undefined)
+				{
+					if(chk[i].id.substring(0,slt.length)==slt)
+					{
+						chk[i].checked = true;
+					}
+				}
+			}
+		}else{
+			$("input[id^='"+slt+"']").removeAttr("checked");
+		}
+	}
+	else
+	{
+		var chk = document.getElementsByTagName("select");
+		for(i=0;i<chk.length;i++)
+		{
+			if(chk[i].id != undefined)
+			{
+				if(chk[i].id.substring(0,slt.length)==slt)
+				{
+					chk[i].value = obj.value;
+				}
+			}
+		}
+	}
+}
+
+function selectalls(obj,vals){
+	if(vals==undefined)
+	{
+		if(obj.checked){
+			var chk = document.getElementsByTagName("input");
+			for(i=0;i<chk.length;i++)
+			{
+				if(chk[i].type == "checkbox")
+				{
+					chk[i].checked = true;
+				}
+			}
+		}else{
+			$(":checkbox").removeAttr("checked");
+		}
+	}
+	else
+	{
+		var chk = document.getElementsByTagName("select");
+		for(i=0;i<chk.length;i++)
+		{
+			chk[i].value = obj.value;
+		}
+	}
+}
+</script>
+
+</body>
+</html>

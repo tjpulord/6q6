@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>个人中心</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+</head>
+<body class="backgroud_f3">
+        <div class="mycenter_head">
+            <div class="mycenter_header_img bradradius10 top16">
+                <a href="{{:U('MyCenter/myinfo')}}">
+                <img src="{{$user['header']|default='__ROOT__/Public/weixin/image/photo.png'}}"></a>
+            </div>
+            <div class="top13 pstrelative texcenter texcolorff fontsize1">
+                
+                  <if condition="$user['id']">
+                      <p>{{$user['name']|default=$user['nickname']}}
+                        <!-- <i class="Hui-iconfont mleft05">&#xe6cf;</i><font class="texcolor2dq mleft02">5.00分</font>-->
+                      </p>  
+                  <else/>
+                      <p><a href="{{$redirect_uri}}" class="texcolorff">登录/注册</a></p>
+                  </if>
+                <p class="texcolorf5 opacity07 mtop_02">公社号：{{$user['id']|default="未设置"}}</p>
+            </div>
+        </div>
+        <div class="datagrid backgroud_ff">
+           <ul>
+               <li>
+                   <a href="{{:U('account/accountlist',array('zt'=>'zc'))}}">
+                      <div class="pstabsolute mleft40p mtop04" >
+                        <p class="backgroud_ff642d  braderradius100  bgwidth16 height100 texindent0 fcenter texshowpoint texcolorff texlineheight16" >1</p>
+                      </div>
+                       <i class="icon Hui-iconfont  icocolorhs" >&#xe6b5;</i>
+                       <span class="icocolorhs">代付款</span>
+                   </a>
+               </li>
+
+               <li>
+                  <a href="{{:U('account/accountlist',array('zt'=>'bz'))}}">
+                  <div class="pstabsolute mleft40p mtop04">
+                      <p class="backgroud_ff642d  braderradius100  bgwidth16 height100 texindent0 fcenter texshowpoint texcolorff texlineheight16">1</p>
+                  </div>
+
+                   <i class="icon Hui-iconfont icocolorls">&#xe6bf;</i>
+                   <span class="icocolorls">代发货</span>
+                   </a>
+               </li>
+               <li>
+                   <a href="{{:U('account/accountlist',array('zt'=>'sx'))}}">
+                      <div class="pstabsolute mleft40p mtop04">
+                        <p class="backgroud_ff642d  braderradius100  bgwidth16 height100 texindent0 fcenter texshowpoint texcolorff texlineheight16">0</p>
+                      </div>
+                   <i class="icon Hui-iconfont icocolorns">&#xe6bb;</i>
+                   <span class="icocolorns">代收货</span>
+                   </a>
+               </li>
+               <li>
+                  <a href="{{:U('account/accountlist')}}">
+                      <div class="pstabsolute mleft40p mtop04">
+                        <p class="backgroud_ff642d  braderradius100  bgwidth16 height100 texindent0 fcenter texshowpoint texcolorff texlineheight16">1</p>
+                      </div>
+                   <i class="icon Hui-iconfont icocolorzs">&#xe6b3;</i>
+                   <span class="icocolorzs">待评价</span>
+                   </a>
+               </li>
+               <li>
+                  <a href="{{:U('account/accountlist')}}">
+                      <div class="pstabsolute mleft40p mtop04">
+                        <p class="backgroud_ff642d  braderradius100  bgwidth16 height100 texindent0 fcenter texshowpoint texcolorff texlineheight16">1</p>
+                      </div>
+                   <i class="icon Hui-iconfont icocolorsl">&#xe70c;</i>
+                   <span class="icocolorsl">退换货</span>
+                   </a>
+               </li>
+           </ul>
+        </div>
+
+        <div class="mycenter_section">
+            <div class="weui_cells weui_cells_access">
+                <a class="weui_cell " href="<?php echo U('Order/cuandanlist');?>">
+                    <div class="weui_cell_hd icoadtexcenter">
+                      <i class="icon Hui-iconfont icocolorrs">&#xe620;</i>
+                    </div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p class="texcolor44">我的篡单</p>
+                    </div>
+                    <div class="weui_cell_ft">您的篡单预约活动</div>
+                </a>
+            </div>
+        </div>
+
+        <div class="mycenter_section">
+            <div class="weui_cells weui_cells_access">
+                <a class="weui_cell" href="<?php echo U('Order/orderlist');?>">
+                    <div class="weui_cell_hd icoadtexcenter">
+                      <i class="icon Hui-iconfont icocolorls"></i>
+                    </div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p class="texcolor44">我的订单</p>
+                    </div>
+                    <div class="weui_cell_ft"></div>
+                </a>
+                <a class="weui_cell" href="{{:U('wallet/index')}}">
+                    <div class="weui_cell_hd icoadtexcenter">
+                      <i class="icon Hui-iconfont icocolorqh"></i>
+                    </div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p class="texcolor44">我的钱包</p>
+                    </div>
+                    <div class="weui_cell_ft"></div>
+                </a>
+            </div>
+        </div>
+
+        <div class="mycenter_section">
+            <div class="weui_cells weui_cells_access">
+
+                <a class="weui_cell" href="<?php echo U('Message/index');?>">
+                    <div class="weui_cell_hd icoadtexcenter">
+                      <i class="icon Hui-iconfont icocolorns"></i>
+                    </div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p class="texcolor44 ">我的消息<?php if ($mes_num){ ?>
+                          <span style="float:right; color:red">new</span><?php }?>
+                        </p>
+                    </div>
+                    <div class="weui_cell_ft"></div>
+                </a>
+                <a class="weui_cell" href="{{:U("MyCenter/complete")}}">
+                    <div class="weui_cell_hd icoadtexcenter">
+                      <i class="icon Hui-iconfont icocolorhs">&#xe692;</i>
+                    </div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p class="texcolor44">意见反馈</p>
+                    </div>
+                    <div class="weui_cell_ft"></div>
+                </a>
+            </div>
+        </div>
+
+        <div class="mycenter_section">
+            <div class="weui_cells weui_cells_access">
+                <a class="weui_cell" href="{{:U('About/about_us')}}">
+                    <div class="weui_cell_hd icoadtexcenter">
+                      <i class="icon Hui-iconfont icocolorls"></i>
+                    </div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p class="texcolor44">关于我们</p>
+                    </div>
+                    <div class="weui_cell_ft"></div>
+                </a>
+            </div>
+        </div>
+
+<script src="__ROOT__/Public/weixin/js/jquery.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/common.js"></script>
+</body>
+</html>

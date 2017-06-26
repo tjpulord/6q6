@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>消息详情</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
+</head>
+<body class="backgroud_f3">
+   <!--我们介绍-->
+        <div class="backgroud_ff mleft15p mright15p mtop1 ">
+            <article style="padding: 0px 15px 55px 15px;">
+                <header>
+                    <h1 class="fontsize13 texweightno texcolor44 mtop05 ptop05">{{$message['title']}}</h1>
+                    <time class="fontsize08 texcolora0 ">{{:date("Y-m-d H:i:s", $message['addtime'])}}</time>
+                </header>
+                <article class="fontsize105 texcolor77 texlineheight30 ">
+                    {{$message['content']}}
+                </article>
+                <footer class="ftright mtop06">
+                     <a href="javascript:del({{$message['id']}});"><i class="Hui-iconfont fontsize145 mtop01 icocolorhh ">&#xe6e2;</i><span class="mleft03 texcolora0 fontsize131">删除</span></a> 
+                </footer>
+            </article>
+        </div>
+<script src="__ROOT__/Public/weixin/js/jquery.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/common.js"></script>
+<script>
+    function del(id)
+    {
+        $.ajax({
+                    type: "post",
+                    url: '{{:U('Message/delmes')}}',
+                    async: false,
+                    data: {id: id},
+                    dataType: "json",
+                    success: function(data){
+                        if(data){
+                            alert('删除消息成功');
+                            location.href="{{:U("Message/index")}}";
+                        } else {
+                            alert('删除消息失败');
+                        }
+                    },
+                    error:function() {
+                        return false;
+                    }
+                });
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+@charset "utf-8";
+/* 你自己的样式 */
+
+/*page*/
+.pagin{position:relative;margin-top:10px;padding:0 12px;color:white; line-height:40px;float:right; }
+.pagin li {list-style-type: none; display: inline-block;}
+.pagin li a{width:40px; height:40px; padding-left:5px; padding-right:5px; border:solid 1px #ccc; margin-left:1px; border-radius:3px; margin-left:5px; margin-right:5px;}
+.pagin li span{width:40px; height:40px; padding-left:5px; padding-right:5px; background:rgb(90,152,222); border:solid 1px rgb(90,152,222); border-radius:5px;}
+.pagin li a:hover{width:40px; height:40px; padding-left:5px; padding-right:5px; border:solid 1px rgb(90,152,222); margin-left:1px; border-radius:3px; margin-left:5px; margin-right:5px;}
+
+.num{ width:40px; height:40px; }
+.prev{background:url(../images/pre.gif) no-repeat center center; width:40px; height:40px; padding-left:5px; padding-right:5px;}
+.next{background:url(../images/next.gif) no-repeat center center; width:40px; height:40px; padding-left:5px; padding-right:5px;}
+
+.page{
+    float: right;
+}
+.page li{
+    float: left;
+    width: auto;
+    margin-top: 7px;
+    margin-right: 5px;
+    padding: 3px 8px;
+    border:solid 1px #eeeeee;
+    height: 20px;
+    line-height: 20px;
+    margin-left:10px;
+}
+
+/*tree 树形结构*/
+.tree {
+    min-height:20px;
+    padding:19px;
+    margin-bottom:20px;
+    background-color:#fbfbfb;
+    border:1px solid #999;
+    -webkit-border-radius:4px;
+    -moz-border-radius:4px;
+    border-radius:4px;
+    -webkit-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.tree ul {
+    padding: 0; margin: 0 0 10px 25px;
+}
+
+.tree li {
+    list-style-type:none;
+    margin:0;
+    padding:10px 5px 0 5px;
+    position:relative;
+}
+.tree li::before, .tree li::after {
+    content:'';
+    left:-20px;
+    position:absolute;
+    right:auto;
+}
+.tree li::before {
+    border-left:1px solid #999;
+    bottom:50px;
+    height:100%;
+    top:0;
+    width:1px;
+}
+.tree li::after {
+    border-top:1px solid #999;
+    height:20px;
+    top:25px;
+    width:25px
+}
+.tree li span {
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    border:1px solid #999;
+    border-radius:5px;
+    display:inline-block;
+    padding:3px 8px;
+    text-decoration:none;
+}
+.tree li.parent_li>span {
+    cursor:pointer;
+}
+.tree>ul>li::before, .tree>ul>li::after {
+    border:0
+}
+.tree li:last-child::before {
+    height:30px;
+}
+.tree li.parent_li>span:hover, .tree li.parent_li>span:hover+ul li span {
+    background:#eee;
+    border:1px solid #94a0b4;
+    color:#000
+}
+
+.tree li .span_menu{
+    background: seashell;
+}
+
+
+.searchpanel{
+     background:#ffffff; text-indent: 10px; position: absolute; top: -30px; left: 0; width: 100%; border:solid 1px #cccccc; line-height: 40px; height: auto;
+}
+
+.searchbar{
+    position: absolute; bottom: -30px; background: #34495e; line-height: 30px; height: 30px; margin-left: 40%; border-radius:0px 0px 10px 10px; padding:0px 10px ;
+    text-align: center; text-indent: 0px; color: #fff; width: 120px; cursor: pointer;
+}
+
+.searchpanel td{ padding: 0px; font-size: 12px; }
+
+.searchpanel input{
+    margin: 1px; border-radius: 5px; border:solid 1px #cccccc; height: 30px; font-size: 14px; text-indent: 10px;line-height: 30px; width: 300px; background: #f9f9f9;
+}
+
+.searchpanel select{
+    margin: 1px; padding: 3px; border-radius: 5px; border:solid 1px #cccccc; height: 32px; font-size: 14px; line-height: 32px; width: 300px;background: #f9f9f9;
+}
+
+.searchpanel button{
+    margin: 0px; padding: 2px;  border-radius: 5px; border:solid 1px #ffffff; background: #ff8584;
+}
+.searchpanel .searchbtn{
+    margin: 0px; padding: 2px;  height: 35px; width: 100px; border-radius: 5px; border:solid 1px #ffffff; background: #ff8584;
+    background-position: left center; background-repeat: no-repeat; text-indent: 20px; font-size: 18px; color: #fff; line-height: 30px; font-weight: bold;
+}
+.searchpanel .resetbtn{
+    margin: 0px; padding: 2px;  height: 35px; width: 100px; border-radius: 5px; border:solid 1px #ffffff; background: #c0c0c0;  font-size: 18px; color: #fff; line-height: 30px; font-weight: bold;
+}
+.searchpanel .allbtn{
+    margin: 0px; padding: 2px;  height: 35px; width: 100px; border-radius: 5px; border:solid 1px #ffffff; background: #36a9e1;  font-size: 18px; color: #fff; line-height: 30px; font-weight: bold;
+}
+
+#searchForm{width: 100%; height: auto; overflow: hidden;  margin-bottom: -30px;}
+#searchForm li{list-style: none; float: left;  width: auto; min-width: 220px; }
+#searchForm li label{margin-right: 10px; float: left; width: 80px; margin-top: 3px; font-size: 14px;}
+#searchForm .select {height: 32px; overflow:hidden; text-overflow:ellipsis; float: left; position: relative; line-height: 32px; min-width: 60px; max-width: 120px; padding: 4px;}
+#searchForm .select select{position: absolute; top:0px; left: 0px; border:none;}
+
+#searchForm li .searchForm-input{height: 32px; overflow:hidden; text-overflow:ellipsis; float: left; position: relative; line-height: 32px; min-width: 60px; max-width: 340px; }
+#searchForm li .searchForm-input label{ margin-top: -5px;font-size: 14px; }
+#searchForm li .searchForm-input input{height: 32px; overflow:hidden; text-overflow:ellipsis; float: left; position: relative; line-height: 32px; min-width: 60px; max-width: 160px; margin-top: -4px;  margin-right:4px; font-size: 14px; text-align: left; }
+
+.tongji div{border:solid 1px #f9f9f9;}

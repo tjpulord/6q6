@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>篡单预约</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/new/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
+    <script src="__ROOT__/Public/weixin/js/jquery.min.js"></script>
+    <script type="text/javascript" src="__ROOT__/Public/js/LocalResizeIMG.js"></script>
+    <script type="text/javascript" src="__ROOT__/Public/js/patch/mobileBUGFix.mini.js"></script>
+    <script type="text/javascript" src="__ROOT__/Public/weixin/js/ilazyui.js"></script>
+</head>
+<body class="backgroud_f3">
+    <div class="texcolor2d mleft15p mright15p mtop06 mbottom06 opacity06">
+     尊敬的用户您好：您所发表的产品，将在审核后公布，非常感谢您的参与!
+    </div>
+    <div class="weui-cells weui-cells_access mtop0">
+        <a class="weui-cell" href="javascript:;" onclick="showdialog('goods_name', '请编辑商品名称');">
+            <div class="weui-cell__bd weui-cell_primary">
+                <p class="texcolor44">商品名称</p>
+            </div>
+            <div class="weui-cell__ft texcolor88" id="goods_name">{{$info['name']|default="请编辑商品市场价格"}}</div>
+        </a>
+        <a class="weui-cell" href="javascript:;" onclick="showdialog('goods_price', '请编辑商品市场价格');">
+            <div class="weui-cell__bd weui-cell_primary">
+                <p class="texcolor44">市场价格</p>
+            </div>
+            <div class="weui-cell__ft texcolor88" id="goods_price">{{$info['price']|default="请编辑商品现购价格"}}</div>
+        </a>
+        <a class="weui-cell" href="javascript:;" onclick="showdialog('goods_price', '请编辑商品现购价格');">
+            <div class="weui-cell__bd weui-cell_primary">
+                <p class="texcolor44">现购价格</p>
+            </div>
+            <div class="weui-cell__ft texcolor88" id="goods_price">{{$info['price']|default="请编辑商品价格"}}</div>
+        </a>
+        <a class="weui-cell" href="javascript:;" onclick="showdialog('goods_coming', '请编辑商品产地');">
+            <div class="weui-cell__bd weui-cell_primary">
+                <p class="texcolor44">商品来源</p>
+            </div>
+            <div class="weui-cell__ft texcolor88" id="goods_coming">{{$info['coming']|default="请编辑商品产地"}}</div>
+        </a>
+        <a class="weui-cell" href="javascript:;" onclick="showdialog('goods_unit', '请编辑商品单位');">
+            <div class="weui-cell__bd weui-cell_primary">
+                <p class="texcolor44">商品单位</p>
+            </div>
+            <div class="weui-cell__ft texcolor88" id="goods_unit">{{$info['unit']|default="请编辑商品单位"}}</div>
+        </a>
+    </div>
+
+    <div class="weui-cells weui-cells_access">
+        <a class="weui-cell" href="javascript:;" onclick="showdialog('goods_startend', '请编辑篡单起始时间');">
+            <div class="weui-cell__bd weui-cell_primary">
+                <p class="texcolor44">篡单起始时间</p>
+            </div>
+            <div class="weui-cell__ft texcolor88 fontsize16p" id="goods_startend">{{$info['startend']|default="请编辑篡单起始时间"}}</div>
+        </a>
+        <a class="weui-cell" href="javascript:;" onclick="showdialog('goods_min', '请编辑商品最低起篡数');">
+            <div class="weui-cell__bd weui-cell_primary">
+                <p class="texcolor44">最低起篡份数</p>
+            </div>
+            <div class="weui-cell__ft texcolor88" id="goods_min">{{$info['min']|default="请编辑商品最低起篡数"}}</div>
+        </a>
+        <a class="weui-cell" href="javascript:;" onclick="showdialog('goods_max', '请编辑商品最高篡单数');">
+            <div class="weui-cell__bd weui-cell_primary">
+                <p class="texcolor44">最高篡单份数</p>
+            </div>
+            <div class="weui-cell__ft texcolor88" id="goods_max">{{$info['max']|default="请编辑商品最高篡单数"}}</div>
+        </a>
+        <a class="weui-cell" href="javascript:;" onclick="showdialog('goods_post_style', '请编辑商品收货方式');">
+            <div class="weui-cell__bd weui-cell_primary">
+                <p class="texcolor44">商品收货方式</p>
+            </div>
+            <div class="weui-cell__ft texcolor88" id="goods_post_style">{{$info['post_style']|default="请编辑商品收货方式"}}</div>
+        </a>
+    </div>
+    <div class="page_pop_up_window">
+        <section>
+            <header class="page_pop_up_window_header" id="pop_title">
+                请输入
+            </header>
+            <textarea id="pop_content">
+            </textarea>
+            <footer>
+                <input type="hidden" id="valueid" />
+                <a class="weui-btn weui-btn_primary page_pop_up_window_btn" href="javaScript:setvalue();">确定</a>
+            </footer>
+        </section>
+    </div>
+
+<form action="{{:U('Goods/preview')}}" method="post" id="goods_form">
+        <input type="hidden" name="id" value="{{$info['id']}}">
+    <div class="mtop06  pleft15p fontsize11 texcolor77">选择商品销售方式</div>
+
+    <div class="weui-cells weui-cells_radio mtop06">
+        <label class="weui-cell weui_check__label" for="x11">
+            <div class="weui-cell__bd">
+                <p class="texcolor44">预约活动</p>
+            </div>
+            <div class="weui-cell__ft">
+                <input type="radio" class="weui-check" name="type" id="x11" value="2" <?php if ($info['type']==2): ?>
+                    checked="checked"
+                <?php endif ?> />
+                <span class="weui-icon-checked"></span>
+            </div>
+        </label>
+        <label class="weui-cell weui_check__label" for="x12">
+            <div class="weui-cell__bd weui-cell_primary">
+                <p class="texcolor44">时令商品</p>
+            </div>
+             <div class="weui-cell__ft">
+                <input type="radio" name="type" class="weui-check" id="x12" value="1" <?php if ($info['type']==1): ?>
+                    checked="checked"
+                <?php endif ?>>
+                <span class="weui-icon-checked"></span>
+            </div>
+        </label>
+    </div>
+
+    <div class="weui-cells ">
+        <div class="weui-cell weui-cell_switch">
+            <div class="weui-cell__bd weui-cell_primary"><p class="texcolor44">是否允许商品单独购买</p></div>
+            <div class="weui-cell__ft">
+                <input class="weui-switch" type="checkbox" name="issale" value="1" <?php if ($info['issale']==1): ?>
+                    checked="checked"
+                <?php endif ?>>
+            </div>
+        </div>
+        <a class="weui-cell" href="javascript:;" onclick="showdialog('goods_post_fee', '请编辑商品邮费区间');">
+            <div class="weui-cell__bd weui-cell_primary">
+                <p class="texcolor44">编辑邮费区间</p>
+            </div>
+            <div class="weui-cell__ft texcolor88" id="goods_post_fee">{{$info['post_fee']|default="请编辑商品邮费区间"}}</div>
+        </a>
+
+    </div>
+
+    <div class="mtop06  pleft15p fontsize11 texcolor77">商品详细描述</div>
+
+    <div class="weui-cells mtop06">
+        <div class="weui-cell">
+            <div class="weui-cell__bd weui-cell_primary">
+                <textarea class="weui-textarea" placeholder="请输入商品详细描述" rows="4" name="description">{{$info['description']}}</textarea></textarea>
+                <!-- <div class="weui-textarea_counter"><span class="texcolor2d opacity07">0</span>/200</div> -->
+            </div>
+        </div>
+    </div>
+
+    <div class="mtop06  pleft15p fontsize11 texcolor77">商品家乡做法</div>
+
+    <div class="weui-cells mtop06">
+        <div class="weui-cell">
+            <div class="weui-cell__bd weui-cell_primary">
+                <textarea class="weui-textarea" placeholder="请输入商品家乡做法" rows="4" name="cooking">{{$info['cooking']}}</textarea>
+                <!-- <div class="weui_textarea_counter"><span class="texcolor2d opacity07">0</span>/200</div> -->
+            </div>
+        </div>
+    </div>
+
+    <div class="mtop06  pleft15p fontsize11 texcolor77">上传商品照片</div>
+
+    <div class="weui-cell backgroud_ff mtop06">
+        <div class="weui-cell__bd mtop02">
+            <div class="weui-uploader  ">
+                <div class="weui-uploader__bd  ">
+                    <ul class="weui-uploader__files" id="upload_image_list">
+                        <volist name="imagelist" id="ivo">
+                            <li class="weui-uploader__file" style="background-image:url({{$ivo['image']}})"></li>
+                        </volist>
+                    </ul>
+
+                    <div class="weui-uploader__input-box"  onclick="$.iLazy.uploadmultiimage(dealimage);">
+                        <image class="weui-uploader__input" id="upload_image_div" type="file" accept="image/*" multiple="" >
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mleft15p mright15p mtop06">
+        <!-- <p class="texcolor2d mtop03 fontsize1">温馨提示：</p> -->
+        <p class="texcolor77 mtop03 mbottom1 fontsize1">尊敬的用户您好，分享家乡的土特产，让更多的人了解您的家乡，诚信和谐需要大家维护。</p>
+    </div>
+<!-- 
+    <a href="javascript:submit_form();">
+        <div class="weui-btn weui-btn_primary wbtn96 mbottom20">
+            预览
+        </div></a>
+    <a href="javascript:cancel_form();">
+        <div class="weui-btn weui-btn_default wbtn96 mbottom20">
+        取消
+        </div>
+    </a> -->
+    <div class="mbottom12 mleft15p mright15p">
+        <a href="javascript:cancel_form();" class="weui-btn weui-btn_minicd weui-btn_default width45">取 消</a>
+        <a href="javascript:submit_form();" class="weui-btn weui-btn_minicd weui-btn_primary1 ftright width45" style="margin-top: 0px;">预 览</a>
+    </div>
+
+</form>
+
+<div class="weui-gallery" id="gallery">
+    <span class="weui-gallery__img" id="galleryImg"></span>
+    <div class="weui-gallery__opr">
+        <a href="javascript:delimage()" class="weui-gallery__del">
+            <i class="weui-icon-delete weui-icon_gallery-delete"></i>
+        </a>
+    </div>
+</div>
+
+<div id="dialog4" style="display: none;">
+        <div class="weui-mask"></div>
+        <div class="weui-dialog weui-skin_android">
+            <div class="weui-dialog__bd" id="showmsg">
+                弹窗内容，告知当前状态、信息和解决方法，描述文字尽量控制在三行内
+            </div>
+            <div class="weui-dialog__ft">
+                <!-- <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default">辅助操作</a> -->
+                <a href="javascript:hidedialog();" class="weui-dialog__btn weui-dialog__btn_primary">确定</a>
+            </div>
+        </div>
+    </div>
+
+<script type="text/javascript">
+    var goodid = "<?php echo $info['id'] ?>";
+
+    function showdialog (it, title) {
+        $(".page_pop_up_window").show();
+        $("#valueid").val(it);
+        $("#pop_title").html(title);
+        var content = $("#"+it).html();
+        $("#pop_content").val(content);
+    }
+    function setvalue () {
+
+        var vid = $("#valueid").val();
+        var vstr = $("#pop_content").val();
+        if (vstr == $("#"+vid).html()) {
+            $(".page_pop_up_window").hide();
+            return true;
+        };
+        $.ajax({
+            url: 'index.php?s=/home/Goods/keepin',
+            type: 'POST',
+            dataType: 'json',
+            data: {id: goodid, key: vid, value:vstr},
+            success: function(data){
+                if (data.code == 2000) {
+                    $("#"+vid).html(vstr);
+                    $(".page_pop_up_window").hide();
+                }else{
+                    alert('保存失败 -- '+vid+":"+vstr);
+                }
+            },
+            error: function(){
+                alert("net error");
+            }
+        });
+    }
+
+    function submit_form () {
+        if ($("#upload_image_list li").length == 0) {
+            $("#dialog4").show();
+            $("#showmsg").html("请上传商品图片");
+            return false;
+        };
+
+        $("#goods_form").submit();
+    }
+
+    function hidedialog(){
+        $("#dialog4").hide();
+    }
+
+    function cancel_form () {
+        alert("dff");
+        if (confirm("取消后所编辑的数据将丢失，确认取消？")) {
+            return;
+        };
+    }
+
+
+    function dealimage(arg) {
+
+        $.ajax({
+            url: 'index.php?s=/home/Goods/saveimage',
+            type: 'POST',
+            dataType: 'json',
+            data: {image: arg, goodsid:goodid},
+            success: function(data){
+                if (data.code == 0) {
+                    $.iLazy.alert('图片保存失败');
+                }else{
+                    $("#upload_image_list").append('<li class="weui-uploader__file" style="background-image:url('+arg+')"></li>');
+
+                }
+            }
+        });
+    }
+
+    function delimage(){
+        var imageurl = $('#galleryImg').css('background-image');
+        var pos = imageurl.indexOf('/upload/');
+        var imgstr = imageurl.substr(pos);
+        imgstr = imgstr.substr(0, imgstr.length-1);
+        // var imagenumber = parseInt($("#imagenumber").html().substr(0,1));
+        $.ajax({
+            url: 'index.php?s=/home/Goods/delimage',
+            type: 'POST',
+            dataType: 'json',
+            data: {image: imgstr, goodsid:goodid},
+            success: function(data){
+                if (data.code == 0) {
+                    $.iLazy.alert('图片删除失败');
+                }else{
+                    $("#upload_image_list li").each(function() {
+                        var tt=$(this).css('background-image');
+                        if (tt == imageurl) {
+                            $(this).remove();
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+</script>
+
+</body>
+<script type="text/javascript">
+    $(function() {
+        var tmpl = '<li class="weui-uploader__file" style="background-image:url(#url#)"></li>',
+            $gallery = $("#gallery"), $galleryImg = $("#galleryImg"),
+            $uploaderInput = $("#uploaderInput"),
+            $uploaderFiles = $("#upload_image_list")
+            ;
+        $uploaderFiles.on('click', 'li', function() {
+            $("#galleryImg").attr('style', this.getAttribute('style'));
+            $("#gallery").fadeIn(100);
+        });
+        $gallery.on('click', function() {
+            $("#gallery").fadeOut(100);
+        });
+    });
+
+</script>
+</html>

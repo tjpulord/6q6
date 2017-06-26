@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>详情展示</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/new/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/new/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/scrollbar.css"/>
+    <script src="__ROOT__/Public/weixin/js/jquery.min.js"></script>
+    <!-- 影响输入 -->
+    <script src="__ROOT__/Public/weixin/js/ilazyuiscroll.js"></script>
+    <script src="__ROOT__/Public/weixin/js/ilazyui.js"></script>
+    <script src="__ROOT__/Public/js/jquery.touchSwipe.min.js"></script>
+    <script src="__ROOT__/Public/js/idangerous.swiper-1.9.1.min.js"></script>
+    <script src="__ROOT__/Public/js/idangerous.swiper.scrollbar-1.2.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $(".min").click(function() {
+            $("#goodnum").val("abc");
+        });
+    });
+    function addbtn(){
+        $("#goodnum").val(parseInt($("#goodnum").val())+1);
+    }
+    function minbtn(){
+        var n = parseInt($("#goodnum").val());
+        if (n>0) {
+            $("#goodnum").val(n-1);
+        }
+    }
+    </script>
+</head>
+<body class="backgroud_f3">
+<div id="wrapper">
+    <div id="scroller">
+        <div id="pullDown">
+            <span class="pullDownLabel">下拉刷新...</span>
+        </div>
+        <div class="weui_panel_bd backgroud_ff ">
+            <div class=" fontsize105">
+                <p class="mleft15p ftleft ptop06 pbottom02 texcolor44">{{$info[name]}}</p>
+                <p class="mright15p fright pbottom02 ptop06 texcolor2d">已购：{{$info[purchased]}} 份</p>
+            </div>
+            <div class=" fontsize08 texcolora0 ">
+                <div class="mright15p mleft15p pbottom06" >
+                    <p class="ftleft mright06">篡单周期:<span >{{$info['startend']}}</span> </p>
+                    <!-- <P class="fright"><i class="Hui-iconfont fontsize06 mtop01 icocolorls">&#xe627;</i><span class="mleft05">200 份起</span></P> -->
+                    <P class="fright"><span>最高:{{$info['max']}}份</span></P>
+                </div>
+            </div>
+            <!-- 轮播代码 开始 -->
+            <div class="pagination pagination1"></div>
+            <div class="swiper-main">
+                <div class="swiper-container swiper1">
+                    <div class="swiper-wrapper">
+                        <volist name="imagelist" id="banner">
+                            <div class="swiper-slide">
+                                <a  href="{{$banner['url']|default="javascript:;"}}">
+                                    <img src="{{$banner['image']|default="__PUBLIC__/weixin/image/sheuqguanai.png"}}" style="opacity: 1; ">
+                                </a>
+                            </div>
+                        </volist>
+                    </div>
+                </div>
+            </div>
+            <script type="text/javascript">
+                var swiper = new Swiper('.swiper1', {
+                        pagination : '.pagination1',
+                        loop:true,
+                        grabCursor: true
+                    });
+            </script>
+            <!-- 轮播 结束 -->
+            <!-- banner上的一行产地 -->
+            <div class="weui_media_boxtm weui_media_appmsg zzhou10000">
+                <p class="img_opct" >产地：{{$info['coming']}}</p>
+            </div>
+
+            <div class=" fontsize105 texcolor44 mtop_03">
+                <p class="mleft15p ftleft ptop06 pbottom02">{{$info['username']}}</p>
+                <p class="mright15p fright pbottom02 ptop06 ">{{$info['name']}}</p>
+            </div>
+
+            <div class=" fontsize08 texcolora0">
+                <div class="mright15p mleft15p  pbottom10" >
+                    <P class="ftleft"><i class="Hui-iconfont fontsize1 mtop01 icocolorls">&#xe6c9;</i><span class="mleft03">西青区  华庄子</span></P>
+                    <p class="fright">篡单号:<span>{{$info['goodsid']}}</span> </p>
+                </div>
+            </div>
+        </div>
+        <div class="backgroud_ff" >
+            <div class="donate_jine datagrid3">
+                <ul>
+                    <li>
+                        <h3 class="texshixiao marin0 texweightbold texcolor2d fontsize1">{{$info['market_price']}}元/{{$info['unit']}}</h3>
+                        <p class="texcolor77 mtop_02">市场价</p>
+                    </li>
+                    <li >
+                        <div class="bleftsolidee">
+                            <h3 class="marin0 texweightbold texcolor4b fontsize1">{{$info['price']}}元/{{$info['unit']}}</h3>
+                            <p class="texcolor77 mtop_02">现价</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="bleftsolidee">
+                            <if condition="$info['status'] eq 1">
+                                <h3 class="marin0 fontsize1 texlineheight texcolor66">正在<br>篡单</h3>
+                            <!-- <h3 class="marin0 fontsize1 texlineheight texcolor66">正在<br>预约</h3>-->
+                            <elseif condition="$info['status'] eq 2" />
+                                <h3 class="marin0 fontsize1 texlineheight texcolor66">篡单<br>结束</h3>
+                            </if>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    <!-- 购买商品选择单位和数量 -->
+        <form action="{{:U('order/orderconfirm')}}" method="post" id="purchase_form" >
+            <input type="hidden" name="goodsid" value="{{$info['id']}}">
+            <div class="weui-cells" >
+                <div class="weui-cell" >
+                    <div class="weui-cell__hd weui-label">
+                        <p class="texcolor44">购买数量</p>
+                    </div>
+                    <!-- <div style="text-align: right; color:#888; margin-right: 12px;">
+                        <input type="button" style="width:15px;" value="-" class="min">
+                        <input type="text" value='1' style="width:25px; color:#888; text-align: center" id="goodnum">
+                        <input type="button" style="width:15px;" value="+" class="add" onclick="addbtn();" />
+                    </div> -->
+                    <div class="weui-cell__bd weui-cell__ft">
+                        <a href="javascript:;" onclick="minbtn();" class="weui-btn_plain-default pleft10p pright10p braderradius4">-</a>
+                        <input type="text" value='1' class="borderee braderradius4 texcolor2d texcenter width30 ptop03 pbottom02"  id="goodnum" name="goodnum">
+                        <a href="javascript:;" onclick="addbtn();" class="weui-btn_plain-default pleft8p pright8p braderradius4">+</a>
+                    </div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd weui-label">
+                        <p class="texcolor44">收货方式</p>
+                    </div>
+                    <div class="weui-cell__bd weui-cell__ft">请选择收货方式</div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd weui-label">
+                        <p class="texcolor44">收货地址</p>
+                    </div>
+                    <div class="weui-cell__bd texcolor66">
+                        <input class="weui-input weui-cell__ft" type="text" name="address" value="" placeholder="请填写收货地址">
+                    </div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd weui-label">
+                        <p class="texcolor44">收货人姓名</p>
+                    </div>
+                    <div class="weui-cell__bd texcolor66">
+                        <input class="weui-input weui-cell__ft" type="text" placeholder="请输入收货人姓名" value="{{$userinfo['name']}}" name="name">
+                    </div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd weui-label">
+                        <p class="texcolor44">收货人电话</p>
+                    </div>
+                    <div class="weui-cell__bd texcolor66">
+                        <input class="weui-input weui-cell__ft" type="tel" placeholder="请输入手机号" value="{{$userinfo['mobile']}}" name="mobile" id="mobile">
+                    </div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd weui-label">
+                        <p class="texcolor44">备注</p>
+                    </div>
+                    <div class="weui-cell__bd texcolor77">
+                        <input class="weui-input weui-cell__ft" type="tel" placeholder="请输入备注信息">
+                    </div>
+                </div>
+            </div>
+        </form>
+    <!-- 商品描述 -->
+        <div class="mtop06  pleft15p fontsize11 texcolor77">商品详细描述</div>
+        <div class="weui-cells mtop06 texcolor66">
+            <p class="mleft15p mright15p mtop06 mbottom16 ">
+                {{$info['description']}}
+            </p>
+        </div>
+    <!-- 商品做法 -->
+        <div class="mtop06  pleft15p fontsize11 texcolor77">商品家乡做法</div>
+        <div class="weui-cells mtop06 texcolor66">
+            <p class="mleft15p mright15p mtop06 mbottom16">
+                {{$info['cooking']}}
+            </p>
+        </div>
+    <!-- 支持人数 -->
+        <div class="mtop06 mright15p mleft15p fontsize11 mbottom05">
+            <div class="texcolor77 ftleft">最近购买的成员</div>
+            <div class="fright">
+                 <i class="icon Hui-iconfont icocolorhs"></i> {{:count($orderlist)}} 人购买
+            </div>
+        </div>
+        <div class="backgroud_ff bgheight41 overflowhid">
+            <volist name="orderlist" id="oo" offset="0" length="6">
+                <li class="mright15p mleft15p">
+                    <a href="{{:U('Goods/member', array('gid'=>$info['id']))}}" class="">
+                        <img class="mleft03 mright03 ftleft bgwidth30 bgheight30 braderradius100 mtop06" src="{{$oo['header']|default='__ROOT__/Public/weixin/image/sheuqguanai.png'}}" alt="" >
+                    </a>
+                </li>
+            </volist>
+        </div>
+    <!-- 评价 -->
+        <div class="mbottom08 bbtmsoliddd" >
+            <div class="bbtmsolid4br width80">
+            <div class="mtop06 mright15p mleft15p fontsize11 mbottom05 texcolor77"><a href="javascript:addcomment(0,'{{$info[userid]}}', '{{$info['name']}}')"><span class="texcolor2d" >吐 槽</span></a></div>
+          </div>
+        </div>
+
+    <!-- 评价list -->
+        <div id="commentlist">
+            <volist name="comments[0]" id="cvo">
+                <div class="backgroud_ff mright5p mleft5p mbottom1 ptop05 pbottom05">
+                    <div class="mright10p mleft10p">
+                        <img class="mright06 ftleft bgwidth30 bgheight30 mtop06 braderradius4" src="{{$cvo['header']|default='__ROOT__/Public/weixin/image/noimage.png'}}" alt="" >
+                        <p class="fontsize105 ptop03">{{$cvo['username']}}</p>
+                        <time class="fontsize09 texcolora0 " datetime="{{:date('Y-m-d H:i', $cvo['addtime'])}}">{{:date('Y-m-d H:i', $cvo['addtime'])}}</time>
+                        <a onclick="javascript:addcomment({{$cvo['id']}}, '{{$cvo[userid]}}', '{{$cvo[username]}}');" class="opacity08 border2dq ptop02 pbottom01 pleft10 pright10 texcolor2dq ftright mtop_13 braderradius4 fontsize08">回复</a>
+                    </div>
+                    <div class="texcolor66 mleft39 pright10 fontsize1">
+                        <p class=" fontsize1 pbottom06 ">{{$cvo[content]}}</p>
+                        <div id="aaaaa{{$cvo['id']}}">
+                            <foreach name="comments[$cvo['id']]" item="rvo">
+                                <p class="pbottom05 bbtopdd0 ptop04"><a class=" texcolor66 " href="javascript:addcomment({{$cvo[id]}}, '{{$rvo[userid]}}', '{{$rvo[username1]}}');"><span class="texcolor4bq">{{$rvo['username1']}}</span>回复<span class="texcolor4bq">{{$rvo['username2']}}:</span>{{$rvo['content']}}</a></p>
+                            </foreach>
+                        </div>
+                        <if condition="count($comments[$cvo['id']]) eq 6">
+                            <div id="position{{$cvo['id']}}" class="more_comments">
+                                <a class="more_huifu " href="javascript:jiazaihuifu({{$cvo['id']}});"><<展开全部回复>></a>
+                            </div>
+                        </if>
+                    </div>
+                </div>
+            </volist>
+        </div>
+        <div id="pullUp">
+            <span class="pullUpLabel texcolorc0">上拉加载更多...</span>
+        </div>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+    </div>
+</div>
+<!-- 购买的按钮 -->
+<footer class="plan_view_footer zzhou">
+    <h2 class="plan_view_footer_left " id=""><a href="javascript:addcomment('','','{{$info[name]}}');">吐槽</a></h2>
+    <h2 class="plan_view_footer_right"><a href="javascript:purchased();">购买</a></h2>
+</footer>
+</body>
+<script type="text/javascript">
+    var goodsid = <?php echo $info['id'] ?>;
+    var userid  = "<?php echo $userinfo['id'] ?>";
+    window.page1 = 2;
+
+    function addcomment(cid, reuserid, reusername)
+    {
+        if (userid) {
+            if (userid == reuserid && cid) {
+                $.iLazy.toast("亲，您不能给自己回复哦!");
+                return true;
+            };
+            var titlestr = "评价 ";
+            if (cid) {
+                titlestr = "回复 ";
+            };
+            var dialog = new $.iLazy.prompts({
+                title:"请输入",
+                tips:titlestr+reusername+":",
+                yes:function(){
+                    var v = dialog.v.value;
+                    if(v.length>50){
+                        $.iLazy.toast("亲，回复内容不能超过50字");
+                        return false;
+                    }
+                    if(v.length==0 || v=="" || $.iLazy.isEmpty(v)){
+                        $.iLazy.toast("亲，请输入回复内容");
+                        return false;
+                    }
+                    $.ajax({
+                        url: "<?php echo U('Goods/addComment');?>",
+                        type: 'post',
+                        dataType: 'json',
+                        data: {goodsid: goodsid,commentid:cid,content:v, replyuserid:reuserid, userid:userid},
+                        success: function(data){
+                            if(data != 0){
+                                history.go(0);
+                                // $("#search_cancel").attr('onclick', "comment(0)");
+                                // $("#ccc").val("");
+                                // $("#ccc").blur();
+
+                            }else{
+                                alert('评论失败！');
+                            }
+                        },
+                        error: function(){
+                            var data = {
+                                error: 1,
+                                type: 400
+                            };
+                        },
+                    });
+                    // 评论内容不能重复提交
+                    dialog.confirmbtn.unbind();
+                },
+                cancel:function(){
+                    dialog.v.value = "";
+                    dialog.hide();
+                    dialog.remove();
+                }
+            });
+            dialog.show();
+        } else {
+            if (confirm("您还未登录，现在去登录?")) {
+                location.href = "index.php?s=/home/register/login/url/"+location.href;
+            }
+        }
+    }
+
+    function jiazaihuifu(cid){
+        $.ajax({
+            url: '<?php echo U('Goods/ajaxHuifu');?>',
+            type: 'post',
+            dataType:'json',
+            data: {commentid:cid, goodsid:goodsid},
+            success: function(data){
+                // $(".more_comments").remove();
+                if (data.data != ""){
+                    $("#aaaaa"+cid).append(data.data);
+                }
+                $("#position"+cid).remove();
+            },
+            error: function(data){
+
+            }
+        });
+    }
+    function jiazaicomment(gid){
+        $.ajax({
+            url: '<?php echo U('Goods/ajaxComments');?>',
+            type: 'post',
+            dataType:'json',
+            data: {page: window.page1, goodsid:gid},
+            success: function(data){
+                // $(".more_comments").remove();
+                if (data.data != ""){
+                    $("#commentlist").append(data.data);
+                    window.page1++;
+                }else {
+                    $('#pullUp').html('无更多数据');
+                }
+            },
+            error: function(data){
+
+            }
+        });
+    }
+
+    function purchased(){
+        var n = parseInt($("#goodnum").val());
+        if (n==0) {
+            $.iLazy.toast("亲，请输入购买份数!");
+            return false;
+        }
+
+        if (!$("#mobile").val()) {
+            $.iLazy.toast("亲，请输入手机号码!");
+            return false;
+        };
+        $("#purchase_form").submit();
+        // return true;
+    }
+
+ilazyscrollbar.init({
+    wapper:'wrapper',       //容器
+    scroll:'myScrollbar',   //滑动容器
+    upbtn:'pullUp',         //上拉按钮
+    downbtn:'pullDown',     //下拉按钮
+    puaction:function(){
+        // location.reload();
+    },
+    pdaction:function(){
+        // jiazaicomment(goodsid);
+    }
+});
+</script>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>请选择小区</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/new/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/new/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <!-- <script src="__ROOT__/Public/weixin/js/new/zepto.min.js"></script>
+    <script src="__ROOT__/Public/weixin/js/new/example.js"></script> -->
+    <script src="__ROOT__/Public/weixin/js/jquery.min.js"></script>
+</head>
+<body class="backgroud_f3">
+<div class="backgroud_ff zzhou10000 mtop0 pstabsolute">
+<!-- 头部搜素栏目 输入名称后右边显示确认，当没有搜素到 页面弹出对话框，当前没有开通此小区，您是否要开通此小区，开通页面跳转到开通小区界面，点击城市搜素，进入城市选择页面确定后跳回此页-->
+	<div class="page__bd mleft15p mright15p" style="padding-top: 8px; padding-bottom: 8px; ">
+		<div class="" style=" width: 30%; float: left; border-right: 1px solid #f2f2f2;" onclick="changecity('{{$city['name']}}', '{{$city[id]}}')">
+			<span style="margin-right: 6px;" id="city">{{$city['name']|default="请选择"}}</span>
+			<i class="Hui-iconfont icocolorhs opacity05">&#xe698;</i>
+		</div>
+        <div class="weui-search-bar" id="searchBar" style="display: flex; border-radius: 6px; padding:0px 0px">
+            <form class="weui-search-bar__form">
+                <input type="hidden" value="{{$city[id]|default=0}}" id="cityid">
+                <div class="weui-search-bar__box">
+                    <i class="weui-icon-search"></i>
+                    <input type="search" class="weui-search-bar__input" id="searchInput" placeholder="搜索" required="">
+                    <a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
+                </div>
+                <label class="weui-search-bar__label" id="searchText" style="transform-origin: 0px 0px 0px; opacity: 1; transform: scale(1, 1);">
+                    <i class="weui-icon-search"></i>
+                    <span>输入社区名称搜索</span>
+                </label>
+            </form>
+            <a href="javascript:" class="weui-search-bar__cancel-btn" id="searchCancel">取消</a>
+        </div>
+        <!--<a href="javascript:;" class="weui-btn weui-btn_primary">点击展现searchBar</a>-->
+        <!-- <div class="weui-search-bar" id="searchBar" style="display: flex; border-radius: 6px;">
+            <form class="weui-search-bar__form">
+                <div class="weui-search-bar__box">
+                    <i class="weui-icon-search"></i>
+                    <input type="search" class="weui-search-bar__input" id="searchInput" placeholder="搜索" required/>
+                    <a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
+                </div>
+                <label class="weui-search-bar__label" id="searchText">
+                    <i class="weui-icon-search"></i>
+                    <span>搜索</span>
+                </label>
+            </form>
+            <a href="javascript:" class="weui-search-bar__cancel-btn" id="searchCancel">取消</a>
+        </div> -->
+        <div class="weui-cells searchbar-result" id="searchResult" style="display: none;">
+            <div class="weui-cell weui-cell_access">
+                <div class="weui-cell__bd weui-cell_primary">
+                    <p>模糊搜索文本</p>
+                </div>
+            </div>
+            <div class="weui-cell weui-cell_access">
+                <div class="weui-cell__bd weui-cell_primary">
+                    <p>模糊搜索文本</p>
+                </div>
+            </div>
+            <div class="weui-cell weui-cell_access">
+                <div class="weui-cell__bd weui-cell_primary">
+                    <p>模糊搜索文本</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 小区列表循环 -->
+<div class="backgroud_ff mtop36" id="searchres">
+    <volist name="zonelist" id="vo">
+    <div class="weui-media-box weui-media-box_text " onclick="changezone({{$vo[id]}})">
+        <h4 class="weui-media-box__title">
+            <i class="Hui-iconfont icocolorns opacity05 mright03">&#xe643;</i>{{$vo["name"]}}
+        </h4>
+        <p class="weui-media-box__desc texcolora0 mtop03">{{$vo["address"]}}</p>
+    </div>
+    </volist>
+    <!-- <div class="weui-media-box weui-media-box_text ">
+        <h4 class="weui-media-box__title">
+            <i class="Hui-iconfont icocolorns opacity05 mright03">&#xe643;</i>摩卡假日
+            <span style="float: right; font-weight: normal; color: #666666; ">
+                <i class="Hui-iconfont icocolorhs opacity05 mright03">&#xe6c9;</i>1.5km
+            </span>
+        </h4>
+        <p class="weui-media-box__desc texcolora0 mtop03">柳霞路和和平道的交界口为张家界的交</p>
+    </div> -->
+</div>
+
+<script type="text/javascript">
+    var zonelist = <?php echo json_encode($zonelist) ?>;
+    $(document).ready(function() {
+
+        var $searchBar = $('#searchBar'),
+            $searchResult = $('#searchResult'),
+            $searchText = $('#searchText'),
+            $searchInput = $('#searchInput'),
+            $searchClear = $('#searchClear'),
+            $searchCancel = $('#searchCancel');
+            $searchres    = $("#searchres");
+
+        function hideSearchResult(){
+            $searchResult.hide();
+            $searchInput.val('');
+        }
+        function cancelSearch(){
+            hideSearchResult();
+            $searchBar.removeClass('weui-search-bar_focusing');
+            $searchText.show();
+        }
+        function resetres (ooo) {
+            $searchres.empty();
+            for (var o in ooo) {
+                $searchres.append('<div class="weui-media-box weui-media-box_text ">\
+                    <h4 class="weui-media-box__title">\
+                        <i class="Hui-iconfont icocolorns opacity05 mright03">&#xe643;</i>'+ooo[o]['name']+'\
+                    </h4>\
+                    <p class="weui-media-box__desc texcolora0 mtop03">'+ooo[o]['address']+'</p>\
+                </div>');
+            };
+        }
+
+        $searchText.on('click', function(){
+            $searchBar.addClass('weui-search-bar_focusing');
+            $searchInput.focus();
+        });
+        $searchInput
+            .on('blur', function () {
+                if(!this.value.length) cancelSearch();
+            })
+            .on('input', function(){
+
+                if(this.value.length) {
+                    $.ajax({
+                        url: 'interface.php?s=/home/index/getzones',
+                        type: 'GET',
+                        dataType: 'json',
+                        data: {key: this.value},
+                        success: function(data){
+                            if (data.code == 2000) {
+                                d = data.data;
+                                resetres(d);
+                            }else{
+                                $searchres.empty();
+                            }
+                        }
+                    });
+                }
+            })
+        ;
+        $searchClear.on('click', function(){
+            resetres(zonelist);
+            hideSearchResult();
+            $searchInput.focus();
+        });
+        $searchCancel.on('click', function(){
+            resetres(zonelist);
+            $searchInput.val('');
+            $searchInput.blur();
+        });
+
+    });
+
+
+function changecity (cname, cid) {
+    location.href = 'index.php?s=/home/Register/citylist/curcity/'+cname+'/curcid/'+cid;
+    // openwindow.focus();
+}
+function changezone (zid) {
+    location.href = 'index.php?s=/home/MyCenter/myinfo/zid/'+zid;
+}
+</script>
+</body>
+</html>

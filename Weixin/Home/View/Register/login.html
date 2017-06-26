@@ -1,0 +1,96 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1,maximum-scale=1, user-scalable=no" name="viewport">
+    <title>登录</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/example.css"/>
+     <script src="__ROOT__/Public/weixin/js/jquery.min.js"></script>
+     <script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+     <script src="__ROOT__/Public/weixin/js/common.js"></script>
+    <script src="__ROOT__/Public/weixin/js/check.js"></script>
+    <link href="/Public/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/login.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+
+</head>
+
+<body>
+    <include file="Wpublic/share"/>
+<div class="cell">
+    <form id='form' name="form" method="post" action="" enctype="multipart/form-data">
+
+        <div class="logo mcenter mtop4em">
+            <img src="__ROOT__/Public/weixin/image/weixin.jpg" alt="">
+        </div>
+
+        <div class=" weui_cells_form bgcnone wb80 mcenter mtop4em">
+            <div class="l_ui_cell bradiu_5e opacitypng">
+                <div class="weui_cell_hd">
+                    <label class="weui_label wb1em" ><i class="Hui-iconfont" style="color: #ffffff;">&#xe696;</i></label>
+                </div>
+                <div class="weui_cell_bd weui_cell_primary mleft_5em">
+                    <input class="weui_input wcolor" name="phone" id="phone" type="number" style="color: #ffffff;" placeholder="请输入手机号" value="请输入手机号" />
+
+                </div>
+            </div>
+        </div> 
+<!--         <div class=" weui_cells_form bgcnone wb80 mcenter mtop1em">
+            <div class="l_ui_cell bradiu_5e opacitypng">
+                <div class="weui_cell_hd">
+                    <label class="weui_label wb1em" ><i class="Hui-iconfont" style="color: #ffffff;">&#xe63f;</i></label>
+                </div>
+                <div class="weui_cell_bd weui_cell_primary mleft_5em">
+                    <input class="weui_input wcolor" name="password" id="password" type="password" style="color: #ffffff;" placeholder="请输入密码,最少6位" value="" />
+
+                </div>
+            </div>
+        </div>
+
+        <div class=" weui_cells_form bgcnone wb80 mcenter mtop1em">
+            <div class="l_ui_cell bradiu_5e opacitypng">
+                <div class="weui_cell_hd">
+                    <label class="weui_label wb1em" ><i class="Hui-iconfont" style="color: #ffffff;">&#xe63f;</i></label>
+                </div>
+                <div class="weui_cell_bd weui_cell_primary mleft_5em">
+                    <input class="weui_input wcolor" name="primarypwd" id="primarypwd" type="password" style="color: #ffffff;" placeholder="请输入密码,最少6位" value="" />
+
+                </div>
+            </div>
+        </div> -->
+
+        <div class=" weui_cells_form bgcnone wb80 mcenter mtop1em pstrelative">
+            <div class="l_ui_cell bradiu_5e opacitypng">
+                <div class="weui_cell_hd">
+                    <label class="weui_label wb1em" ><i class="Hui-iconfont" style="color: #ffffff;">&#xe696;</i></label>
+                </div>
+                <div class="weui_cell_bd weui_cell_primary mleft_5em ">
+                    <input class="weui_input wcolor" name="code" id="code" type="number" style="color: #ffffff;" placeholder="请输入验证码" value="请输入验证码" />
+                    <span class="opacityypng pstabsolute rightz1 topz1 pallz3em wb40 fcenter wcolor borderzuo"  id="sendcode">获取验证码</span>
+                </div>
+            </div>
+        </div>
+
+        <div class=" weui_cells_form wb80 mcenter mtop2em">
+            <input type="button" class="weui_btn bgcnone opacityypng"  onclick="checkcode()" style="color: #ffffff;" value=" 提 交 ">
+        </div>
+     </form>
+
+</div>
+   <div class="weui_extra_area wcolor opacity65 font-size05 mbottom2em">
+    <p>版权所有：京ICP备16030282号</p>
+    <p>北京万助科技有限公司</p>
+</div>
+<!--弹出框-->
+<div class="weui_dialog_alert" id="dialog2" style="display: none;">
+    <div class="weui_mask"></div>
+    <div class="weui_dialog">
+        <div class="weui_dialog_hd"><strong class="weui_dialog_title">提示</strong></div>
+        <div class="weui_dialog_bd">你的查询已提交，工作人员将尽快与您联系！</div>
+        <div class="weui_dialog_ft">
+            <a href="javascript:;" id="primary2" class="weui_btn_dialog primary">确定</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

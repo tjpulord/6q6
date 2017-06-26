@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="Public/lib/html5.js"></script>
+<script type="text/javascript" src="Public/lib/respond.min.js"></script>
+<script type="text/javascript" src="Public/lib/PIE_IE678.js"></script>
+<![endif]-->
+<link rel="stylesheet" href="__ROOT__/Public/weixin/css/new/weui.css"/>
+<link rel="stylesheet" href="__ROOT__/Public/weixin/css/example.css"/>
+<link href="__ROOT__/Public/lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
+<title>订单支付</title>
+</head>
+<script src="__PUBLIC__/js/jquery1.8.1/jquery.js"></script>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+<script type="text/javascript" src="__ROOT__/Public/weixin/js/ilazyui.js?l=no"></script>
+<script type="text/javascript">
+wx.hideAllNonBaseMenuItem();
+var myjson = "<?php echo $sendData['jsApiParameters']; ?>";
+var returnback = "<?php echo $sendData['notify_url']; ?>";
+var backurl = "<?php echo $_GET['url']; ?>";
+function jsApiCall()
+{
+    WeixinJSBridge.invoke(
+        'getBrandWCPayRequest',
+        myjson,
+        function(res){
+            WeixinJSBridge.log(res.err_msg);
+            var msgarr  = res.err_msg.split(":");
+
+            switch(msgarr[1]){
+            case "ok":
+                 $.iLazy.load("支付成功");
+                if (!backurl) {
+                    backurl = "http://www.tongdanghuzhu.com/weixin.php?s=/home/account/accountlist.html";
+                };
+                setTimeout(function () {
+                    location.href = backurl;
+                }, 5000);
+                break;
+            case "cancel":
+                $.iLazy.load("取消支付");
+                if (!backurl) {
+                    backurl = "http://www.tongdanghuzhu.com/weixin.php?s=/home/account/accountlist.html";
+                };
+                setTimeout(function () {
+                    location.href = backurl;
+                }, 1000);
+                break;
+            case "fail":
+                $.iLazy.load("支付失败了");
+                if (!backurl) {
+                    backurl = "http://www.tongdanghuzhu.com/weixin.php?s=/home/account/accountlist.html";
+                };
+                setTimeout(function () {
+                    location.href = backurl;
+                }, 1000);
+                break;
+            }
+        }
+    );
+}
+
+function payNow()
+{
+    var ss = $("input[name='pay_style']:checked").val();
+    if(ss=="2")
+    {
+       callwalletpay();
+    }else if (ss=="1") {
+      callwxpay();
+    }else{
+        $("#showtoast").show();
+        setTimeout(function(){
+            $("#showtoast").hide();
+        }, 3000);
+    }
+}
+
+
+function callwxpay()
+{
+  if (typeof WeixinJSBridge == "undefined"){
+      alert('WeixinJSBridge define');
+      if( document.addEventListener ){
+          document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+      }else if (document.attachEvent){
+          document.attachEvent('WeixinJSBridgeReady', jsApiCall);
+          document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+      }
+  }else{
+      jsApiCall();
+  }
+  $("#loadingToast").show();
+}
+
+
+function callwalletpay () {
+    var amount = "<?php echo $amount; ?>";
+    var order_fee = "<?php echo $orderinfo['pay_amount'] ?>";
+    var order_no  = "<?php echo $orderinfo['orderno']; ?>";
+
+    if (parseFloat(order_fee) > parseFloat(amount)) {
+        var dialog = new $.iLazy.confirm({
+          title:"友情提示",
+          text:"钱包余额{{$amount}}元，不足支付该订单。是否前往钱包充值？",
+          yes:function(){
+              location.href="/weixin.php?s=/home/Wallet/recharge";
+          },
+          cancel:function(){
+              dialog.hide();
+          }
+        });
+        dialog.show();
+    }else{
+        $.ajax({
+          url: 'interface.php?s=/home/notify/paybywallet',
+          type: 'POST',
+          dataType: 'json',
+          data: {orderno: order_no},
+          success: function(data){
+            if (data.code == 2000) {
+              $.iLazy.load("支付成功");
+                if (!backurl) {
+                    backurl = "index.php?s=/home/order/order/orderno/"+order_no;
+                };
+                setTimeout(function () {
+                    location.href = backurl;
+                }, 1000);
+            }else{
+              $.iLazy.load("支付失败了");
+                if (!backurl) {
+                    backurl = "index.php?s=/home/order/orderlist.html";
+                };
+                setTimeout(function () {
+                    location.href = backurl;
+                }, 1000);
+            }
+          },
+          error: function(){
+
+          }
+        });
+    }
+}
+
+</script>
+<body  class="backgroud_f3">
+<div class="container">
+  <div class="cell">
+      <div class="weui-cells_title fontsize18p texcolor2dq mtop05 mleft15p">订单信息</div>
+      <div class="weui-cells mtop03">
+        <div class="weui-cell">
+          <div class="weui-cell__bd weui-cell_primary">
+            <p class="texcolor44 width70p">订单编号</p>
+          </div>
+          <div class="weui-cell__ft">
+            <?php echo strtoupper($orderinfo['orderno']); ?>
+          </div>
+        </div>
+        <!-- <div class="weui-cell">
+          <div class="weui-cell__bd weui-cell_primary">
+            <p class="texcolor44 width70p">商品价格</p>
+          </div>
+          <div class="weui-cell__ft">
+            <?php echo strtoupper($orderinfo['price']); ?>
+          </div>
+        </div> -->
+        <div class="weui-cell">
+          <div class="weui-cell__bd weui-cell_primary">
+            <p class="texcolor44 width70p">购买份数</p>
+          </div>
+          <div class="weui-cell__ft">
+            <?php echo strtoupper($orderinfo['number']); ?>
+          </div>
+        </div>
+        <div class="weui-cell">
+          <div class="weui-cell__bd weui-cell_primary">
+            <p class="texcolor44 width70p">订单总额</p>
+          </div>
+          <div class="weui-cell__ft">
+            {{$orderinfo['pay_amount']}}
+          </div>
+        </div>
+        <div class="weui-cell">
+          <div class="weui-cell__bd weui-cell_primary">
+            <p class="texcolor44 width70p">订单内容</p>
+          </div>
+          <!--内容展示一行 标题加数量如： 花牛苹果1箱 -->
+          <div class="weui-cell__ft width76 mleft05">
+            {{$orderinfo['detail']}}
+          </div>
+        </div>
+      </div>
+      <div class="weui-cells_title  fontsize18p texcolor2dq mtop05 mleft15p">
+        选择支付方式
+      </div>
+      <div class="weui-cells weui-cells_radio mtop03">
+        <label class="weui-cell weui-check__label" for="x11">
+          <div class="weui-cell__hd">
+            <i class="Hui-iconfont">&#xe63a;</i>
+          </div>
+          <div class="weui-cell__bd weui-cell_primary">
+            <p class="mleft03 texcolor44">钱包支付</p>
+          </div>
+          <div class="weui-cell__ft">
+            <input type="radio" class="weui-check" name="pay_style" id="x11" value="2">
+            <span class="weui-icon-checked"></span>
+          </div>
+        </label>
+        <label class="weui-cell weui-check__label" for="x22">
+          <div class="weui-cell__hd">
+             <i class="Hui-iconfont">&#xe694;</i>
+          </div>
+          <div class="weui-cell__bd weui-cell_primary">
+            <p class="mleft03 texcolor44">微信支付</p>
+          </div>
+          <div class="weui-cell__ft">
+              <input type="radio" class="weui-check" name="pay_style" id="x22" value="1" checked="checked">
+              <span class="weui-icon-checked"></span>
+          </div>
+        </label>
+      </div>
+      <div class="mtop1 mbottom1">
+          <a href="javascript:;"  id="dopay" onclick="payNow()" class="weui-btn backgroud_ff642d fontsize16p wbtn96"> 确认支付 </a>
+      </div>
+  </div>
+
+  <!-- BEGIN toast -->
+  <div id="showtoast" style="display: none;">
+    <div class="weui_mask_transparent"></div>
+    <div class="weui_toast">
+        <i class="weui_icon_toast"></i>
+        <p class="weui_toast_content">选择支付方式</p>
+    </div>
+  </div>
+  <!-- END toast -->
+
+  <!-- BEGIN loading toast -->
+  <div id="loadingToast" class="weui_loading_toast" style="display: none;">
+    <div class="weui_mask_transparent"></div>
+    <div class="weui_toast">
+        <div class="weui_loading">
+            <div class="weui_loading_leaf weui_loading_leaf_0"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_1"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_2"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_3"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_4"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_5"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_6"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_7"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_8"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_9"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_10"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_11"></div>
+        </div>
+        <p class="weui_toast_content" id="showmsg">数据加载中</p>
+    </div>
+  </div>
+  <!-- end loading toast -->
+
+  <!--BEGIN dialog1-->
+  <div class="weui-dialog__confirm" id="dialog1" style="display: none;">
+      <div class="weui-mask"></div>
+      <div class="weui-dialog weui-skin_android">
+          <div class="weui-dialog__hd"><strong class="weui-dialog__title">钱包余额</strong></div>
+          <div class="weui-dialog__bd">钱包余额{{$amount}}元，不足支付该订单。是否前往钱包充值？</div>
+          <div class="weui-dialog__ft">
+              <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default">取消</a>
+              <a href="weixin.php?s=/home/Wallet/recharge" class="weui-dialog__btn weui-dialog__btn_primary">确定</a>
+          </div>
+      </div>
+  </div>
+  <!--END dialog1-->
+
+</div>
+</body>
+</html>

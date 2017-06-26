@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>详情</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
+    <script src="__PUBLIC__/home/js/jquery1.8.1/jquery.js"></script>
+    <script type="text/javascript" src="__ROOT__/Public/weixin/js/ilazyui.js"></script>
+</head>
+<body class="bgpreview">
+    <img class="maskimg" src="__ROOT__/Public/images/phone_header.png">
+    <div class="bd prediv">
+    <article class="weui_article bgcgray mtop1em">
+        <section>
+            <h2 class="title">{{$article['title']}}</h2>
+            <section>
+                <h3 class="timeclr">发布日期：<?php echo date('Y-m-d',$article['addtime']); ?></h3>
+                <img src="{{$article['thumb']}}">
+                <div class="graywd">
+                    <p > {{$article['content']}}</p>
+                </div>
+            </section>
+        </section>
+    </article>
+    </div>
+<script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/common.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        var weui_article = $(".weui_article");
+        weui_article.find('img').each(function(index) {
+            var imgsrc = $(this).attr('src');
+            if (imgsrc.indexOf("emoticons")>1) {
+                $(this).attr('style', 'width:auto');
+            };
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>充值</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+    <script src="__PUBLIC__/js/jquery1.8.1/jquery.js"></script>
+    <script type="text/javascript" src="__ROOT__/Public/weixin/js/ilazyui.js"></script>
+</head>
+<body class="backgroud_hui">
+    <include file="Wpublic/share"/>
+   <div class="bd">
+       <div class="reacharge_zhanghu">
+           <div class="weui_cells">
+                <div class="weui_cell">
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p>充值账户</p>
+                    </div>
+                    <div class="weui_cell_ft">{{$_SESSION['userinfo']['phone']}}</div>
+                </div>
+                <div class="weui_cell">
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p>账户余额</p>
+                    </div>
+                    <div class="weui_cell_ft">{{$wallet['amount']}}元</div>
+                </div>
+            </div>
+        </div>
+        <div class="bgcwhite">
+            <div class="weui_cells_title mtop08em font-size13 ptop05em">充值金额</div>
+            <div class="recharge_jine_choose">
+                <ul>
+                    <li class="radio_choosed">
+                        <label for="jine10"><input type="radio" name="jine" id="jine10" value="30" checked="checked">30元</label>
+                    </li>
+                    <li>
+                        <label for="jine20"><input type="radio" name="jine" value="50" id="jine20">50元</label>
+                    </li>
+                    <li>
+                        <label for="jine40"><input type="radio" name="jine" value="70" id="jine40">70元</label>
+                    </li>
+                    <li>
+                        <label for="jine60"><input type="radio" name="jine" value="100" id="jine60">100元</label>
+                    </li>
+                    <li>
+                        <label for="jine80"><input type="radio" name="jine" value="200" id="jine80">200元</label>
+                    </li>
+                    <li>
+                        <label for="jine100"><input type="radio" name="jine" value="300" id="jine100">300元</label>
+                    </li>
+                </ul>
+            </div>
+            <div class="recharge_jine_input">
+                <div class="  bradiu8 bborder mtop1em mbottom1em">
+                    <div class="weui_cell ">
+                        <div class="weui_cell_hd"><label for="" class="weui_label">金额</label></div>
+                        <div class="weui_cell_bd weui_cell_primary">
+                            <input class="weui_input" type="tel" name="jine_diy" pattern="[0-9]*" maxlength="6" value="30" placeholder="请输入金额">
+                        </div>
+                        <div class="jine_houzhui">
+                            元
+                        </div>
+                    </div>
+                </div>
+                <p class="czwxts">为了减少频繁充值，建议您充值50元以上</p>
+            </div>
+
+        </div>
+        <div class="fcenter  mtop1em bgcnone ">
+            <a href="javascript:order();" class="weui_btn bgcored  wb90"> 充　值 </a>
+        </div>
+    </div>
+    <!--弹出框2-->
+<div class="weui_dialog_alert" id="dialog2" style="display: none;">
+    <div class="weui_mask"></div>
+    <div class="weui_dialog">
+        <div class="weui_dialog_hd"><strong class="weui_dialog_title" id="dialog2_title">提交成功</strong></div>
+        <div class="weui_dialog_bd" id="dialog2_content">工作人员将尽快与您联系！</div>
+        <div class="weui_dialog_ft">
+            <a href="javascript:dialog2_hide();" id="primary2" class="weui_btn_dialog primary">确定</a>
+        </div>
+    </div>
+</div>
+    <div id="toast" style="display: none;">
+            <div class="weui_mask_transparent"></div>
+            <div class="weui_toast">
+                <i class="weui_icon_toast"></i>
+                <p class="weui_toast_content">下单成功</p>
+            </div>
+        </div>
+        <div id="loadingToast" class="weui_loading_toast" style="display:none;">
+            <div class="weui_mask_transparent"></div>
+            <div class="weui_toast">
+                <div class="weui_loading">
+                    <div class="weui_loading_leaf weui_loading_leaf_0"></div>
+                    <div class="weui_loading_leaf weui_loading_leaf_1"></div>
+                    <div class="weui_loading_leaf weui_loading_leaf_2"></div>
+                    <div class="weui_loading_leaf weui_loading_leaf_3"></div>
+                    <div class="weui_loading_leaf weui_loading_leaf_4"></div>
+                    <div class="weui_loading_leaf weui_loading_leaf_5"></div>
+                    <div class="weui_loading_leaf weui_loading_leaf_6"></div>
+                    <div class="weui_loading_leaf weui_loading_leaf_7"></div>
+                    <div class="weui_loading_leaf weui_loading_leaf_8"></div>
+                    <div class="weui_loading_leaf weui_loading_leaf_9"></div>
+                    <div class="weui_loading_leaf weui_loading_leaf_10"></div>
+                    <div class="weui_loading_leaf weui_loading_leaf_11"></div>
+                </div>
+                <p class="weui_toast_content">正在提交订单信息</p>
+            </div>
+        </div>
+        <form action="/interface.php?s=/home/pay/payorder" method="post" id="form1">
+            <input type="hidden" name="userid" value="{{$userid}}">
+            <input type="hidden" name="orderid" value="" id="orderid">
+        </form>
+    </div>
+<script src="__ROOT__/Public/weixin/js/jquery.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/common.js"></script>
+<script>
+    $('label').on('click', function() {
+        $('.radio_choosed').removeClass('radio_choosed');
+        $(this).parent().addClass('radio_choosed');
+    });
+    $('input[name="jine"]').change(function() {
+        $('input[name="jine_diy"]'). val($(this).val());
+    });
+    function order()
+    {
+        $("#loadingToast").show();
+        var userid = "{{$_SESSION['userinfo']['id']}}",
+            money = $('input[name="jine_diy"]').val();
+        if (money.length != 0 &&　!isNaN(money)){
+            $.ajax({
+                url: '/interface.php?s=/home/order/recharge',
+                type: 'POST',
+                dataType: 'json',
+                data: {userid: userid, money: money},
+                success: function(data){
+                    console.log(data);
+                    if (data.code == 2000) {
+                        $("#loadingToast").hide();
+                        $("#toast").show();
+                        $("#toast").hide('slow/400/fast');
+                        location.href = "/interface.php?s=/home/pay/payorder/userid/"+userid+"/orderid/"+data.data.order_no+'&url={{:urlencode(U('wallet/index'))}}';
+                        // pay(data.data.order_no);
+                    } else {
+                        $("#loadingToast").hide();
+                        $("#dialog2_title").text('错误提示');
+                        $("#dialog2_content").text(data.msg);
+                        $("#dialog2").show();
+                    }
+                },
+                error: function(){
+                    $("#dialog2_title").text('错误提示');
+                    $("#dialog2_content").text('网络故障，请联系管理员！');
+                    $("#dialog2").show();
+                }
+            })
+            .done(function() {
+                console.log("success");
+            })
+            .fail(function() {
+                console.log("error");
+            })
+            .always(function() {
+                console.log("complete");
+            });
+        } else {
+            $("#dialog2_title").text('提示');
+            $("#dialog2_content").text('请输入充值金额');
+            $("#dialog2").show();
+        }
+
+    }
+    function  dialog2_hide ()
+    {
+        $('#dialog2').hide();
+    }
+</script>
+</body>
+</html>

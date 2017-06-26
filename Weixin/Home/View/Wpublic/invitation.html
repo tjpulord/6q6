@@ -1,0 +1,141 @@
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<style>
+#share_img{
+  position: fixed; top: 0px right:0px; width: 100%; height: 100%; z-index: 9999999999; 
+}
+.jiantou{
+  position: absolute; right: 10px; top: 0px; z-index: 9999999999; 
+}
+.jiantou img{width: 200px; height: 200px; opacity: 1;}
+
+
+  #share_img p{
+    position: fixed;
+    z-index: 10;
+    color: #fff;
+  }
+  #share_img p img{
+    width:50px;
+    height:50px;
+  }
+  #share_img p span{ line-height: 50px; position: fixed; left: 35%; }
+  #share_img p:nth-of-type(1){
+    font-size:26px; 
+    top: 30%;
+    left: 15%;
+  }
+  #share_img p:nth-of-type(2){
+    font-size:20px; 
+    top: 40%;
+    left: 15%;
+  }
+
+  #share_img p:nth-of-type(3){
+    font-size:20px; 
+    top: 50%;
+    left: 15%;
+  }
+  .ok_btn{
+    width: 240px;
+    height: 40px;
+    position: fixed;
+    z-index: 10;
+    top: 65%;
+    left: 15%;
+  }
+  .ok_btn img{ width: 100%; height: 100%;  }
+</style>
+<!--分享图片-->
+<div id="share_img" style="display: none;" >
+<div class="weui_mask" id="weui_mask_share"></div>
+<div class="jiantou"><img src="__ROOT__/Public/weixin/image/arrow.png" class="arrow"></div>
+  <p>点击右上角开始分享:</p>
+  <p><img src="__ROOT__/Public/weixin/image/share1.png"><span>分享到朋友圈</span></p>
+  <p><img src="__ROOT__/Public/weixin/image/share2.png"><span>发送给朋友</span></p>
+  <div class="ok_btn"><img src="__ROOT__/Public/weixin/image/ok_btn.png"></div>
+</div>
+<script>
+  wx.config({
+    // debug: true,
+    appId: '{{:$signPackage["appId"]}}',
+    timestamp: {{:$signPackage["timestamp"]}},
+    nonceStr: '{{:$signPackage["nonceStr"]}}',
+    signature: '{{:$signPackage["signature"]}}',
+    jsApiList: [
+    'checkJsApi',
+    'hideAllNonBaseMenuItem',
+    'showMenuItems',
+    'onMenuShareTimeline',
+    'onMenuShareAppMessage',
+    ]
+  }); 
+
+  wx.ready(function () {
+    function addscore()
+    {
+      var phone = '{{$_SESSION['userinfo']['phone']}}',
+          userid = '{{$_SESSION['userinfo']['id']}}';
+      if (phone != "" && userid != ""){
+        $.ajax({
+          url: '/interface.php?s=/home/score/add',
+          type: 'POST',
+          dataType: 'json',
+          data: {userid: userid, actionid: '7'},
+          success: function(data){
+              console.log(data);
+              if (data.code == 2000){
+                alert(data.msg);
+              } else {
+                alert(data.msg);
+              }
+          },
+          error: function(){
+          }
+        });
+      }
+
+    }
+    wx.checkJsApi({
+      jsApiList: [
+        'hideAllNonBaseMenuItem',
+        'showMenuItems'
+      ],
+      success: function (res) {
+        // alert(JSON.stringify(res));
+      }
+    });
+  wx.hideAllNonBaseMenuItem();
+    wx.showMenuItems({
+      menuList: ["menuItem:share:appMessage","menuItem:share:timeline"], // 要显示的菜单项，所有menu项见附录3
+      success: function (res) {
+        // alert('已显示“阅读模式”，“分享到朋友圈”，“复制链接”等按钮');
+      },
+      fail: function (res) {
+        // alert(JSON.stringify(res));
+      }
+    });
+    // alert(123);
+    // 2. 分享接口
+    // 2.1 监听“分享给朋友”，按钮点击、自定义分享内容及分享结果接口
+      wx.onMenuShareAppMessage({
+        title: '{{$share['title']|default="同当互助"}}',
+        desc: '<?php echo (str_replace(array(" ","　","\t","\n","\r","\'"), "", htmlspecialchars(strip_tags($share['content']))) ? str_replace(array(" ","　","\t","\n","\r","\'"), "", htmlspecialchars(strip_tags($share['content']))):"欢迎加入同当互助大家庭，我们有难同当！"); ?>',
+        link: location.href,
+        imgUrl: "http://{{$_SERVER['HTTP_HOST']}}{{$share['thumb']|default=C('HEADER')}}",
+        success: function(res){
+          addscore();
+        }
+      });
+
+    // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
+    wx.onMenuShareTimeline({
+      title: '{{$share['title']|default="同当互助"}}',
+      link: location.href,
+      imgUrl: "http://{{$_SERVER['HTTP_HOST']}}{{$share['thumb']|default=C('HEADER')}}",
+      success: function(res){
+        addscore();
+      }
+    });
+  })
+
+</script>

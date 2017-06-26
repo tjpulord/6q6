@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>社会关爱</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <script src="__ROOT__/Public/weixin/js/jquery.min.js"></script>
+    <script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+    <script src="__ROOT__/Public/weixin/js/common.js"></script>
+    <script src="__ROOT__/Public/js/jquery.touchSwipe.min.js"></script>
+    <script src="__ROOT__/Public/js/idangerous.swiper-1.9.1.min.js"></script>
+    <script src="__ROOT__/Public/js/idangerous.swiper.scrollbar-1.2.js"></script>
+<script type="text/javascript">
+    window.page1=0;
+    window.status1=1;
+    window.page2=0;
+    window.status2=1;
+    function ajaxLoad1(zone,url)
+    {
+        if(window.status1){
+            window.page1++;
+            $.ajax({
+                url: url,
+                type: 'post',
+                dataType:'json',
+                data: {page: window.page1},
+                success: function(data){
+                    if(data.error){
+                        window.status1=0;
+                        $('.graywd').html('无更多数据');
+                    }else{
+                        tianjia(zone,data.data);
+                    }
+                },
+                error: function(data){
+
+                }
+            });
+        }
+    }
+    function tianjia(zone,data){
+        var li_clone="";
+        for(var i= 0,l = data.length;i<l;i++){
+            //处理数据并插入
+            var id = data[i].id;
+                thumb = data[i].thumb;
+                content = data[i].content;
+                title = data[i].title;
+                count = data[i].count;
+                li_clone +='<a href="http://<?php echo $_SERVER["HTTP_HOST"];?>/weixin.php/home/Social/article/id/'+id+'" class="weui_media_box weui_media_appmsg"><div class="  listthumb"><img class="bradiu4" src="'+thumb+'" alt=""></div><div class="weui_media_bd shequguanai_list_tn"><h4 class="weui_media_title"><span class="bcolor">'+title+'</span></h4> <p class="weui_media_desc wb90">'+content+'</p><div class="shequguanai_juanzhucishu"><i class="icon Hui-iconfont shequguanai_juanzhucishu_xin"></i><p class="shequguanai_juanzhucishu_neirong">共'+count+'人捐助</p></div></div><div class="tubiao_youjiantou"><i class="icon Hui-iconfont" style="color: #e0e0e0; margin-left:0.4em; "></i> </div></a>';
+
+        };
+        $("#position2").before(li_clone);
+        // if(zone == 1){
+        //     $("#content1").append(li_clone);
+        // }else if(zone == 2) {
+        //     $("#position2").append(li_clone);
+        // }
+
+
+
+    }
+</script>
+</head>
+<body class="bgcgray">
+    <include file="Wpublic/share"/>
+    <div class="bd" style="height: 100%;" id="contain">
+        <!-- 广告代码 开始 -->
+    <div class="pagination pagination1"></div>
+    <div class="swiper-main">
+        <?php
+            $banners = M('ads')->where('position="social"')->select();
+        ?>
+        <div class="swiper-container swiper1">
+            <div class="swiper-wrapper">
+              <volist name="banners" id="banner">
+                <div class="swiper-slide">
+                    <a  href="{{$banner['url']|default="javascript:;"}}">
+                        <img src="{{$banner['picture']|default="__PUBLIC__/weixin/image/shequhuzhubanner1.png"}}" style="opacity: 1; ">
+                    </a>
+                </div>
+              </volist>
+            </div>
+      </div>
+    </div>
+      <script type="text/javascript">
+          var swiper = new Swiper('.swiper1', {
+                pagination : '.pagination1',
+                loop:true,
+                grabCursor: true
+            });
+      </script>
+        <!-- 广告 结束 -->
+<!-- 内容区 开始 -->
+        <div class="weui_tab social_weui_tab">
+            <div class="weui_tab_bd pallz0em" id="content1">
+                <volist name="art_list1" id="art1">
+                    <div class="weui_panel weui_panel_access">
+                        <div class="weui_panel_bd" >
+                            <a href="<?php echo U('Social/article',array('id'=>$art1['id']))?>" class="weui_media_box weui_media_appmsg weui_panel_ft">
+                                <div class=" listthumb">
+                                    <img class="bradiu4" src="{{$art1.thumb}}" alt="">
+                                </div>
+                                <div class="weui_media_bd1">
+                                    <h4 class="weui_media_title"><span class="bcolor">{{$art1.title}}</span></h4>
+                                    <p class="weui_media_desc wb90"><?php echo msubstr(strip_tags($art1['content']),0,300);?></p>
+                                    <p class="shequguanai_juanzhucishu_neirong">
+                                        <i class="icon Hui-iconfont" style="color: #ff0000; width: 15px; margin-top:0.15em;">&#xe649;</i>
+                                        共<font color="red">  {{$art1['count']}}  </font>人捐助
+                                    </p>
+                                    <span class="weui_cell_ft"></span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </volist>
+                <div class="fcenter  mbottom4em mtop08em" id="position2">
+                    <a class="more_comments font-size1 gcolor " href="javascript:ajaxLoad1('1','<?php echo U('Social/loadArticle');?>');" ><span class="graywd">点击加载更多</span></a>
+                </div>
+            </div>
+        </div>
+<!-- 内容区 结束 -->
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>申请互助金</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+    <link href="__ROOT__/Public/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+</head>
+<body class="bgcgray">
+    <include file="Wpublic/share"/>
+    <form action="" enctype="multipart/form-data" method="post" onsubmit="return check();">
+        <input type="hidden" name="planid" value="{{$account['planid']}}">
+        <input type="hidden" name="cardnumber" value="{{$account['cardnumber']}}">
+        <input type="hidden" name="name" value="{{$account['username']}}">
+        <div class="bgcwhite ptop1em mtop1em">
+            <div class="bradiu8 bborder mbottom05em wb90 mcenter">
+                <a class="weui_cell remove_a" href="javascript:;">
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p>姓名</p>
+                    </div>
+                    <div class="weui_cell_ft">{{$account['username']|default="未设置"}}<i class="icon Hui-iconfont"></i></div>
+                </a>
+            </div>
+            <div class="bradiu8 bborder mbottom05em wb90 mcenter">
+                <a class="weui_cell remove_a" href="javascript:;">
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p>身份证号</p>
+                    </div>
+                    <div class="weui_cell_ft">{{$account['cardnumber']|default="未设置"}}<i class="icon Hui-iconfont"></i></div>
+                </a>
+            </div>
+            <div class="bradiu8 bborder mbottom05em wb90 mcenter">
+                <div class="weui_cell">
+                    <div class="weui_cell_bd weui_cell_primary ">
+                        <textarea class="weui_textarea" type="text" name="content" minlength="50" id="content" maxlength="1000" rows="5" value="" placeholder="情况说明：请详细描述申请内容，内容描述至少50字" required="required">{{$mutual['content']}}</textarea>
+                        <div class="weui_textarea_counter"><span id="length">0</span>/1000</div>
+                    </div>
+                </div>
+            </div>
+            <div class="bradiu8 bborder mtop2em wb90 mcenter">
+                <div class="weui_cell">
+                    <div class="weui_cell_bd weui_cell_primary ">
+                        <input class="weui_input" type="number" name="contact"  value="{{$_SESSION['userinfo']['phone']}}" placeholder="邮箱、QQ、手机号(选填)">
+                    </div>
+                </div>
+            </div>
+            <span>&nbsp;</span>
+        </div>
+        <br>
+        <div class="fcenter mtop1em bgcnone wb90 mcenter">
+            <input type="submit" class="weui_btn bgcored  wb90" id="showTooltips" value="确定">
+        </div>
+        <div class="font-size08 wb90 mcenter mtop05em flheight2 graywd mtop2em">
+            <p>请勿提交不良信息，否则可能导致您的账户被封</p>
+            <p>全国客服电话：{{$kefu['value']}}</p>
+        </div>
+    </form>
+
+<script src="__ROOT__/Public/weixin/js/jquery.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/common.js"></script>
+<script>
+    $(document).keydown(function(event) {
+        $("#length").html($('#content').val().length);
+    });
+    function check(){
+        var textl = $("#content").val().length;
+        if ( textl<50 || textl>1000) {
+            alert('情况说明需50~1000字');
+            return false;
+        }
+        return true;
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>积分规则</title>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/weui.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/example.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/shequhudong.css"/>
+    <link rel="stylesheet" href="__ROOT__/Public/weixin/css/ilazy.css"/>
+</head>
+<body class="bgcgray">
+    <include file="Wpublic/share"/>
+    <div class="bgcwhite mtop1em">
+        <article class="mymessage_area ">
+            <header>
+                <h1>积分规则</h1>
+                <time>{{:date("Y-m-d H:i:s", $ruler['addtime'])}}</time>
+            </header>
+            <article class="message_content ">
+                {{$ruler['content']}}
+            </article>
+            <footer>
+            <div class="fcenter  mtop1em bgcnone mbottom1em">
+                <a href="{{:U('wallet/score')}}" class="weui_btn bgcored  wb90"> 我知道了 </a>
+            </div>
+            </footer>
+        </article>
+    </div>
+<script src="__ROOT__/Public/weixin/js/jquery.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/router.min.js"></script>
+<script src="__ROOT__/Public/weixin/js/common.js"></script>
+</body>
+</html>

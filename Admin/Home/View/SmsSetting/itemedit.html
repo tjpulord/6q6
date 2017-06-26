@@ -1,0 +1,172 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link href="__PUBLIC__/css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/lib/icheck/icheck.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="__PUBLIC__/css/default.css" />
+<link rel="stylesheet" href="__PUBLIC__/editor/plugins/code/prettify.css" />
+
+<link href="__PUBLIC__/lib/webuploader/0.1.5/webuploader.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/editor/kindeditor.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/kindeditor.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/lang/zh_CN.js"></script>
+<title>添加代理</title>
+</head>
+<body>
+<div class="pd-20">
+    <form method="post" class="form form-horizontal" id="form-article-add">
+        <input type="hidden" name="id" id="id" value="{{$data.id}}">
+        <!-- <?php unset($data["id"]) ?> -->
+        <div class="row cl">
+            <label class="form-label col-2">短信服务主机地址：</label>
+            <div class="formControls col-5">
+                <input type="text" name="info[sms_hostip]" value="{{$data['sms_hostip']}}" class="input-text"/></div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-2">短信服务主机端口：</label>
+            <div class="formControls col-5">
+                <input type="text" name="info[sms_port]" value="{{$data['sms_port']}}" class="input-text"/></div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-2">版本号：</label>
+            <div class="formControls col-5">
+                <input type="text" name="info[sms_version]" value="{{$data['sms_version']}}" class="input-text"/></div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-2">账号：</label>
+            <div class="formControls col-5">
+                <input type="text" name="info[sms_sid]" value="{{$data['sms_sid']}}" class="input-text"/></div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-2">Token：</label>
+            <div class="formControls col-5">
+                <input type="text" name="info[sms_token]" value="{{$data['sms_token']}}" class="input-text"/></div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-2">应用Id：</label>
+            <div class="formControls col-5">
+                <input type="text" name="info[sms_appid]" value="{{$data['sms_appid']}}" class="input-text"/></div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-2">短信模板自定义分类：</label>
+            <div class="formControls col-5">
+                <input type="text" name="info[sms_cate]" value="{{$data['sms_cate']}}" class="input-text"/></div>
+        </div>
+
+        <div class="row cl">
+            <div class="col-8 col-offset-2">
+                <input type="hidden" name="doSubmit" value="ok">
+                <input type="button" name="doSubmits" id="doSubmit" class="btn btn-primary radius Hui-iconfont" value="确定&#xe6a7;">
+                <button onClick="layer_close('form-article-add')" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<div class="pd-20">
+    <form method="post" class="form form-horizontal" id="form-article-list">
+
+        <div class="mt-20">
+            <span class="l">
+                <a class="btn btn-primary radius" onclick="updatetemplate()"><i class="Hui-iconfont">&#xe63c;</i>更新模板 </a>
+                <a class="btn btn-primary radius" onclick="savetemplate()"><i class="Hui-iconfont">&#xe63c;</i>保存模板 </a>
+            </span>
+        <table class="table table-border table-bordered table-bg table-hover table-sort">
+            <thead><tr class="text-c">
+                <th>模板id</th>
+                <th>模板名称</th>
+                <th>模板内容</th>
+                <th>模板状态</th>
+                <th>模板分类</th>
+                <th>模板创建时间</th>
+                <th>更新时间</th></tr>
+            </thead>
+            <tbody>
+                <volist name="list" id="vo">
+                    <tr class="text-l">
+                        <td>{{$vo[id]}}</td>
+                        <td>{{$vo[title]}}</td>
+                        <td>{{$vo[content]}}</td>
+                        <td>
+                            <if condition="$vo['status'] eq 0">
+                                待审核
+                            <elseif condition="$vo['status'] eq 1"/>
+                                审核通过
+                            <else/>
+                                未通过
+                            </if></td>
+                        <td>
+                            <select name="data[{{$vo[id]}}][cateid]">
+                                {{:fill_option(explode(",",$data['sms_cate']), $vo['cateid'])}}
+                            </select>
+                        </td>
+                        <td>{{$vo[datecreated]}}</td>
+                        <td>{{$vo[dateupdated]}}</td>
+                    </tr>
+                </volist>
+            </tbody>
+        </table>
+        <div id="page" class="pagin">{{$page}}</div>
+    </div>
+    </form>
+</div>
+<script type="text/javascript" src="__PUBLIC__/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/lib/layer/1.9.3/layer.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/mLazy.js"></script>
+<if condition="$save">
+<script type="text/javascript">
+layer.msg("保存成功",{icon: 6,time:1000});
+
+</script>
+</if>
+
+<script type="text/javascript">
+
+/*关闭弹出框口*/
+function layer_close(){
+    var index = parent.layer.getFrameIndex(window.name);
+    parent.layer.close(index);
+}
+
+function updatetemplate () {
+    $.ajax({
+        url: 'interface.php?s=/home/sms/getTemplate',
+        type: 'GET',
+        dataType: 'json',
+        success: function(data){
+            if (data.code == 2000) {
+                layer.msg("更新成功", {icon: 6,time:1000});
+                location.replace(location.href);
+            }else{
+                alert(data.msg);
+            }
+        },
+        error: function(){
+            alert("更新短信模板失败");
+        },
+    });
+
+}
+
+// 提交保存模板
+function savetemplate(){
+    $("#form-article-list").submit();
+}
+
+$(document).ready(function() {
+    $("#doSubmit").bind("click",function(){
+        $("#form-article-add").submit();
+    });
+});
+</script>
+</body>
+</html>

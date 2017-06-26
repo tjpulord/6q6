@@ -1,0 +1,217 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="Public/lib/html5.js"></script>
+<script type="text/javascript" src="Public/lib/respond.min.js"></script>
+<script type="text/javascript" src="Public/lib/PIE_IE678.js"></script>
+<![endif]-->
+<link href="__PUBLIC__/css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/css/style.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="http://lib.h-ui.net/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>菜单管理</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 系统设置 <span class="c-gray en">&gt;</span> 菜单管理 <a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+<i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="pd-20">
+	<form action="{{:U('System/menulist')}}" method="post" id="submitForm">
+	<div class="cl pd-5 bg-1 bk-gray mt-20">
+	<a href="javascript:void(0);"
+					onClick=article_add('添加子菜单','{{:U("System/menuedit")}}',650,500); class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加新菜单</a>
+	<a href="javascript:void(0);"
+					onClick="$('#submitForm').submit();" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe61e;</i> 排序管理</a>
+	<!-- <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>	 -->
+	 <span class="r"><span class="label label-success radius">共有数据：<strong>{{$list|count}}</strong> 条</span></span> </div>
+	<div class="mt-20">
+		<input type="hidden" name="doSubmit" value="ok">
+		<table class="table table-border table-bordered table-bg table-hover table-sort">
+			<thead>
+				<tr class="text-c">
+					<th width="20">排序</th>
+					<th>ID</th>
+					<th>名称</th>
+					<th>控制器</th>
+					<th>参数</th>
+					<th>是否启用</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<volist name="list" id="vo">
+				<tr class="text-l">
+					<td width="20"><input type="text" value="{{$vo.sorder}}" name="morder[{{$vo.id}}]"  AUTOCOMPLETE="off" maxlength="3" size="3" style="width:40px; text-align:center;" class="input-text radius size-S"></td>
+					<td>{{$vo.id}}</td>
+					<td class="text-l size-L"><b><i class="Hui-iconfont">{{$vo.icon}}</i> {{$vo.name}}</b></td>
+					<td class="text-l">{{$vo.url|default='--'}}</td>
+					<td class="text-l">{{$vo.param|default='--'}}</td>
+					<td class="text-l"><if condition="$vo.isuse eq '1'">启用<else /> 未启用</if></td>
+					<td class="text-l">
+					<a href="javascript:void(0);"
+					onClick=article_add('添加子菜单','{{:U("System/menuedit",array("parentid"=>$vo["id"]))}}',650,500);>添加子菜单</a>
+					<a href="javascript:void(0);"
+					onClick=article_add('编辑','{{:U("System/menuedit",array("id"=>$vo["id"]))}}',650,500);>修改</a>
+					<a href="javascript:void(0);"
+					onClick=article_del('{{:U("System/menudel",array("id"=>$vo["id"]))}}');>删除</a>
+					</td>
+				</tr>
+				<volist name="vo.list" id="v">
+				<tr class="text-l">
+					<td><input type="text" value="{{$v.sorder}}" name="morder[{{$v.id}}]" maxlength="3"  AUTOCOMPLETE="off" size="3" style="width:40px;text-align:center;" class="input-text radius size-S"></td>
+					<td>{{$v.id}}</td>
+					<td class="text-l"> │ &nbsp;&nbsp; └─ {{$v.name}}</td>
+					<td class="text-l">{{$v.url|default='--'}}</td>
+					<td class="text-l">{{$v.param|default='--'}}</td>
+					<td class="text-l"><if condition="$vo.isuse eq '1'">启用<else /> 未启用</if></td>
+					<td class="text-l">
+						<a href="javascript:void(0);"
+						onClick=article_add('编辑','{{:U("System/menuedit",array("id"=>$v["id"]))}}',650,500);>修改</a>
+						<a href="javascript:void(0);"
+						onClick=article_del('{{:U("System/menudel",array("id"=>$v["id"]))}}');>删除</a>
+					</td>
+				</tr>
+				</volist>
+				</volist>
+			</tbody>
+		</table>
+	</div>
+	</form>
+</div>
+
+<script type="text/javascript" src="__PUBLIC__/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/lib/layer/1.9.3/layer.js"></script>
+<script type="text/javascript" src="__PUBLIC__/lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="__PUBLIC__/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<!-- <script type="text/javascript" src="__PUBLIC__/js/H-ui.admin.js"></script> -->
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript">
+// $('.table-sort').dataTable({
+// 	"aaSorting": [[ 1, "desc" ]],//默认第几个排序
+// 	"bStateSave": true,//状态保存
+// 	"aoColumnDefs": [
+// 	  //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
+// 	  {"orderable":false,"aTargets":[0,8]}// 制定列不参与排序
+// 	]
+// });
+
+/*添加*/
+function article_add(title,url,w,h){
+	w = w == undefined ? 800 : w;
+	h = h == undefined ? 600 : h;
+	var index = layer.open({
+		type: 2,
+		area: [w+'px', h +'px'],
+		title: title,
+		content: url,
+		success: function(layero, index){
+		    console.log(layero, index);
+		},
+		yes: function(index, layero){
+		    //do something
+		    layer.close(index); //如果设定了yes回调，需进行手工关闭
+		},
+		end:function(index,laero){
+			location.replace(location.href);
+		}
+	});
+	// layer.full(index);
+}
+/*编辑*/
+function article_edit(title,url,id,w,h){
+	var index = layer.open({
+		type: 2,
+		title: title,
+		content: url,
+		end:function(){
+			location.reload();
+		}
+	});
+	layer.full(index);
+}
+/*删除*/
+function article_del(url){
+	layer.confirm('确认要删除吗？',function(index)
+	{
+		getAjax('get',url,'');
+		if(JsonData.code == 2000)
+		{
+			layer.msg('已删除!',{icon:6,time:1000});
+			location.replace(location.href);
+		}else
+		{
+			layer.msg('删除失败!',{icon:5,time:1000});
+		}
+	});
+}
+
+/**-搜索**/
+function search_act(title,url)
+{
+	var params = '?'+$('#searchForm').serialize();
+	url = url+params;
+	var index = layer.open({
+		type: 2,
+		title: title,
+		content: url
+	});
+	layer.full(index);
+}
+
+// /*资讯-审核*/
+// function article_shenhe(obj,id){
+// 	layer.confirm('审核文章？', {
+// 		btn: ['通过','不通过'],
+// 		shade: false
+// 	},
+// 	function(){
+// 		$(obj).parents("tr").find(".td-manage").prepend('<a class="c-primary" onClick="article_start(this,id)" href="javascript:;" title="申请上线">申请上线</a>');
+// 		$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已发布</span>');
+// 		$(obj).remove();
+// 		layer.msg('已发布', {icon:6,time:1000});
+// 	},
+// 	function(){
+// 		$(obj).parents("tr").find(".td-manage").prepend('<a class="c-primary" onClick="article_shenqing(this,id)" href="javascript:;" title="申请上线">申请上线</a>');
+// 		$(obj).parents("tr").find(".td-status").html('<span class="label label-danger radius">未通过</span>');
+// 		$(obj).remove();
+//     	layer.msg('未通过', {icon:5,time:1000});
+// 	});
+// }
+// /*资讯-下架*/
+// function article_stop(obj,id){
+// 	layer.confirm('确认要下架吗？',function(index){
+// 		$(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="article_start(this,id)" href="javascript:;" title="发布"><i class="Hui-iconfont">&#xe603;</i></a>');
+// 		$(obj).parents("tr").find(".td-status").html('<span class="label label-defaunt radius">已下架</span>');
+// 		$(obj).remove();
+// 		layer.msg('已下架!',{icon: 5,time:1000});
+// 	});
+// }
+
+// /*资讯-发布*/
+// function article_start(obj,id){
+// 	layer.confirm('确认要发布吗？',function(index){
+// 		$(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="article_stop(this,id)" href="javascript:;" title="下架"><i class="Hui-iconfont">&#xe6de;</i></a>');
+// 		$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已发布</span>');
+// 		$(obj).remove();
+// 		layer.msg('已发布!',{icon: 6,time:1000});
+// 	});
+// }
+// /*资讯-申请上线*/
+// function article_shenqing(obj,id){
+// 	$(obj).parents("tr").find(".td-status").html('<span class="label label-default radius">待审核</span>');
+// 	$(obj).parents("tr").find(".td-manage").html("");
+// 	layer.msg('已提交申请，耐心等待审核!', {icon: 1,time:2000});
+// }
+
+</script>
+</body>
+</html>
